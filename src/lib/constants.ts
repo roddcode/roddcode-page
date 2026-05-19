@@ -7,7 +7,7 @@ export const SITE = {
   author: "Alejandro Alvarado",
   location: "Lima, PE",
   email: "devale.alvarado@gmail.com",
-  calendly: "https://calendly.com/roddcode/30min",
+  cal: "https://cal.com/roddcode/intro",
   github: "https://github.com/roddcode",
   linkedin: "https://www.linkedin.com/in/alejandro-alvarado-roddcode/",
 } as const;

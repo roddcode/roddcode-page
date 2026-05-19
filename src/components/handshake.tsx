@@ -16,14 +16,14 @@ export function Handshake() {
 
         <div className="flex flex-wrap gap-4 mb-12">
           <Link
-            href={SITE.calendly}
+            href={SITE.cal}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-foreground text-background hover:bg-foreground/90 px-8 py-4 text-sm font-medium transition-all duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center gap-2"
             style={{ borderRadius: "2px" }}
           >
-            Schedule a Call →
-            <span className="text-xs opacity-60 font-normal ml-1">30 min</span>
+            Book Intro Call
+            <span className="text-xs opacity-50 font-mono ml-1">cal.com</span>
           </Link>
           <Link
             href={`mailto:${SITE.email}?subject=Engineering%20Collaboration`}
