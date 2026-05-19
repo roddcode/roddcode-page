@@ -3,14 +3,14 @@
 import { useState, useRef } from "react";
 import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/cn";
+import type { ComponentPropsWithoutRef } from "react";
 
-export function CodeBlock({ children, className, ...props }: any) {
+export function CodeBlock({ children, className, ...props }: ComponentPropsWithoutRef<"pre">) {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
 
   const onCopy = () => {
     if (preRef.current) {
-      // innerText ensures what is visibly rendered (including newlines from display: block elements) is exactly what is copied.
       const text = preRef.current.innerText || preRef.current.textContent || "";
       navigator.clipboard.writeText(text.trimEnd());
       setCopied(true);
@@ -34,7 +34,7 @@ export function CodeBlock({ children, className, ...props }: any) {
             copied ? "scale-100 opacity-100" : "scale-0 opacity-0"
           )}
         >
-          <Check size={14} className="text-green-500" />
+          <Check size={14} strokeWidth={1.5} className="text-green-500" />
         </span>
         <span
           className={cn(
@@ -42,7 +42,7 @@ export function CodeBlock({ children, className, ...props }: any) {
             copied ? "scale-0 opacity-0" : "scale-100 opacity-100"
           )}
         >
-          <Copy size={14} />
+          <Copy size={14} strokeWidth={1.5} />
         </span>
       </button>
     </div>

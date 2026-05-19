@@ -9,7 +9,8 @@ const PostMetadataSchema = z.object({
   title: z.string(),
   date: z.string(),
   summary: z.string(),
-  slug: z.string(),
+  // slug is always derived from the filename, not authored in frontmatter
+  slug: z.string().optional(),
 });
 
 export type PostMetadata = z.infer<typeof PostMetadataSchema>;

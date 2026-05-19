@@ -9,7 +9,7 @@ export function Footer() {
           roddcode
         </span>
 
-        <div className="flex items-center gap-5 text-sm font-mono text-[#3a3a39]">
+        <div className="flex items-center gap-5 text-sm font-mono text-tertiary">
           <Link href="/writing" className="hover:text-muted-foreground transition-colors">
             Writing
           </Link>

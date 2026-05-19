@@ -20,9 +20,9 @@ export function Arsenal() {
             </tr>
           </thead>
           <tbody>
-            {ARSENAL.map((item, index) => (
+            {ARSENAL.map((item) => (
               <tr
-                key={index}
+                key={item.layer}
                 className="border-b border-border transition-colors hover:bg-foreground/3"
               >
                 <td

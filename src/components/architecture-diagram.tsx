@@ -1,5 +1,6 @@
 import { cn } from "@/lib/cn";
 import { ArrowDown } from "lucide-react";
+import type { ReactNode } from "react";
 
 type NodeStatus = "active" | "passive" | "degraded";
 
@@ -9,8 +10,8 @@ export function DiagramNode({
   status = "active",
   className,
 }: {
-  label: React.ReactNode;
-  sublabel?: React.ReactNode;
+  label: ReactNode;
+  sublabel?: ReactNode;
   status?: NodeStatus;
   className?: string;
 }) {
@@ -47,7 +48,7 @@ export function ArchitectureLayer({
   children,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="flex flex-col w-full group">

@@ -17,7 +17,7 @@ export function Philosophy() {
               >
                 {tenet.title}
               </h3>
-              <p className="text-sm text-[#a1a1a0] leading-relaxed grow">
+              <p className="text-sm text-secondary-foreground leading-relaxed grow">
                 {tenet.description}
               </p>
               <Link

@@ -17,7 +17,7 @@ export function CaseStudySoffia() {
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
             01 — The Problem
           </p>
-          <div className="flex flex-col gap-4 text-[#a1a1a0] leading-relaxed max-w-2xl">
+          <div className="flex flex-col gap-4 text-secondary-foreground leading-relaxed max-w-2xl">
             <p>
               Dental and aesthetic clinics operate on a brutal conversion
               window: a lead unanswered for{" "}
@@ -147,7 +147,7 @@ export function CaseStudySoffia() {
                   ["Booking deadlocks", "Chronic (race conditions)", "Zero (Reactive FSM)"],
                 ].map(([metric, before, after]) => (
                   <tr key={metric} className="hover:bg-muted/40 transition-colors group">
-                    <td className="py-4 text-sm text-[#a1a1a0] border-b border-border pr-8">
+                    <td className="py-4 text-sm text-secondary-foreground border-b border-border pr-8">
                       {metric}
                     </td>
                     <td className="py-4 text-sm text-muted-foreground border-b border-border pr-8 tabular-nums">

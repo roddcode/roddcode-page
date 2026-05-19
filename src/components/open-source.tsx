@@ -16,13 +16,11 @@ export function OpenSource() {
               >
                 {project.name}
               </h3>
-              <p className="text-sm text-[#a1a1a0] leading-relaxed grow">
+              <p className="text-sm text-secondary-foreground leading-relaxed grow">
                 {project.description}
               </p>
-              {/* @ts-ignore */}
               {project.status === "In Development" && (
                 <span className="text-xs font-mono text-primary w-fit">
-                  {/* @ts-ignore */}
                   — {project.status}
                 </span>
               )}

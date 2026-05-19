@@ -7,6 +7,10 @@
   --color-foreground: oklch(0.95 0 0);
   --color-muted: oklch(0.17 0 0);
   --color-muted-foreground: oklch(0.55 0 0);
+  /* Secondary text (#a1a1a0 equivalent) */
+  --color-secondary-foreground: oklch(0.65 0 0);
+  /* Tertiary / disabled (#3a3a39 equivalent) */
+  --color-tertiary: oklch(0.25 0 0);
   --color-primary: oklch(0.53 0.15 45);
   /* Bronze Desaturado */
   --color-border: oklch(0.20 0 0);
@@ -21,7 +25,7 @@
   --radius-sm: 2px;
   --radius-md: 4px;
 
-  --animate-fade-in-up: fade-in-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  --animate-fade-in-up: fade-in-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes fade-in-up {
@@ -85,14 +89,11 @@
     background: var(--color-muted-foreground);
   }
 
-  /* SOTA Accessibility */
-  a:focus-visible,
-  button:focus-visible {
-    outline: 1px solid var(--color-primary);
+  /* SOTA Accessibility — single source of truth */
+  :focus-visible {
+    outline: 1px solid var(--color-ring);
     outline-offset: 2px;
     border-radius: 1px;
-
-    letter-spacing: -0.01em;
   }
 
   /* H1 y H2 globales: EB Garamond, sentence case */
@@ -100,16 +101,6 @@
   h2 {
     font-family: var(--font-serif);
     font-weight: 500;
-  }
-
-  ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-foreground);
-  }
-
-  :focus-visible {
-    outline: 1px solid var(--color-ring);
-    outline-offset: 2px;
   }
 }
 
@@ -120,6 +111,11 @@
   margin-right: auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+@utility animate-fade-in-up {
+  animation: var(--animate-fade-in-up);
+  will-change: transform, opacity, filter;
 }
 
 /* =============================================

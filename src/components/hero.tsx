@@ -22,7 +22,7 @@ export function Hero() {
         </h1>
 
         <p
-          className="text-xl text-[#a1a1a0] font-sans font-normal max-w-2xl leading-relaxed animate-fade-in-up"
+          className="text-xl text-secondary-foreground font-sans font-normal max-w-2xl leading-relaxed animate-fade-in-up"
           style={{ animationDelay: "240ms" }}
         >
           Currently: Architecting{" "}

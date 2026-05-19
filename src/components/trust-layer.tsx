@@ -45,7 +45,7 @@ export async function TrustLayer() {
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
             SYSTEM FACT
           </p>
-          <p className="text-sm text-[#a1a1a0] font-mono leading-relaxed">
+          <p className="text-sm text-secondary-foreground font-mono leading-relaxed">
             The production agent handles multi-patient bookings concurrently.
             Atomic room locking via PostgreSQL{" "}
             <code className="text-foreground bg-muted px-1.5 py-0.5 text-xs">
