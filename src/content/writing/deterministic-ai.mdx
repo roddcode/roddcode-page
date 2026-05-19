@@ -1,0 +1,168 @@
+---
+title: "Deterministic AI: Validating LLM Output in Production"
+date: "2026-04-22"
+summary: "LLMs are non-deterministic by nature. How to wrap every model output with Zod schemas and finite state machines to guarantee stability."
+slug: "deterministic-ai"
+---
+
+## The problem with language models in production
+
+A language model doesn't compute a deterministic output. Given the same input, it produces different outputs on different runs. Temperature, sampling strategy, and the model's internal state introduce variance that's fundamental to how these systems work.
+
+This is fine for a chatbot. It's not fine for a system that books medical appointments.
+
+When Soff.ia confirms a 10 AM appointment with Dr. Ríos on Friday, that confirmation must map to an actual database row, a calendar event, and a Upstash QStash job scheduled for T-24h. The LLM cannot approximate this. It must be exact, or the system fails.
+
+The question is not "can we make the LLM more reliable?" The answer to that is no. The question is "how do we build a system that produces reliable outputs using a non-deterministic component?"
+
+---
+
+## The architecture of determinism
+
+Determinism in an AI system comes from the structure around the model, not from the model itself.
+
+Three components enforce this in Soff.ia:
+
+### 1. Finite State Machine (FSM)
+
+The orchestrator is a state machine. At any point in a conversation, the system is in one of six defined states: `idle`, `identity_check`, `service_selection`, `availability_query`, `booking_confirmation`, `payment_pending`.
+
+State transitions are defined in code, not inferred by the LLM. The model cannot skip from `identity_check` to `booking_confirmation` because the orchestrator doesn't allow that transition. The sequence is enforced.
+
+```typescript
+type ConversationState =
+  | "idle"
+  | "identity_check"
+  | "service_selection"
+  | "availability_query"
+  | "booking_confirmation"
+  | "payment_pending";
+
+const VALID_TRANSITIONS: Record<ConversationState, ConversationState[]> = {
+  idle: ["identity_check"],
+  identity_check: ["service_selection"],
+  service_selection: ["availability_query"],
+  availability_query: ["booking_confirmation"],
+  booking_confirmation: ["payment_pending", "idle"],
+  payment_pending: ["idle"],
+};
+
+function transition(
+  current: ConversationState,
+  next: ConversationState
+): ConversationState {
+  if (!VALID_TRANSITIONS[current].includes(next)) {
+    throw new Error(`Invalid transition: ${current} → ${next}`);
+  }
+  return next;
+}
+```
+
+The LLM operates inside one state at a time. It cannot see tools from other states. It cannot transition itself.
+
+### 2. Progressive Tool Gating
+
+Each state exposes a different set of tools to the model.
+
+In `identity_check`, the model can call `validate_document` and `create_patient_record`. It cannot call `book_appointment`. The booking tool doesn't exist in this state — it's not in the context, not in the system prompt, not available.
+
+This is the key insight: **the most effective guardrail is not telling the model not to do something. It's making the thing structurally impossible.**
+
+We use Vercel AI SDK's `prepareStep` hook to inject the correct tool set before each model call:
+
+```typescript
+const result = await generateText({
+  model,
+  messages,
+  experimental_prepareStep: async ({ toolResults }) => {
+    const currentState = await getConversationState(patientId);
+    return {
+      tools: TOOLS_BY_STATE[currentState],
+      // Inject current gate context into the system prompt
+      system: buildSystemPrompt(currentState, clinicConfig),
+    };
+  },
+});
+```
+
+The model receives exactly the context and capabilities relevant to its current position in the FSM. Nothing more.
+
+### 3. Zod Schema Validation on Every Output
+
+Tool calls are where non-determinism becomes catastrophic. If the model calls `book_appointment` with a malformed date, a missing doctor ID, or a service type that doesn't exist in the clinic's catalog, the downstream consequence is a corrupted database row.
+
+Every tool's input schema is defined with Zod. The SDK validates the model's output before the tool executes:
+
+```typescript
+const bookAppointmentSchema = z.object({
+  patientId: z.string().uuid(),
+  doctorId: z.string().uuid(),
+  serviceId: z.string().uuid(),
+  startTime: z.string().datetime({ offset: true }),
+  durationMinutes: z.number().int().min(15).max(180),
+  notes: z.string().max(500).optional(),
+});
+
+const bookAppointment = tool({
+  description: "Book a confirmed appointment slot",
+  parameters: bookAppointmentSchema,
+  execute: async (params) => {
+    // params is already validated — types are guaranteed
+    return await createAppointment(params);
+  },
+});
+```
+
+If the model generates a `startTime` that isn't a valid ISO 8601 datetime, the SDK throws before `execute` is called. The FSM catches this, logs the failure, and re-prompts the model with a corrective instruction.
+
+---
+
+## The reactive FSM: handling in-flight failures
+
+Static state machines break on real conversations. Patients interrupt themselves. They change their mind mid-booking. They say "actually, can we do next Tuesday instead?" when the model is in `booking_confirmation`.
+
+A static FSM would either ignore this or throw an error. A reactive FSM handles it by checking state freshness before each model step.
+
+We call this the "in-flight refresh" pattern. Before each model call in `prepareStep`, we re-read the conversation state from the database. If the state was externally modified (by a clinic admin, by a previous webhook, by a concurrent message), the model receives the updated context.
+
+This eliminates an entire category of bug: the stale-state hallucination, where the model confidently confirms a booking for a slot that was taken 30 seconds ago by another patient.
+
+---
+
+## Non-negotiable safety blocks
+
+Some inputs should never reach the LLM. Routing them to a language model is the wrong architecture.
+
+In Soff.ia, these are intercepted before the FSM:
+
+- **Noise Guard v2:** IVRs, promotional messages, and automated bots detected via statistical pattern analysis. Dropped immediately, zero LLM cost.
+- **Code Red:** Messages containing emergency medical keywords trigger instant human handoff notification via Telegram. The LLM response time (~8 seconds) is too slow for a medical emergency.
+- **Minors:** Any conversation identifying a patient under 18 halts and requires adult guardian confirmation before proceeding.
+- **Trolls:** Conversations with sustained abusive or incoherent content are flagged and handed off.
+
+These aren't AI decisions. They're code decisions. Regex, keyword matching, and statistical classifiers that run in under 5ms. Cheap, predictable, auditable.
+
+---
+
+## What this buys you
+
+A properly structured AI system produces outputs that are:
+
+- **Typed:** Every tool call has a Zod schema. Invalid inputs are rejected before execution.
+- **Bounded:** The FSM prevents the model from accessing capabilities outside its current state.
+- **Auditable:** Every state transition is a database write. You can replay any conversation step by step.
+- **Recoverable:** When a step fails, the FSM knows exactly which state the conversation is in. Recovery is deterministic.
+
+The LLM handles the part it's actually good at: natural language understanding, context management across a multi-turn conversation, and generating responses that feel human to a patient booking an appointment at 11 PM.
+
+The code handles everything else.
+
+---
+
+## The principle
+
+Non-determinism in AI systems is a constraint to design around, not a problem to solve. You don't make a language model deterministic. You build a deterministic wrapper that uses a language model for a well-defined subset of its capabilities.
+
+The boundary between "what the model decides" and "what the code decides" is the most important architectural decision in any AI system. Draw it wrong, and you have a system that mostly works until it catastrophically doesn't. Draw it right, and you have a system that fails predictably, recovers automatically, and can be audited line by line.
+
+Production AI is not about the model. It's about the structure around the model.
