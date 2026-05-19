@@ -12,12 +12,12 @@ export const SITE = {
   linkedin: "https://www.linkedin.com/in/alejandro-alvarado-roddcode/",
 } as const;
 
-// Métricas de la página (estáticas, placeholder)
+// Métricas de la página (reales de auditoría Lighthouse)
 export const PAGE_METRICS = [
-  { label: "LCP", value: "0.8s" },
-  { label: "CLS", value: "0.02" },
-  { label: "TTFB", value: "210ms" },
-  { label: "LH Score", value: "98" },
+  { label: "LCP", value: "1.6s" },
+  { label: "CLS", value: "0.00" },
+  { label: "TBT", value: "110ms" },
+  { label: "LH Score", value: "99" },
 ] as const;
 
 // Filosofía de ingeniería

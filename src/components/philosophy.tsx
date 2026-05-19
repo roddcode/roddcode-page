@@ -13,7 +13,10 @@ export function Philosophy() {
             <div key={tenet.number} className="flex flex-col gap-4">
               <h3
                 className="text-xl text-foreground leading-snug"
-                style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 500 }}
+                style={{
+                  fontFamily: "var(--font-eb-garamond)",
+                  fontWeight: 500,
+                }}
               >
                 {tenet.title}
               </h3>

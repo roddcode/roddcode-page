@@ -27,7 +27,10 @@ export function Arsenal() {
               >
                 <td
                   className="py-5 text-sm text-muted-foreground pr-10"
-                  style={{ fontFamily: "var(--font-eb-garamond)", fontSize: "0.9rem" }}
+                  style={{
+                    fontFamily: "var(--font-eb-garamond)",
+                    fontSize: "0.9rem",
+                  }}
                 >
                   {item.layer}
                 </td>

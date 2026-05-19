@@ -13,7 +13,7 @@
   --color-tertiary: oklch(0.25 0 0);
   --color-primary: oklch(0.53 0.15 45);
   /* Bronze Desaturado */
-  --color-border: oklch(0.20 0 0);
+  --color-border: oklch(0.2 0 0);
   --color-ring: var(--color-primary);
 
   /* Fuentes (La Tensión SOTA) */
@@ -43,7 +43,6 @@
 }
 
 @layer base {
-
   *,
   *::before,
   *::after {
@@ -66,7 +65,7 @@
 
   /* La Firma: Selection Bronze */
   ::selection {
-    background-color: oklch(0.553 0.174 38.40 / 0.3);
+    background-color: oklch(0.553 0.174 38.4 / 0.3);
     color: var(--color-foreground);
   }
 

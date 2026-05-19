@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { SITE } from "@/lib/constants";
+import Link from "next/link";
 
 export function Handshake() {
   return (
@@ -9,9 +9,9 @@ export function Handshake() {
           Initiate connection
         </h2>
         <p className="text-lg text-[#a1a1a0] leading-relaxed mb-12">
-          Available for AI infrastructure projects and senior engineering
-          roles. If you need systems that close revenue gaps instead of
-          creating technical debt, let&apos;s talk.
+          Available for AI infrastructure projects and senior engineering roles.
+          If you need systems that close revenue gaps instead of creating
+          technical debt, let&apos;s talk.
         </p>
 
         <div className="flex flex-wrap gap-4 mb-12">

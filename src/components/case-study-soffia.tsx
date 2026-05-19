@@ -11,7 +11,6 @@ export function CaseStudySoffia() {
       </h2>
 
       <div className="flex flex-col gap-20">
-
         {/* THE PROBLEM */}
         <div className="grid md:grid-cols-[160px_1fr] gap-10">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
@@ -109,11 +108,16 @@ export function CaseStudySoffia() {
                 <p className="text-xs font-mono text-primary mb-3">{d.n}</p>
                 <h3
                   className="text-lg mb-2 text-foreground leading-snug"
-                  style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 500 }}
+                  style={{
+                    fontFamily: "var(--font-eb-garamond)",
+                    fontWeight: 500,
+                  }}
                 >
                   {d.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2">{d.body}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                  {d.body}
+                </p>
               </div>
             ))}
           </div>
@@ -141,12 +145,23 @@ export function CaseStudySoffia() {
               </thead>
               <tbody>
                 {[
-                  ["Response time", "47 min / ∞ (after hours)", "< 8 seconds, 24/7"],
+                  [
+                    "Response time",
+                    "47 min / ∞ (after hours)",
+                    "< 8 seconds, 24/7",
+                  ],
                   ["After-hours leads", "0% (100% loss)", "100% captured"],
                   ["No-show rate", "~25%", "< 8%"],
-                  ["Booking deadlocks", "Chronic (race conditions)", "Zero (Reactive FSM)"],
+                  [
+                    "Booking deadlocks",
+                    "Chronic (race conditions)",
+                    "Zero (Reactive FSM)",
+                  ],
                 ].map(([metric, before, after]) => (
-                  <tr key={metric} className="hover:bg-muted/40 transition-colors group">
+                  <tr
+                    key={metric}
+                    className="hover:bg-muted/40 transition-colors group"
+                  >
                     <td className="py-4 text-sm text-secondary-foreground border-b border-border pr-8">
                       {metric}
                     </td>
@@ -170,7 +185,6 @@ export function CaseStudySoffia() {
             </table>
           </div>
         </div>
-
       </div>
     </section>
   );

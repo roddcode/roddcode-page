@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { SITE } from "@/lib/constants";
+import Link from "next/link";
 
 export function Header() {
   return (
@@ -18,7 +18,10 @@ export function Header() {
           >
             roddcode
           </Link>
-          <nav aria-label="Primary navigation" className="flex items-center gap-6">
+          <nav
+            aria-label="Primary navigation"
+            className="flex items-center gap-6"
+          >
             <span className="text-xs font-mono text-tertiary">
               {SITE.location}
             </span>

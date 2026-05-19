@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { SITE } from "@/lib/constants";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -9,30 +9,33 @@ export function Footer() {
           roddcode
         </span>
 
-        <div className="flex items-center gap-5 text-sm font-mono text-tertiary">
-          <Link href="/writing" className="hover:text-muted-foreground transition-colors">
+        <div className="flex items-center gap-5 text-sm font-mono text-secondary-foreground">
+          <Link
+            href="/writing"
+            className="hover:text-foreground transition-colors"
+          >
             Writing
           </Link>
-          <span>·</span>
+          <span className="text-tertiary select-none">·</span>
           <Link
             href={SITE.github}
-            className="hover:text-muted-foreground transition-colors"
+            className="hover:text-foreground transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
             GitHub
           </Link>
-          <span>·</span>
+          <span className="text-tertiary select-none">·</span>
           <Link
             href={SITE.linkedin}
-            className="hover:text-muted-foreground transition-colors"
+            className="hover:text-foreground transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
             LinkedIn
           </Link>
-          <span>·</span>
-          <span>{SITE.location}</span>
+          <span className="text-tertiary select-none">·</span>
+          <span className="text-tertiary">{SITE.location}</span>
         </div>
       </div>
     </footer>

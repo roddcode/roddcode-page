@@ -12,7 +12,10 @@ export function OpenSource() {
             <div key={project.name} className="flex flex-col gap-4">
               <h3
                 className="text-xl text-foreground leading-snug"
-                style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 500 }}
+                style={{
+                  fontFamily: "var(--font-eb-garamond)",
+                  fontWeight: 500,
+                }}
               >
                 {project.name}
               </h3>

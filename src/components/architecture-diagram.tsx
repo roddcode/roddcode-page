@@ -21,9 +21,11 @@ export function DiagramNode({
         "flex flex-col items-center justify-center px-4 py-3 rounded-sm border w-full text-center relative z-10 transition-colors duration-300",
         "bg-background/80 backdrop-blur-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]",
         status === "active" && "border-border hover:border-muted-foreground/30",
-        status === "passive" && "border-transparent text-muted-foreground bg-transparent shadow-none",
-        status === "degraded" && "border-primary/40 text-primary bg-primary/5 shadow-[0_0_15px_rgba(194,65,12,0.1)]",
-        className
+        status === "passive" &&
+          "border-transparent text-muted-foreground bg-transparent shadow-none",
+        status === "degraded" &&
+          "border-primary/40 text-primary bg-primary/5 shadow-[0_0_15px_rgba(194,65,12,0.1)]",
+        className,
       )}
     >
       <span className="font-mono text-xs tracking-wider leading-relaxed">
@@ -33,7 +35,7 @@ export function DiagramNode({
         <span
           className={cn(
             "font-mono text-[10px] mt-1.5 tracking-widest uppercase",
-            status === "degraded" ? "text-primary/70" : "text-muted-foreground"
+            status === "degraded" ? "text-primary/70" : "text-muted-foreground",
           )}
         >
           {sublabel}
@@ -78,7 +80,6 @@ export function ArchitectureDiagram() {
     <div className="w-full flex justify-center py-10">
       {/* Max width constrained for readability, but fully fluid */}
       <div className="flex flex-col w-full max-w-2xl relative md:ml-16">
-        
         <ArchitectureLayer title="Ingress">
           <DiagramNode label="Evolution API" sublabel="Self-hosted / Webhook" />
         </ArchitectureLayer>
@@ -109,7 +110,6 @@ export function ArchitectureDiagram() {
           <DiagramNode label="Google Calendar" sublabel="Service Account" />
           <DiagramNode label="Upstash QStash" sublabel="T-24h / T-2h Jobs" />
         </ArchitectureLayer>
-
       </div>
     </div>
   );

@@ -4,7 +4,9 @@ export default function NotFound() {
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center container-site">
       <p className="text-primary font-mono text-sm mb-4">404 ERROR</p>
-      <h1 className="text-3xl font-bold tracking-tighter mb-4">Resource not found</h1>
+      <h1 className="text-3xl font-bold tracking-tighter mb-4">
+        Resource not found
+      </h1>
       <p className="text-muted-foreground text-center max-w-md mb-8">
         The requested system resource does not exist or has been moved.
       </p>

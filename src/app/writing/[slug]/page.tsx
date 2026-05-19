@@ -1,9 +1,9 @@
-import { getPostBySlug, getAllPosts } from "@/lib/mdx";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
+import { getAllPosts, getPostBySlug } from "@/lib/mdx";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import rehypePrettyCode from "rehype-pretty-code";
 
 const mdxComponents = {
@@ -11,7 +11,9 @@ const mdxComponents = {
   pre: CodeBlock,
 };
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   try {
     const { meta } = getPostBySlug(slug);
@@ -32,7 +34,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PostPage(props: { params: Promise<{ slug: string }> }) {
+export default async function PostPage(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const params = await props.params;
   let post: ReturnType<typeof getPostBySlug> | undefined;
   try {
@@ -46,11 +50,14 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   return (
     <article className="py-24 container-site max-w-3xl min-h-[80vh]">
       <div className="mb-8">
-        <Link href="/writing" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">
+        <Link
+          href="/writing"
+          className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors"
+        >
           ← Back to Writing
         </Link>
       </div>
-      
+
       <header className="mb-16">
         <time className="text-sm font-mono text-primary mb-4 block tabular-nums">
           {new Date(post.meta.date).toLocaleDateString("en-US", {
@@ -59,7 +66,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
             day: "numeric",
           })}
         </time>
-        <h1 className="text-3xl text-foreground mb-6 leading-tight" style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 500 }}>
+        <h1
+          className="text-3xl text-foreground mb-6 leading-tight"
+          style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 500 }}
+        >
           {post.meta.title}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
@@ -68,9 +78,9 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       </header>
 
       <div className="prose prose-invert max-w-none">
-        <MDXRemote 
-          source={post.content} 
-          components={mdxComponents} 
+        <MDXRemote
+          source={post.content}
+          components={mdxComponents}
           options={{
             mdxOptions: {
               rehypePlugins: [
@@ -83,7 +93,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
                 ],
               ],
             },
-          }} 
+          }}
         />
       </div>
     </article>
