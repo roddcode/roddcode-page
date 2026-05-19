@@ -80,12 +80,12 @@ export const OPEN_SOURCE_PROJECTS = [
     name: "resilient-fetcher",
     description:
       "TypeScript utility for Next.js that wraps native fetch with exponential backoff, circuit breaking, and UI fallback states.",
-    status: "In Development",
+    href: "https://github.com/roddcode/resilient-fetcher",
   },
   {
     name: "ssr-auth-pipeline",
     description:
       "OAuth2 token lifecycle manager for Next.js. Handles access/refresh token rotation entirely server-side. Zero tokens in client-side storage.",
-    status: "In Development",
+    href: "https://github.com/roddcode/ssr-auth-pipeline",
   },
 ] as const;

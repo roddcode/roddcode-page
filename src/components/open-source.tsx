@@ -1,4 +1,5 @@
 import { OPEN_SOURCE_PROJECTS } from "@/lib/constants";
+import { ArrowUpRight } from "lucide-react";
 
 export function OpenSource() {
   return (
@@ -9,25 +10,31 @@ export function OpenSource() {
         </p>
         <div className="grid md:grid-cols-2 gap-x-20 gap-y-14">
           {OPEN_SOURCE_PROJECTS.map((project) => (
-            <div key={project.name} className="flex flex-col gap-4">
+            <a
+              key={project.name}
+              href={"href" in project ? project.href : "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col gap-4 group"
+            >
               <h3
-                className="text-xl text-foreground leading-snug"
+                className="text-xl text-foreground leading-snug flex items-center gap-2 group-hover:text-primary transition-colors"
                 style={{
                   fontFamily: "var(--font-eb-garamond)",
                   fontWeight: 500,
                 }}
               >
                 {project.name}
+                <ArrowUpRight
+                  size={16}
+                  strokeWidth={1.5}
+                  className="text-muted-foreground group-hover:text-primary transition-colors"
+                />
               </h3>
               <p className="text-sm text-secondary-foreground leading-relaxed grow">
                 {project.description}
               </p>
-              {project.status === "In Development" && (
-                <span className="text-xs font-mono text-primary w-fit">
-                  — {project.status}
-                </span>
-              )}
-            </div>
+            </a>
           ))}
         </div>
       </div>
