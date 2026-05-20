@@ -99,7 +99,7 @@ export async function TrustLayer() {
   ];
 
   return (
-    <section id="trust" className="py-32 container-site">
+    <section id="trust" className="py-24 container-site">
       <h2 className="text-4xl md:text-5xl mb-20 leading-tight">
         Trust signals
       </h2>
@@ -107,16 +107,12 @@ export async function TrustLayer() {
       {/* Testimonial */}
       <div className="max-w-3xl mb-20 relative">
         <span
-          className="absolute -top-6 -left-2 text-8xl leading-none text-foreground opacity-10 select-none"
-          style={{ fontFamily: "var(--font-eb-garamond)" }}
+          className="absolute -top-6 -left-2 text-8xl leading-none text-foreground opacity-10 select-none font-serif"
           aria-hidden
         >
           &ldquo;
         </span>
-        <p
-          className="text-3xl leading-snug text-foreground relative z-10"
-          style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 400 }}
-        >
+        <p className="text-3xl leading-snug text-foreground relative z-10 font-sans">
           Le pregunté si tenía disponibilidad para mañana y en menos de 5
           segundos me dio horarios, me pidió mis datos, me registró y me dijo
           cuánto tenía que adelantar. Todo por WhatsApp. No tuve que llamar a
@@ -132,7 +128,7 @@ export async function TrustLayer() {
         <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
           SYSTEM FACT
         </p>
-        <p className="text-sm text-secondary-foreground font-mono leading-relaxed">
+        <p className="text-sm text-secondary-foreground leading-relaxed">
           The production agent handles multi-patient bookings concurrently.
           Atomic room locking via PostgreSQL{" "}
           <code className="text-foreground bg-muted px-1.5 py-0.5 text-xs">
@@ -157,13 +153,13 @@ export async function TrustLayer() {
                 Active since {new Date(stats.created_at).getFullYear()}
               </>
             ) : (
-              <>Fetching live stats...</>
+              <>Stats unavailable</>
             )}
           </p>
         </div>
 
         {/* Console Box */}
-        <div className="bg-[#0b0b0a] border border-border/50 rounded-sm p-4 font-mono text-xs shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]">
+        <div className="bg-muted border border-border/50 rounded-sm p-4 font-mono text-xs shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]">
           <div className="flex items-center justify-between border-b border-border/20 pb-2 mb-3">
             <div className="flex gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />

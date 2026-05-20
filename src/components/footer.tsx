@@ -5,11 +5,11 @@ export function Footer() {
   return (
     <footer className="border-t border-border py-10">
       <div className="container-site flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <span className="font-mono text-sm text-muted-foreground font-semibold">
+        <span className="text-sm text-muted-foreground font-medium">
           roddcode
         </span>
 
-        <div className="flex items-center gap-5 text-sm font-mono text-secondary-foreground">
+        <div className="flex items-center gap-5 text-sm text-secondary-foreground">
           <Link
             href="/writing"
             className="hover:text-foreground transition-colors"

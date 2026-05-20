@@ -43,7 +43,7 @@ export function Hero() {
           </Link>
           <Link
             href="#handshake"
-            className="border border-border hover:border-[#3a3a39] text-[#a1a1a0] hover:text-foreground px-6 py-3 text-sm font-sans transition-all duration-100 ease-out will-change-transform active:scale-[0.98]"
+            className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-6 py-3 text-sm font-sans transition-all duration-100 ease-out will-change-transform active:scale-[0.98]"
             style={{ borderRadius: "2px" }}
           >
             Initiate Handshake →

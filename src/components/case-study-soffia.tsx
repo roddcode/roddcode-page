@@ -106,13 +106,7 @@ export function CaseStudySoffia() {
             ].map((d) => (
               <div key={d.n}>
                 <p className="text-xs font-mono text-primary mb-3">{d.n}</p>
-                <h3
-                  className="text-lg mb-2 text-foreground leading-snug"
-                  style={{
-                    fontFamily: "var(--font-eb-garamond)",
-                    fontWeight: 500,
-                  }}
-                >
+                <h3 className="text-lg mb-2 text-foreground leading-snug font-medium">
                   {d.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mt-2">
@@ -168,15 +162,7 @@ export function CaseStudySoffia() {
                     <td className="py-4 text-sm text-muted-foreground border-b border-border pr-8 tabular-nums">
                       {before}
                     </td>
-                    <td
-                      className="py-4 border-b border-border tabular-nums text-primary"
-                      style={{
-                        fontFamily: "var(--font-eb-garamond)",
-                        fontSize: "1.25rem",
-                        fontWeight: 500,
-                        lineHeight: 1.2,
-                      }}
-                    >
+                    <td className="py-4 border-b border-border tabular-nums text-primary font-medium">
                       {after}
                     </td>
                   </tr>

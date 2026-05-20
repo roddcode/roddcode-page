@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Philosophy() {
   return (
-    <section id="philosophy" className="py-32">
+    <section id="philosophy" className="py-24">
       <div className="container-site">
         <h2 className="text-4xl md:text-5xl mb-16 leading-tight">
           Engineering philosophy
@@ -11,13 +11,7 @@ export function Philosophy() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20">
           {PHILOSOPHY_TENETS.map((tenet) => (
             <div key={tenet.number} className="flex flex-col gap-4">
-              <h3
-                className="text-xl text-foreground leading-snug"
-                style={{
-                  fontFamily: "var(--font-eb-garamond)",
-                  fontWeight: 500,
-                }}
-              >
+              <h3 className="text-xl text-foreground leading-snug font-medium">
                 {tenet.title}
               </h3>
               <p className="text-sm text-secondary-foreground leading-relaxed grow">

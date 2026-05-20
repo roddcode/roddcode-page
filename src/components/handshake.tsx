@@ -3,12 +3,12 @@ import Link from "next/link";
 
 export function Handshake() {
   return (
-    <section id="handshake" className="py-32 container-site">
+    <section id="handshake" className="py-24 container-site">
       <div className="max-w-2xl">
         <h2 className="text-4xl md:text-5xl mb-8 leading-tight">
           Initiate connection
         </h2>
-        <p className="text-lg text-[#a1a1a0] leading-relaxed mb-12">
+        <p className="text-lg text-secondary-foreground leading-relaxed mb-12">
           Available for AI infrastructure projects and senior engineering roles.
           If you need systems that close revenue gaps instead of creating
           technical debt, let&apos;s talk.
@@ -28,12 +28,13 @@ export function Handshake() {
           <Link
             href={`mailto:${SITE.email}?subject=Engineering%20Collaboration`}
             className="text-sm font-sans text-primary hover:text-foreground transition-all duration-100 ease-out will-change-transform active:scale-[0.98] px-8 py-4 inline-flex items-center"
+            style={{ borderRadius: "2px" }}
           >
             Send Message →
           </Link>
         </div>
 
-        <p className="text-sm font-mono text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           Prefer email?{" "}
           <a
             href={`mailto:${SITE.email}`}

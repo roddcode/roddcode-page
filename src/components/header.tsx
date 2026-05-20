@@ -22,7 +22,7 @@ export function Header() {
             aria-label="Primary navigation"
             className="flex items-center gap-6"
           >
-            <span className="text-xs font-mono text-tertiary">
+            <span className="text-xs text-muted-foreground">
               {SITE.location}
             </span>
           </nav>

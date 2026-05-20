@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 
 export function OpenSource() {
   return (
-    <section id="open-source" className="py-32">
+    <section id="open-source" className="py-24">
       <div className="container-site">
         <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-16">
           OPEN SOURCE PRIMITIVES
@@ -17,13 +17,7 @@ export function OpenSource() {
               rel="noopener noreferrer"
               className="flex flex-col gap-4 group"
             >
-              <h3
-                className="text-xl text-foreground leading-snug flex items-center gap-2 group-hover:text-primary transition-colors"
-                style={{
-                  fontFamily: "var(--font-eb-garamond)",
-                  fontWeight: 500,
-                }}
-              >
+              <h3 className="text-xl text-foreground leading-snug flex items-center gap-2 group-hover:text-primary transition-colors font-medium">
                 {project.name}
                 <ArrowUpRight
                   size={16}

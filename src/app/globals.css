@@ -10,7 +10,7 @@
   /* Secondary text (#a1a1a0 equivalent) */
   --color-secondary-foreground: oklch(0.65 0 0);
   /* Tertiary / disabled (#3a3a39 equivalent) */
-  --color-tertiary: oklch(0.25 0 0);
+  --color-tertiary: oklch(0.35 0 0);
   --color-primary: oklch(0.53 0.15 45);
   /* Bronze Desaturado */
   --color-border: oklch(0.2 0 0);

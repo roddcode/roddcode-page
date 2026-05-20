@@ -40,7 +40,7 @@ export default function WritingIndex() {
                   day: "numeric",
                 })}
               </time>
-              <h2 className="text-xl font-semibold text-[#a1a1a0] group-hover:text-foreground transition-colors">
+              <h2 className="text-xl font-medium text-secondary-foreground group-hover:text-foreground transition-colors">
                 {post.title}
               </h2>
               <p className="text-muted-foreground leading-relaxed text-sm">

@@ -23,15 +23,9 @@ export function Arsenal() {
             {ARSENAL.map((item) => (
               <tr
                 key={item.layer}
-                className="border-b border-border transition-colors hover:bg-foreground/3"
+                className="border-b border-border transition-colors hover:bg-muted/40"
               >
-                <td
-                  className="py-5 text-sm text-muted-foreground pr-10"
-                  style={{
-                    fontFamily: "var(--font-eb-garamond)",
-                    fontSize: "0.9rem",
-                  }}
-                >
+                <td className="py-5 text-sm text-muted-foreground pr-10 font-medium">
                   {item.layer}
                 </td>
                 <td className="py-5 text-base text-foreground pr-10 font-sans">

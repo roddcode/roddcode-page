@@ -66,10 +66,7 @@ export default async function PostPage(props: {
             day: "numeric",
           })}
         </time>
-        <h1
-          className="text-3xl text-foreground mb-6 leading-tight"
-          style={{ fontFamily: "var(--font-eb-garamond)", fontWeight: 500 }}
-        >
+        <h1 className="text-3xl text-foreground mb-6 leading-tight">
           {post.meta.title}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">

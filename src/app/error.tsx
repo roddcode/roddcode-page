@@ -15,7 +15,7 @@ export default function ErrorBoundary({
 
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center container-site">
-      <p className="text-red-500 font-mono text-sm mb-4">SYSTEM DEGRADATION</p>
+      <p className="text-primary font-mono text-sm mb-4">SYSTEM DEGRADATION</p>
       <h1 className="text-3xl font-bold tracking-tighter mb-4">
         A critical error occurred
       </h1>
