@@ -57,7 +57,7 @@ export function ArchitectureLayer({
       <div className="flex flex-col md:flex-row gap-4 w-full relative">
         {/* Layer Label - Absolute on desktop, relative on mobile */}
         <div className="md:absolute md:-left-36 md:top-1/2 md:-translate-y-1/2 md:text-right md:w-28 text-left mb-2 md:mb-0">
-          <span className="font-mono text-[10px] text-muted-foreground/50 tracking-widest uppercase group-hover:text-muted-foreground transition-colors">
+          <span className="font-mono text-[10px] text-secondary-foreground/60 tracking-widest uppercase group-hover:text-secondary-foreground transition-colors">
             {title}
           </span>
         </div>

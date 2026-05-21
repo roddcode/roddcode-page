@@ -3,7 +3,10 @@ import Link from "next/link";
 
 export function Handshake() {
   return (
-    <section id="handshake" className="py-24 container-site">
+    <section
+      id="handshake"
+      className="py-24 container-site content-visibility-auto"
+    >
       <div className="max-w-2xl">
         <h2 className="text-4xl md:text-5xl mb-8 leading-tight">
           Initiate connection

@@ -10,7 +10,7 @@ export function Header() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-50 h-20 bg-background/90 backdrop-blur-lg flex items-center">
+      <header className="sticky top-0 z-50 h-20 bg-background/95 flex items-center">
         <div className="container-site w-full flex items-center justify-between">
           <Link
             href="/"

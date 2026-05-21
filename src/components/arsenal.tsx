@@ -2,7 +2,10 @@ import { ARSENAL } from "@/lib/constants";
 
 export function Arsenal() {
   return (
-    <section id="arsenal" className="py-24 container-site">
+    <section
+      id="arsenal"
+      className="py-24 container-site content-visibility-auto"
+    >
       <h2 className="text-4xl md:text-5xl mb-16 leading-tight">The arsenal</h2>
       <div className="w-full overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[600px]">

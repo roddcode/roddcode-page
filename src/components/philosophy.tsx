@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Philosophy() {
   return (
-    <section id="philosophy" className="py-24">
+    <section id="philosophy" className="py-24 content-visibility-auto">
       <div className="container-site">
         <h2 className="text-4xl md:text-5xl mb-16 leading-tight">
           Engineering philosophy

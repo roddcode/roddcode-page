@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 
 export function OpenSource() {
   return (
-    <section id="open-source" className="py-24">
+    <section id="open-source" className="py-24 content-visibility-auto">
       <div className="container-site">
         <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-16">
           OPEN SOURCE PRIMITIVES

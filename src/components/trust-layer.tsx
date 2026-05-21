@@ -99,7 +99,10 @@ export async function TrustLayer() {
   ];
 
   return (
-    <section id="trust" className="py-24 container-site">
+    <section
+      id="trust"
+      className="py-24 container-site content-visibility-auto"
+    >
       <h2 className="text-4xl md:text-5xl mb-20 leading-tight">
         Trust signals
       </h2>
@@ -166,7 +169,7 @@ export async function TrustLayer() {
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
             </div>
-            <span className="text-[10px] text-muted-foreground/50 select-none">
+            <span className="text-[10px] text-secondary-foreground/60 select-none">
               roddcode@github: ~
             </span>
           </div>

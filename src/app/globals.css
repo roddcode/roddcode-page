@@ -6,12 +6,12 @@
   --color-background: oklch(0.12 0 0);
   --color-foreground: oklch(0.95 0 0);
   --color-muted: oklch(0.17 0 0);
-  --color-muted-foreground: oklch(0.55 0 0);
+  --color-muted-foreground: oklch(0.6 0 0);
   /* Secondary text (#a1a1a0 equivalent) */
   --color-secondary-foreground: oklch(0.65 0 0);
   /* Tertiary / disabled (#3a3a39 equivalent) */
   --color-tertiary: oklch(0.35 0 0);
-  --color-primary: oklch(0.53 0.15 45);
+  --color-primary: oklch(0.55 0.15 45);
   /* Bronze Desaturado */
   --color-border: oklch(0.2 0 0);
   --color-ring: var(--color-primary);
@@ -101,6 +101,16 @@
     font-family: var(--font-serif);
     font-weight: 500;
   }
+}
+
+@utility bg-noise {
+  background-image: url(/noise.png);
+  background-size: 128px 128px;
+  background-repeat: repeat;
+}
+
+@utility content-visibility-auto {
+  content-visibility: auto;
 }
 
 @utility container-site {
