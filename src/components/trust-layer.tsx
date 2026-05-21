@@ -169,7 +169,7 @@ export async function TrustLayer() {
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
               <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
             </div>
-            <span className="text-[10px] text-secondary-foreground/60 select-none">
+            <span className="text-[10px] text-secondary-foreground select-none">
               roddcode@github: ~
             </span>
           </div>
