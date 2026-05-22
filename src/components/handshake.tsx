@@ -26,7 +26,7 @@ export function Handshake() {
             style={{ borderRadius: "2px" }}
           >
             Book Intro Call
-            <span className="text-xs opacity-50 font-mono ml-1">cal.com</span>
+            <span className="text-xs font-mono ml-1">cal.com</span>
           </Link>
           <Link
             href={`mailto:${SITE.email}?subject=Engineering%20Collaboration`}

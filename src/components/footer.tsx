@@ -16,7 +16,7 @@ export function Footer() {
           >
             Writing
           </Link>
-          <span className="text-tertiary select-none">·</span>
+          <span className="text-muted-foreground select-none">·</span>
           <Link
             href={SITE.github}
             className="hover:text-foreground transition-colors"
@@ -25,7 +25,7 @@ export function Footer() {
           >
             GitHub
           </Link>
-          <span className="text-tertiary select-none">·</span>
+          <span className="text-muted-foreground select-none">·</span>
           <Link
             href={SITE.linkedin}
             className="hover:text-foreground transition-colors"
@@ -34,8 +34,8 @@ export function Footer() {
           >
             LinkedIn
           </Link>
-          <span className="text-tertiary select-none">·</span>
-          <span className="text-tertiary">{SITE.location}</span>
+          <span className="text-muted-foreground select-none">·</span>
+          <span className="text-muted-foreground">{SITE.location}</span>
         </div>
       </div>
     </footer>
