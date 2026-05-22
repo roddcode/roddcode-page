@@ -25,9 +25,9 @@ export function Hero() {
           className="text-xl text-secondary-foreground font-sans font-normal max-w-2xl leading-relaxed animate-fade-in-up"
           style={{ animationDelay: "240ms" }}
         >
-          Currently: Architecting <span className="text-primary">SoffIA</span>,
-          an autonomous agent that recovers 40% of lost patients for medical
-          clinics via WhatsApp. Zero human intervention. 24/7.
+          Architecting <span className="text-primary">SoffIA</span>, an
+          autonomous agent for medical clinics — plus enterprise CRM systems
+          (.NET/Vue) that replaced InConcert at Movistar.
         </p>
 
         <div

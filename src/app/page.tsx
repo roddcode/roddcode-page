@@ -1,4 +1,5 @@
 import { Arsenal } from "@/components/arsenal";
+import { CaseStudyMeteor } from "@/components/case-study-meteor";
 import { CaseStudySoffia } from "@/components/case-study-soffia";
 import { Footer } from "@/components/footer";
 import { Handshake } from "@/components/handshake";
@@ -17,6 +18,7 @@ export default function HomePage() {
         <Hero />
         <LiveMetrics />
         <CaseStudySoffia />
+        <CaseStudyMeteor />
         <OpenSource />
         <Philosophy />
         <Arsenal />
