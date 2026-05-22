@@ -16,9 +16,9 @@ export function Hero() {
           className="text-5xl md:text-7xl leading-[1.05] tracking-tight text-pretty animate-fade-in-up"
           style={{ animationDelay: "120ms" }}
         >
-          I engineer AI infrastructure
+          I build production AI
           <br />
-          that closes revenue gaps.
+          and enterprise systems.
         </h1>
 
         <p
@@ -39,7 +39,7 @@ export function Hero() {
             className="bg-foreground text-background hover:bg-foreground/90 px-6 py-3 text-sm font-medium transition-all duration-100 ease-out will-change-transform active:scale-[0.98]"
             style={{ borderRadius: "2px" }}
           >
-            View SoffIA Case Study ↓
+            View Case Studies ↓
           </Link>
           <Link
             href="#handshake"

@@ -6,9 +6,30 @@ export function CaseStudySoffia() {
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
         CASE STUDY 01 — SoffIA Core
       </p>
-      <h2 className="text-4xl md:text-5xl mb-20 leading-tight">
+      <h2 className="text-4xl md:text-5xl mb-12 leading-tight">
         Architecture of an autonomous agent
       </h2>
+
+      {/* Result Highlights */}
+      <div className="grid grid-cols-3 gap-4 mb-20 max-w-xl">
+        {[
+          { value: "< 8s", label: "Response time" },
+          { value: "100%", label: "Leads captured" },
+          { value: "< 8%", label: "No-show rate" },
+        ].map((s) => (
+          <div
+            key={s.label}
+            className="border border-border/60 rounded-sm p-5 text-center bg-muted/10"
+          >
+            <p className="text-2xl md:text-3xl font-mono text-primary tabular-nums mb-1">
+              {s.value}
+            </p>
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+              {s.label}
+            </p>
+          </div>
+        ))}
+      </div>
 
       <div className="flex flex-col gap-20">
         {/* THE PROBLEM */}
