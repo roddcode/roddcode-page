@@ -1,3 +1,6 @@
+import { ImagePlaceholder } from "./image-placeholder";
+import { ProcessComparison } from "./process-comparison";
+
 export function CaseStudyMeteor() {
   return (
     <section id="meteor" className="py-24 container-site">
@@ -9,11 +12,12 @@ export function CaseStudyMeteor() {
       </h2>
 
       {/* Result Highlights */}
-      <div className="grid grid-cols-3 gap-4 mb-20 max-w-xl">
+      <div className="grid grid-cols-4 gap-4 mb-20 max-w-2xl">
         {[
           { value: "53%", label: "Process time ↓" },
           { value: "$0", label: "License cost" },
           { value: "53.79%", label: "Monthly ROI" },
+          { value: "< 2 mo", label: "Payback period" },
         ].map((s) => (
           <div
             key={s.label}
@@ -79,51 +83,14 @@ export function CaseStudyMeteor() {
           </div>
         </div>
 
-        {/* THE RESULT */}
+        {/* IMPACT */}
         <div className="grid md:grid-cols-[160px_1fr] gap-10">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
-            03 — The Result
+            03 — Impact
           </p>
-          <div className="w-full max-w-2xl overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[440px]">
-              <thead>
-                <tr>
-                  <th className="pb-3 text-xs font-mono text-muted-foreground uppercase tracking-widest border-b border-border pr-8">
-                    Metric
-                  </th>
-                  <th className="pb-3 text-xs font-mono text-muted-foreground uppercase tracking-widest border-b border-border pr-8">
-                    Before
-                  </th>
-                  <th className="pb-3 text-xs font-mono text-muted-foreground uppercase tracking-widest border-b border-border">
-                    After
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  ["Process time", "169 min", "79 min (53% ↓)"],
-                  ["Licensing cost", "$1,000 USD/mo", "$0 (eliminated)"],
-                  ["Monthly ROI", "—", "53.79%"],
-                  ["Payback period", "—", "< 2 months"],
-                ].map(([metric, before, after]) => (
-                  <tr
-                    key={metric}
-                    className="hover:bg-muted/40 transition-colors group"
-                  >
-                    <td className="py-4 text-sm text-secondary-foreground border-b border-border pr-8">
-                      {metric}
-                    </td>
-                    <td className="py-4 text-sm text-muted-foreground border-b border-border pr-8 tabular-nums">
-                      {before}
-                    </td>
-                    <td className="py-4 border-b border-border tabular-nums text-primary font-medium">
-                      {after}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-xs font-mono text-muted-foreground mt-4">
+          <div className="min-w-0">
+            <ProcessComparison />
+            <p className="text-xs font-mono text-muted-foreground mt-6">
               Stack: Vue.js · Tailwind CSS · C# .NET · SQL Server
             </p>
           </div>

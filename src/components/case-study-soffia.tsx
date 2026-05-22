@@ -31,6 +31,15 @@ export function CaseStudySoffia() {
         ))}
       </div>
 
+      {/* Visual Proof */}
+      <div className="flex flex-col gap-6 mb-20 max-w-3xl">
+        <img
+          src="/captura-crm-soffia.png"
+          alt="SoffIA CRM Dashboard"
+          className="w-full h-auto rounded-sm border border-border/30"
+        />
+      </div>
+
       <div className="flex flex-col gap-20">
         {/* THE PROBLEM */}
         <div className="grid md:grid-cols-[160px_1fr] gap-10">
