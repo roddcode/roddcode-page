@@ -119,13 +119,12 @@ export async function TrustLayer() {
           &ldquo;
         </span>
         <p className="text-3xl leading-snug text-foreground relative z-10 font-sans">
-          Le pregunté si tenía disponibilidad para mañana y en menos de 5
-          segundos me dio horarios, me pidió mis datos, me registró y me dijo
-          cuánto tenía que adelantar. Todo por WhatsApp. No tuve que llamar a
-          nadie.
+          Antes perdíamos leads los fines de semana. Ahora SoffIA los convierte
+          mientras dormimos. Mi equipo llegó el lunes con 4 citas nuevas ya
+          pagadas.
         </p>
         <p className="text-sm font-mono text-muted-foreground mt-6">
-          — Beta patient, Valoración de Ortodoncia, May 2026
+          — Dra. Jomara Herrera, Cirujana Dentista · Clínica Castro y Herrera
         </p>
       </div>
 
