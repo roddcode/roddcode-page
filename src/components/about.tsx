@@ -24,7 +24,7 @@ export function About() {
             </p>
           </div>
           <a
-            href="/cv.pdf"
+            href="/cv-alejandro-alvarado-fullstack.pdf"
             download="Alejandro-Alvarado-CV-2026.pdf"
             className="inline-flex items-center gap-2 text-xs font-mono text-primary hover:text-foreground transition-colors border border-primary/40 hover:border-foreground/40 px-4 py-2.5 rounded-sm shrink-0"
           >
