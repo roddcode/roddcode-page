@@ -1,5 +1,4 @@
 import { About } from "@/components/about";
-import { Arsenal } from "@/components/arsenal";
 import { Background } from "@/components/background";
 import { CaseStudyMeteor } from "@/components/case-study-meteor";
 import { CaseStudySoffia } from "@/components/case-study-soffia";
@@ -25,7 +24,6 @@ export default function HomePage() {
         <CaseStudySoffia />
         <CaseStudyMeteor />
         <Philosophy />
-        <Arsenal />
         <Suspense
           fallback={
             <section className="py-24 container-site">

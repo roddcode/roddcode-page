@@ -8,7 +8,7 @@ const milestones = [
       "Architected fully autonomous conversational agent with LLMs in transactional pipeline — 24/7 booking via WhatsApp. Response time: 47 min → < 8s. No-show rate: 25% → < 8%.",
       "Reactive FSM with in-flight tool injection, stateless JIT reminders via QStash, OCR validation, Google Calendar sync — all within a single Vercel serverless function. Zero cold-start failures.",
       "Built real-time CRM dashboard: Revenue Board, lead pipeline visualization, push notifications. Lighthouse 99/100.",
-      "Stack: Next.js, TypeScript, DeepSeek-V4, PostgreSQL, Supabase, Docker.",
+      "Stack: Next.js (Base-8 Layout), TypeScript (Discriminated Unions), DeepSeek-V4, PostgreSQL, Supabase, Docker.",
     ],
   },
   {
@@ -19,7 +19,7 @@ const milestones = [
     body: [
       "Designed and built METEOR, a CRM that replaced InConcert at Movistar Perú. Vue.js + Tailwind CSS frontend, C# .NET + SQL Server backend.",
       "Reduced operational process time from 169 min to 79 min (53% ↓). Eliminated $1,000 USD/month in third-party licensing costs. ROI recovered in < 2 months.",
-      "Built REST APIs for intelligent lead querying, e-commerce integrations, and real-time reporting dashboards. Landed national-scale campaign pages and email templates.",
+      "Built REST APIs for intelligent lead querying, e-commerce integrations (idempotent webhooks), and real-time reporting dashboards. Landed national-scale campaign pages and email templates.",
     ],
   },
   {

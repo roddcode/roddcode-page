@@ -42,34 +42,6 @@ export const PHILOSOPHY_TENETS = [
   },
 ] as const;
 
-export const ARSENAL = [
-  {
-    layer: "Application Platform",
-    technologies: "Next.js 15, React 19, Tailwind CSS v4",
-    approach: "App Router, Edge Runtime, Serverless, Base-8 Layout",
-  },
-  {
-    layer: "Languages & Types",
-    technologies: "TypeScript (strict), Node.js, Python",
-    approach: "Discriminated Unions, Zod, Strict Typings",
-  },
-  {
-    layer: "Data & Infrastructure",
-    technologies: "Postgres, MongoDB, Drizzle ORM, Upstash Redis",
-    approach: "Serverless SQL, Mutex Locks, Row Level Security",
-  },
-  {
-    layer: "AI & Automation",
-    technologies: "DeepSeek-V4, Llama 4 Scout, Whisper v3",
-    approach: "Vercel AI SDK, FSM Orchestrator, OCR, Function Calling",
-  },
-  {
-    layer: "Integrations & Async",
-    technologies: "Evolution API (WhatsApp), GCal API, QStash",
-    approach: "Stateless JIT Jobs, Webhook Idempotency",
-  },
-] as const;
-
 export const OPEN_SOURCE_PROJECTS = [
   {
     name: "resilient-fetcher",
