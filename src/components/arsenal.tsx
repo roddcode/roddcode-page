@@ -4,7 +4,7 @@ export function Arsenal() {
   return (
     <section
       id="arsenal"
-      className="py-24 container-site content-visibility-auto"
+      className="py-24 container-site content-visibility-auto scroll-mt-20"
     >
       <h2 className="text-4xl md:text-5xl mb-16 leading-tight">The arsenal</h2>
       <div className="w-full overflow-x-auto">

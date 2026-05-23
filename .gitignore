@@ -11,3 +11,4 @@ Thumbs.db
 *.tsbuildinfo
 npm-debug.log*
 pnpm-debug.log*
+src/content/writing/_drafts/

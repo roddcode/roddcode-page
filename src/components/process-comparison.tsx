@@ -6,7 +6,7 @@ export function ProcessComparison() {
         <p className="text-5xl md:text-6xl font-mono text-primary tabular-nums leading-none mb-2">
           53%
         </p>
-        <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
+        <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
           Process time reduction
         </p>
       </div>
@@ -17,7 +17,7 @@ export function ProcessComparison() {
           <p className="text-2xl font-mono text-muted-foreground tabular-nums">
             169 min
           </p>
-          <p className="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest">
+          <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
             Before
           </p>
         </div>
@@ -31,7 +31,7 @@ export function ProcessComparison() {
         </div>
         <div>
           <p className="text-2xl font-mono text-primary tabular-nums">79 min</p>
-          <p className="text-[10px] font-mono text-primary uppercase tracking-widest">
+          <p className="text-xs font-mono text-primary uppercase tracking-wider">
             After
           </p>
         </div>
@@ -63,10 +63,10 @@ export function ProcessComparison() {
             <p className="text-lg font-mono text-primary tabular-nums mb-0.5">
               {w.metric}
             </p>
-            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">
+            <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-1">
               {w.label}
             </p>
-            <p className="text-[10px] text-muted-foreground/60 leading-snug">
+            <p className="text-[10px] text-muted-foreground leading-snug">
               {w.detail}
             </p>
           </div>

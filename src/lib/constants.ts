@@ -1,8 +1,7 @@
-// Metadatos del sitio
 export const SITE = {
   title: "RoddCode — Engineering AI Infrastructure",
   description:
-    "I engineer AI infrastructure that closes revenue gaps. Architect of Soff.ia, an autonomous agent for medical clinics.",
+    "I build production AI and enterprise systems. Architect of SoffIA, an autonomous agent for medical clinics — plus the CRM that replaced InConcert at Movistar.",
   url: "https://roddcode.com",
   author: "Alejandro Alvarado",
   location: "Lima, PE",
@@ -12,7 +11,6 @@ export const SITE = {
   linkedin: "https://www.linkedin.com/in/alejandro-alvarado-roddcode/",
 } as const;
 
-// Métricas de la página (reales de auditoría Lighthouse)
 export const PAGE_METRICS = [
   { label: "LCP", value: "1.6s" },
   { label: "CLS", value: "0.00" },
@@ -20,7 +18,6 @@ export const PAGE_METRICS = [
   { label: "LH Score", value: "99" },
 ] as const;
 
-// Filosofía de ingeniería
 export const PHILOSOPHY_TENETS = [
   {
     number: "01",
@@ -45,7 +42,6 @@ export const PHILOSOPHY_TENETS = [
   },
 ] as const;
 
-// Arsenal (tabla de tecnologías)
 export const ARSENAL = [
   {
     layer: "Application Platform",
@@ -64,7 +60,7 @@ export const ARSENAL = [
   },
   {
     layer: "AI & Automation",
-    technologies: "DeepSeek V4, Llama 4 Scout, Whisper v3",
+    technologies: "DeepSeek-V4, Llama 4 Scout, Whisper v3",
     approach: "Vercel AI SDK, FSM Orchestrator, OCR, Function Calling",
   },
   {
@@ -74,7 +70,6 @@ export const ARSENAL = [
   },
 ] as const;
 
-// Open source projects
 export const OPEN_SOURCE_PROJECTS = [
   {
     name: "resilient-fetcher",

@@ -1,4 +1,3 @@
-import { cn } from "@/lib/cn";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export function AuthSequenceDiagram() {

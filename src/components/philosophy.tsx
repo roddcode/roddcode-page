@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Philosophy() {
   return (
-    <section id="philosophy" className="py-24 content-visibility-auto">
+    <section id="philosophy" className="py-24 content-visibility-auto scroll-mt-20">
       <div className="container-site">
         <h2 className="text-4xl md:text-5xl mb-16 leading-tight">
           Engineering philosophy
@@ -21,7 +21,7 @@ export function Philosophy() {
                 href={`/writing/${tenet.slug}`}
                 className="text-sm font-sans text-primary hover:text-foreground transition-colors w-fit"
               >
-                [Read the Essay →]
+                [Read: {tenet.title} →]
               </Link>
             </div>
           ))}

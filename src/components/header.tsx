@@ -1,4 +1,5 @@
 import { SITE } from "@/lib/constants";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export function Header() {
@@ -10,7 +11,7 @@ export function Header() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-50 h-20 bg-background/95 flex items-center">
+      <header className="sticky top-0 z-50 h-14 bg-background/80 backdrop-blur-md border-b border-border/20 flex items-center">
         <div className="container-site w-full flex items-center justify-between">
           <Link
             href="/"
@@ -22,6 +23,21 @@ export function Header() {
             aria-label="Primary navigation"
             className="flex items-center gap-6"
           >
+            <Link
+              href="/writing"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Writing
+            </Link>
+            <Link
+              href={SITE.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              LinkedIn
+              <ArrowUpRight size={10} strokeWidth={1.5} />
+            </Link>
             <span className="text-xs text-muted-foreground">
               {SITE.location}
             </span>

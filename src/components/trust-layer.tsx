@@ -1,3 +1,5 @@
+
+
 interface GitHubEvent {
   id: string;
   type: string;
@@ -101,7 +103,7 @@ export async function TrustLayer() {
   return (
     <section
       id="trust"
-      className="py-24 container-site content-visibility-auto"
+      className="py-24 container-site content-visibility-auto scroll-mt-20"
     >
       <h2 className="text-4xl md:text-5xl mb-20 leading-tight">
         Trust signals
@@ -197,6 +199,7 @@ export async function TrustLayer() {
           </div>
         </div>
       </div>
+
     </section>
   );
 }

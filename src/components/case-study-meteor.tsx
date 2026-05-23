@@ -1,9 +1,12 @@
-import { ImagePlaceholder } from "./image-placeholder";
+import Image from "next/image";
 import { ProcessComparison } from "./process-comparison";
 
 export function CaseStudyMeteor() {
   return (
-    <section id="meteor" className="py-24 container-site">
+    <section
+      id="meteor"
+      className="py-24 container-site content-visibility-auto scroll-mt-20"
+    >
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
         CASE STUDY 02 — METEOR
       </p>
@@ -12,12 +15,12 @@ export function CaseStudyMeteor() {
       </h2>
 
       {/* Result Highlights */}
-      <div className="grid grid-cols-4 gap-4 mb-20 max-w-2xl">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20 max-w-2xl">
         {[
           { value: "53%", label: "Process time ↓" },
           { value: "$0", label: "License cost" },
-          { value: "53.79%", label: "Monthly ROI" },
           { value: "< 2 mo", label: "Payback period" },
+          { value: "100%", label: "ROI achieved" },
         ].map((s) => (
           <div
             key={s.label}
@@ -26,11 +29,23 @@ export function CaseStudyMeteor() {
             <p className="text-2xl md:text-3xl font-mono text-primary tabular-nums mb-1">
               {s.value}
             </p>
-            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+            <p className="text-xs font-mono text-secondary-foreground uppercase tracking-wider">
               {s.label}
             </p>
           </div>
         ))}
+      </div>
+
+      {/* Visual Proof */}
+      <div className="mb-20 max-w-3xl">
+        <Image
+          src="/meteor-crm-dark.webp"
+          alt="METEOR CRM — Leads Dashboard"
+          width={1600}
+          height={770}
+          className="w-full h-auto rounded-sm border border-border/30"
+          sizes="(max-width: 48rem) calc(100vw - 3rem), 45rem"
+        />
       </div>
 
       <div className="flex flex-col gap-20">
@@ -39,7 +54,7 @@ export function CaseStudyMeteor() {
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
             01 — The Problem
           </p>
-          <div className="flex flex-col gap-4 text-secondary-foreground leading-relaxed max-w-2xl">
+          <div className="flex flex-col gap-4 text-secondary-foreground leading-relaxed max-w-2xl min-w-0">
             <p>
               Lead management and reporting depended on a third-party system
               (InConcert) that cost{" "}
@@ -57,7 +72,7 @@ export function CaseStudyMeteor() {
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
             02 — Approach
           </p>
-          <div className="grid sm:grid-cols-2 gap-x-16 gap-y-10 max-w-3xl">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-16 gap-y-10 max-w-4xl min-w-0">
             {[
               {
                 n: "01",
@@ -68,6 +83,11 @@ export function CaseStudyMeteor() {
                 n: "02",
                 title: "SQL Server Migration",
                 body: "All lead data migrated into a normalized SQL Server schema, eliminating the $1K/mo licensing cost entirely.",
+              },
+              {
+                n: "03",
+                title: "Real-Time Reporting",
+                body: "Built on-demand reports (Excel, PDF, CSV) with configurable validation rules. Eliminated 30 min/day of manual reporting and the developer bottleneck for custom requests.",
               },
             ].map((d) => (
               <div key={d.n}>
