@@ -217,7 +217,7 @@ export function CaseStudySoffia() {
               },
             ].map((d) => (
               <div key={d.n}>
-                <p className="text-xs font-mono text-primary mb-3">{d.n}</p>
+                <p className="text-xs font-mono text-tertiary mb-3">{d.n}</p>
                 <h3 className="text-lg mb-2 text-foreground leading-snug font-medium">
                   {d.title}
                 </h3>
@@ -245,7 +245,7 @@ export function CaseStudySoffia() {
           <div className="flex flex-col gap-10 max-w-3xl min-w-0">
             {/* Callout */}
             <div className="border-l-2 border-primary pl-5">
-              <p className="text-xs font-mono text-primary uppercase tracking-widest mb-2">
+              <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
                 ARCHITECTURAL PRINCIPLE
               </p>
               <p className="text-sm text-secondary-foreground leading-relaxed">

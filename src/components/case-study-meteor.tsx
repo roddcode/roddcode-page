@@ -91,7 +91,7 @@ export function CaseStudyMeteor() {
               },
             ].map((d) => (
               <div key={d.n}>
-                <p className="text-xs font-mono text-primary mb-3">{d.n}</p>
+                <p className="text-xs font-mono text-tertiary mb-3">{d.n}</p>
                 <h3 className="text-lg mb-2 text-foreground leading-snug font-medium">
                   {d.title}
                 </h3>
