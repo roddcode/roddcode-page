@@ -21,7 +21,7 @@ export function Handshake() {
 
         <div className="flex flex-wrap gap-4 mb-12">
           <a
-            href="/cv.pdf"
+            href="/cv-alejandro-alvarado-fullstack.pdf"
             download="Alejandro-Alvarado-CV-2026.pdf"
             className="bg-foreground text-background hover:bg-foreground/90 px-8 py-4 text-sm font-medium transition-colors duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center gap-2"
             style={{ borderRadius: "2px" }}
