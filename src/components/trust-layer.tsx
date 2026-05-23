@@ -130,7 +130,7 @@ export async function TrustLayer() {
       </div>
 
       {/* System fact */}
-      <div className="border-l-2 border-border pl-6 max-w-2xl mb-20">
+      <div className="border-l-2 border-primary/60 pl-6 max-w-2xl mb-20">
         <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
           SYSTEM FACT
         </p>
