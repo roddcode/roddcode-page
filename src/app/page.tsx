@@ -8,7 +8,7 @@ import { Handshake } from "@/components/handshake";
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
 import { LiveMetrics } from "@/components/live-metrics";
-import { OpenSource } from "@/components/open-source";
+
 import { Philosophy } from "@/components/philosophy";
 import { TrustLayer } from "@/components/trust-layer";
 import { Suspense } from "react";
@@ -24,7 +24,6 @@ export default function HomePage() {
         <Background />
         <CaseStudySoffia />
         <CaseStudyMeteor />
-        <OpenSource />
         <Philosophy />
         <Arsenal />
         <Suspense

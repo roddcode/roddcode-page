@@ -22,6 +22,13 @@ export function Hero() {
         </h1>
 
         <p
+          className="text-xs font-mono text-muted-foreground animate-fade-in-up"
+          style={{ animationDelay: "60ms" }}
+        >
+          Movistar · SoffIA Clinic AI · 2.5yr · Lima, PE
+        </p>
+
+        <p
           className="text-xl text-secondary-foreground font-sans font-normal max-w-2xl leading-relaxed animate-fade-in-up"
           style={{ animationDelay: "120ms" }}
         >
