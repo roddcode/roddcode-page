@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
@@ -60,6 +61,7 @@ export default function RootLayout({
           aria-hidden="true"
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );

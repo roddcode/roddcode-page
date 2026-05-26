@@ -20,7 +20,7 @@ export default function WritingIndex() {
         </Link>
       </div>
       <div className="mb-16">
-        <h1 className="text-3xl mb-4">Writing</h1>
+        <h1 className="text-3xl font-medium mb-4">Writing</h1>
         <p className="text-muted-foreground text-lg">
           High-signal architecture essays.
         </p>
