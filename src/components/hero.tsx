@@ -25,7 +25,7 @@ export function Hero() {
           className="text-xs font-mono text-muted-foreground animate-fade-in-up"
           style={{ animationDelay: "60ms" }}
         >
-          Movistar · SoffIA Clinic AI · 2.5yr · Lima, PE
+           Movistar · SoffIA Clinic AI · 3yr · Lima, PE
         </p>
 
         <p

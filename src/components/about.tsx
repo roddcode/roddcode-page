@@ -10,7 +10,7 @@ export function About() {
               ABOUT
             </p>
             <p className="text-sm text-secondary-foreground leading-relaxed">
-              21 years old, 2.5 years of professional experience.
+              21 years old, 3 years of professional experience.
               <br />
               Building production systems since 18.
               <br />
