@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
@@ -61,6 +62,7 @@ export default function RootLayout({
           aria-hidden="true"
         />
         {children}
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>
