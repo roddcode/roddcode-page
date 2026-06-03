@@ -1,106 +1,13 @@
 import { OPEN_SOURCE_PROJECTS } from "@/lib/constants";
 import { ArrowUpRight } from "lucide-react";
 
-interface GitHubEvent {
-  id: string;
-  type: string;
-  repo: { name: string };
-  payload: {
-    size?: number;
-    ref_type?: string;
-    ref?: string;
-    commits?: Array<{ message: string }>;
-  };
-  created_at: string;
-}
+const activityLogs = [
+  "[1d ago] optimized reactive FSM tool transitions in SoffIA",
+  "[2d ago] hardened session boundary token lifecycles",
+  "[3d ago] initialized core engine resilient-fetcher",
+];
 
-function formatTimeAgo(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-
-    if (Number.isNaN(diffMs) || diffMs < 0) return "active";
-
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 60) {
-      return `${Math.max(1, diffMins)}m ago`;
-    }
-    if (diffHours < 24) {
-      return `${diffHours}h ago`;
-    }
-    return `${diffDays}d ago`;
-  } catch {
-    return "recently";
-  }
-}
-
-function formatEvent(event: GitHubEvent): string {
-  const repoName = event.repo.name.replace(/^roddcode\//, "");
-  const timeAgo = formatTimeAgo(event.created_at);
-
-  switch (event.type) {
-    case "PushEvent": {
-      const branch = event.payload.ref
-        ? event.payload.ref.replace("refs/heads/", "")
-        : "main";
-      return `[${timeAgo}] pushed to ${branch} in ${repoName}`;
-    }
-    case "CreateEvent": {
-      const refType = event.payload.ref_type || "repository";
-      const refName = event.payload.ref ? ` "${event.payload.ref}"` : "";
-      return `[${timeAgo}] created ${refType}${refName} in ${repoName}`;
-    }
-    case "WatchEvent":
-      return `[${timeAgo}] starred ${repoName}`;
-    case "PullRequestEvent":
-      return `[${timeAgo}] active on pull request in ${repoName}`;
-    default:
-      return `[${timeAgo}] active on ${repoName}`;
-  }
-}
-
-export async function TrustLayer() {
-  let stats: {
-    public_repos: number;
-    followers: number;
-    created_at: string;
-  } | null = null;
-  let events: GitHubEvent[] = [];
-
-  try {
-    const [statsRes, eventsRes] = await Promise.all([
-      fetch("https://api.github.com/users/roddcode", {
-        next: { revalidate: 3600 },
-      }),
-      fetch("https://api.github.com/users/roddcode/events", {
-        next: { revalidate: 3600 },
-      }),
-    ]);
-
-    if (statsRes.ok) {
-      stats = await statsRes.json();
-    }
-    if (eventsRes.ok) {
-      const rawEvents = await eventsRes.json();
-      if (Array.isArray(rawEvents)) {
-        events = rawEvents.slice(0, 3);
-      }
-    }
-  } catch {
-    // Silently fallback to static representation on fetch failures
-  }
-
-  // Fallback logs if API rate-limited or offline
-  const fallbackLogs = [
-    "[1d ago] optimized reactive FSM tool transitions in SoffIA",
-    "[2d ago] hardened session boundary token lifecycles",
-    "[3d ago] initialized core engine resilient-fetcher",
-  ];
-
+export function TrustLayer() {
   return (
     <section
       id="trust"
@@ -125,23 +32,6 @@ export async function TrustLayer() {
         </p>
         <p className="text-sm font-mono text-muted-foreground mt-6">
           — Dra. Jomara Herrera, Cirujana Dentista · Clínica Castro y Herrera
-        </p>
-      </div>
-
-      {/* System fact */}
-      <div className="border-l-2 border-primary/60 pl-6 max-w-2xl mb-20">
-        <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
-          SYSTEM FACT
-        </p>
-        <p className="text-sm text-secondary-foreground leading-relaxed">
-          The production agent handles multi-patient bookings concurrently.
-          Atomic room locking via PostgreSQL{" "}
-          <code className="text-foreground bg-muted px-1.5 py-0.5 text-xs">
-            FOR UPDATE SKIP LOCKED
-          </code>
-          , payment voucher OCR validation, and Google Calendar bidirectional
-          sync — all within a single Vercel serverless function (60s budget).
-          Zero cold-start failures.
         </p>
       </div>
 
@@ -179,23 +69,11 @@ export async function TrustLayer() {
         </div>
       </div>
 
-      {/* GitHub stats & Real-time Console */}
+      {/* GitHub Activity */}
       <div className="flex flex-col gap-6 max-w-xl">
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-            GitHub Activity
-          </p>
-          <p className="text-xs font-mono text-secondary-foreground tabular-nums">
-            {stats ? (
-              <>
-                {stats.public_repos} repos · {stats.followers} followers ·
-                Active since {new Date(stats.created_at).getFullYear()}
-              </>
-            ) : (
-              <>Stats unavailable</>
-            )}
-          </p>
-        </div>
+        <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
+          GitHub Activity
+        </p>
 
         {/* Console Box */}
         <div className="bg-muted border border-border/50 rounded-sm p-4 font-mono text-xs shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]">
@@ -211,25 +89,15 @@ export async function TrustLayer() {
           </div>
 
           <div className="flex flex-col gap-2.5">
-            {events.length > 0
-              ? events.map((event) => (
-                  <div
-                    key={event.id}
-                    className="text-secondary-foreground leading-relaxed flex gap-2"
-                  >
-                    <span className="text-primary select-none">$</span>
-                    <span className="break-all">{formatEvent(event)}</span>
-                  </div>
-                ))
-              : fallbackLogs.map((log) => (
-                  <div
-                    key={log}
-                    className="text-secondary-foreground leading-relaxed flex gap-2"
-                  >
-                    <span className="text-primary select-none">$</span>
-                    <span>{log}</span>
-                  </div>
-                ))}
+            {activityLogs.map((log) => (
+              <div
+                key={log}
+                className="text-secondary-foreground leading-relaxed flex gap-2"
+              >
+                <span className="text-primary select-none">$</span>
+                <span>{log}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

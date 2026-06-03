@@ -110,10 +110,11 @@ export function CaseStudySoffia() {
             02 — The Architecture
           </p>
           <div className="max-w-3xl w-full flex flex-col gap-4 min-w-0">
+            {/* Desktop diagram */}
             <svg
               viewBox="0 0 800 240"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-auto"
+              className="w-full h-auto hidden md:block"
               role="img"
               aria-label="SoffIA ingress pipeline: Redis Buffer → Debounce Lock → QStash Enqueue → Idempotency Gate"
             >
@@ -176,6 +177,29 @@ export function CaseStudySoffia() {
                 </text>
               </g>
             </svg>
+
+            {/* Mobile vertical diagram */}
+            <div className="md:hidden flex flex-col gap-3">
+              {[
+                { step: "01", title: "Redis Buffer", desc: "Rapid-fire coalescing of inbound WhatsApp messages" },
+                { step: "02", title: "Debounce Lock", desc: "3s window per sender — coalesce rapid messages into one" },
+                { step: "03", title: "QStash Enqueue", desc: "Deferred job: 2s for text, 8s for audio (Whisper)" },
+                { step: "04", title: "Idempotency Gate", desc: "msgId dedup — duplicate messages are dropped" },
+              ].map((s, i) => (
+                <div key={s.step} className="flex gap-4 items-start">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-8 h-8 rounded-sm border border-primary/40 bg-primary/5 flex items-center justify-center shrink-0">
+                      <span className="text-xs font-mono text-primary">{s.step}</span>
+                    </div>
+                    {i < 3 && <div className="w-px h-6 bg-primary/20" />}
+                  </div>
+                  <div className="flex flex-col gap-0.5 pt-1">
+                    <span className="text-sm font-medium text-foreground">{s.title}</span>
+                    <span className="text-xs text-muted-foreground">{s.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
             <p className="text-[11px] font-mono text-muted-foreground leading-relaxed">
               The ingress pipeline: inbound WhatsApp messages hit Redis for
               rapid-fire coalescing, acquire a debounce lock within a 3-second
@@ -186,10 +210,10 @@ export function CaseStudySoffia() {
           </div>
         </div>
 
-        {/* KEY ENGINEERING DECISIONS */}
+        {/* ARCHITECTURAL PATTERNS */}
         <div className="grid md:grid-cols-[160px_1fr] gap-10">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
-            03 — Key Decisions
+            03 — Architectural Patterns
           </p>
           <div className="grid sm:grid-cols-2 gap-x-16 gap-y-10 max-w-3xl">
             {[
@@ -257,6 +281,23 @@ export function CaseStudySoffia() {
                 deterministic flow protected by mutex locks. The LLM operates
                 purely as a semantic router — stateless, enjaulado, and
                 cost-controlled by the Loop Shield.
+              </p>
+            </div>
+
+            {/* Production Constraint */}
+            <div className="border-l-2 border-primary/60 pl-5">
+              <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">
+                PRODUCTION CONSTRAINT
+              </p>
+              <p className="text-sm text-secondary-foreground leading-relaxed">
+                The production agent handles multi-patient bookings concurrently.
+                Atomic room locking via PostgreSQL{" "}
+                <code className="text-foreground bg-muted px-1.5 py-0.5 text-xs">
+                  FOR UPDATE SKIP LOCKED
+                </code>
+                , payment voucher OCR validation, and Google Calendar bidirectional
+                sync — all within a single Vercel serverless function (60s budget).
+                Zero cold-start failures.
               </p>
             </div>
 

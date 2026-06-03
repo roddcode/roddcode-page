@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="border-t border-border/40 py-12">
       <div className="container-site flex items-center justify-between">
         <p className="text-xs text-muted-foreground">
-          &copy; {new Date().getFullYear()} Alejandro Alvarado
+          &copy; {new Date().getFullYear()} Alejandro Alvarado · Built with Next.js on Vercel
         </p>
         <button
           type="button"

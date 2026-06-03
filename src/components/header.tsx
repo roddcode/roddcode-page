@@ -30,6 +30,13 @@ export function Header() {
               Writing
             </Link>
             <Link
+              href="/cv-alejandro-alvarado-fullstack.pdf"
+              target="_blank"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              CV
+            </Link>
+            <Link
               href={SITE.linkedin}
               target="_blank"
               rel="noopener noreferrer"

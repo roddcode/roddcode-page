@@ -16,25 +16,30 @@ export function Hero() {
           className="text-5xl md:text-7xl leading-[1.05] tracking-tight text-pretty animate-fade-in-up"
           style={{ animationDelay: "0ms" }}
         >
-          I build production AI
+          Your most expensive operational
           <br />
-          and enterprise systems.
+          gap is what happens when
+          <br />
+          nobody's watching.
         </h1>
 
         <p
           className="text-xs font-mono text-muted-foreground animate-fade-in-up"
           style={{ animationDelay: "60ms" }}
         >
-           Movistar · SoffIA Clinic AI · 3yr · Lima, PE
+          SoffIA · Movistar · 3yr · Lima, PE · Open to remote
         </p>
 
         <p
           className="text-xl text-secondary-foreground font-sans font-normal max-w-2xl leading-relaxed animate-fade-in-up"
           style={{ animationDelay: "120ms" }}
         >
-          Architecting <span className="text-primary">SoffIA</span>, an
-          autonomous agent for medical clinics — plus enterprise CRM systems
-          (.NET/Vue) that replaced InConcert at Movistar.
+          {/* [ALTERNATE 1] I build the infrastructure that captures value 24/7 — autonomous agents that convert after-hours leads, enterprise CRMs that replaced legacy systems at Movistar, and deterministic AI pipelines at $0.001 per booking. */}
+          {/* [ALTERNATE 2] From replacing enterprise CRMs at Movistar to shipping autonomous agents at $0.001/booking — I build production systems that capture value 24/7. */}
+          I ship autonomous agents at{" "}
+          <span className="text-primary">$0.001/booking</span> and replaced
+          enterprise CRMs at <span className="text-primary">Movistar</span> —
+          production systems that capture value 24/7.
         </p>
 
         <div
@@ -42,11 +47,11 @@ export function Hero() {
           style={{ animationDelay: "240ms" }}
         >
           <Link
-            href="#case-study"
+            href="#background"
             className="bg-foreground text-background hover:bg-foreground/90 px-6 py-3 text-sm font-medium transition-colors duration-100 ease-out will-change-transform active:scale-[0.98]"
             style={{ borderRadius: "2px" }}
           >
-            SoffIA Case Study ↓
+            3yr Timeline →
           </Link>
           <Link
             href="#meteor"

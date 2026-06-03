@@ -39,6 +39,14 @@ const milestones = [
       "Built corporate websites with WordPress and Vue.js. Technical incident management and responsive layout implementation.",
     ],
   },
+  {
+    period: "Aug 2023 → Dec 2023",
+    title: "WebemprendePE — Web Developer Intern",
+    location: "First approach to production web · 5 mo",
+    body: [
+      "Developed and maintained corporate websites with WordPress. Plugin customization and theme integration.",
+    ],
+  },
 ];
 
 export function Background() {

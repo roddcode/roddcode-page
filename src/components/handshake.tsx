@@ -20,11 +20,26 @@ export function Handshake() {
         </p>
 
         <div className="flex flex-wrap gap-4 mb-12">
-          <a
-            href="/cv-alejandro-alvarado-fullstack.pdf"
-            download="Alejandro-Alvarado-CV-2026.pdf"
+          <Link
+            href={SITE.cal}
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-foreground text-background hover:bg-foreground/90 px-8 py-4 text-sm font-medium transition-colors duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center gap-2"
             style={{ borderRadius: "2px" }}
+          >
+            Book Intro Call
+          </Link>
+          <Link
+            href={`mailto:${SITE.email}?subject=Engineering%20Collaboration`}
+            className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-8 py-4 text-sm font-sans transition-colors duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center"
+            style={{ borderRadius: "2px" }}
+          >
+            Initiate Handshake →
+          </Link>
+          <a
+            href="/cv-alejandro-alvarado-fullstack.pdf"
+            download="cv-alejandro-alvarado-fullstack.pdf"
+            className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors px-8 py-4 inline-flex items-center gap-2 border border-border/40 hover:border-muted-foreground/30 rounded-sm"
           >
             <svg
               width="14"
@@ -41,26 +56,8 @@ export function Handshake() {
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
-            Download CV — ES (PDF)
+            CV — ES (PDF)
           </a>
-          <Link
-            href={`mailto:${SITE.email}?subject=Engineering%20Collaboration`}
-            className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-8 py-4 text-sm font-sans transition-colors duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center"
-            style={{ borderRadius: "2px" }}
-          >
-            Send Message →
-          </Link>
-          <Link
-            href={SITE.cal}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors px-8 py-4 inline-flex items-center gap-2 border border-border/40 hover:border-muted-foreground/30 rounded-sm"
-          >
-            Book Intro Call
-            <span className="text-[10px] font-mono text-muted-foreground">
-              · International
-            </span>
-          </Link>
         </div>
 
         <p className="text-sm text-muted-foreground">
