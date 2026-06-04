@@ -80,7 +80,7 @@ export function Background() {
                     key={line}
                     className="text-sm text-secondary-foreground leading-relaxed flex gap-3"
                   >
-                    <span className="text-tertiary font-mono text-xs mt-1 select-none">
+                    <span className="text-primary font-mono text-xs mt-1 select-none">
                       —
                     </span>
                     <span>{line}</span>
