@@ -1,0 +1,67 @@
+---
+title: "The tax authority doesn't care that you were following SOP"
+date: "2026-07-01"
+summary: "I deleted a user from AD at 18. Almost cost a company its tax audit trail. The problem wasn't the delete — it was that nobody in the room understood what the data meant."
+slug: "domain-context-before-production-access"
+---
+
+The ticket said: "delete user, laptop reallocated." I was 18, three months into my first dev job at a logistics company in Peru. I opened Active Directory, right-clicked, and hit delete.
+
+What I didn't know at the time: this user's Exchange mailbox contained email threads tied to active import operations. In Peru, SUNAT — the tax authority — can audit those operations years after they close. If an auditor requests correspondence and the mailbox has been purged, the company has no legal defense. The emails aren't just communication. They're fiscal evidence.
+
+I wasn't fired. But I remember the exact feeling of realizing that a standard IT operation — one I performed correctly, by the book — could have created a legal liability for the company. The procedure was right. The context was wrong.
+
+## The real problem wasn't the delete
+
+The problem was that I had production access to a system without understanding the domain it operated in. Nobody's fault — not mine, not my manager's. It was a process gap. The company assumed I knew what I was doing because they told me how to do it. They didn't tell me what it meant.
+
+This gap isn't unique to juniors or to AD. It exists everywhere production access is granted without domain context:
+
+- A developer with database access who doesn't know that `DELETE FROM users WHERE id = X` cascades to invoices
+- An SRE who can push config without knowing which endpoints serve PII
+- A support agent who can reset a password without knowing the account handles payroll
+
+In every case, the operator has the technical ability to perform the action and no visibility into the business consequences. The system trusts them to know what they're doing. But the system never told them what they need to know.
+
+## What I do now
+
+I don't assume the operator knows the domain. I build the domain knowledge into the process.
+
+```typescript
+type ProductionAction = {
+  type: string;
+  description: string;
+  domainImpact: string[];
+  requiredApprovals: string[];
+  reversible: boolean;
+};
+
+const actions: Record<string, ProductionAction> = {
+  "ad:delete_user": {
+    type: "identity",
+    description: "Remove user from Active Directory and all linked systems",
+    domainImpact: ["mailbox retention", "fiscal audit trail", "system access"],
+    requiredApprovals: ["hr", "legal"],
+    reversible: false,
+  },
+  "ad:disable_user": {
+    type: "identity",
+    description: "Revoke access without removing account or data",
+    domainImpact: [],
+    requiredApprovals: ["hr"],
+    reversible: true,
+  },
+};
+```
+
+This isn't revolutionary. It's a mapping table. But it forces a question that most systems never ask: **what are the consequences of this action outside of this system?**
+
+Before any production operation runs, it checks its `domainImpact` against a registry of active compliance requirements. If the operation touches a domain with fiscal implications, legal approval is required before execution. No approval, no execution.
+
+## The actual lesson
+
+The AD incident taught me that technical competence and domain understanding are two different things. You can be excellent at Active Directory and still create a legal liability for your company if you don't know what the data represents outside of AD.
+
+When I interview now, I don't ask about frameworks. I ask: *"tell me about a time you made a production change and later realized you didn't understand the business impact."* The answer tells me more about a candidate's level than any coding exercise.
+
+Because code can be learned. Domain understanding is earned — one mistake at a time. The best engineers are the ones who learned from someone else's mistakes before making their own.
