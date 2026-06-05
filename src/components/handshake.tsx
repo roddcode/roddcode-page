@@ -12,11 +12,11 @@ export function Handshake() {
           Initiate connection
         </h2>
         <p className="text-lg text-secondary-foreground leading-relaxed mb-4">
-          Evaluating full-stack and AI engineering roles at product companies
-          where systems reach real users.
+          I help companies build production AI systems
+          and replace legacy enterprise infrastructure.
         </p>
         <p className="text-sm text-muted-foreground mb-12">
-          If you ship production systems people actually use, let&apos;s talk.
+          If you have a system that needs to capture value 24/7, or a team that needs someone who thinks in architecture, let&apos;s talk.
         </p>
 
         <div className="flex flex-wrap gap-4 mb-12">
