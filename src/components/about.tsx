@@ -1,7 +1,7 @@
 export function About() {
   return (
     <section className="py-24 container-site content-visibility-auto">
-      <div className="border border-border/60 rounded-sm p-8 bg-muted/10 max-w-3xl">
+      <div className="border border-border/60 rounded-sm p-6 md:p-8 bg-muted/10 max-w-3xl">
         <div className="flex flex-col gap-2">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
             ABOUT

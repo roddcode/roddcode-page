@@ -56,7 +56,7 @@ export function Background() {
       className="py-24 container-site content-visibility-auto"
     >
       <h2 className="text-4xl md:text-5xl mb-16 leading-tight">Background</h2>
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-12 md:gap-16">
         {milestones.map((m) => (
           <div
             key={m.title}

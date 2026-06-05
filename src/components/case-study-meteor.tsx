@@ -49,7 +49,7 @@ export function CaseStudyMeteor() {
         />
       </div>
 
-      <div className="flex flex-col gap-20">
+      <div className="flex flex-col gap-16 md:gap-20">
         {/* THE PROBLEM */}
         <div className="grid md:grid-cols-[160px_1fr] gap-10">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest pt-1">
