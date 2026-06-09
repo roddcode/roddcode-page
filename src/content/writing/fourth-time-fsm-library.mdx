@@ -1,0 +1,81 @@
+---
+title: "The fourth time I rebuilt the same state machine, I made it a library"
+date: "2026-06-09"
+summary: "I built the same FSM four times for four different projects. The fourth version became reactive-fsm — a zero-dependency library for controlling LLM tool access in production."
+slug: "fourth-time-fsm-library"
+---
+
+**A patient confirmed a booking for a slot that was already taken. The LLM said "confirmed" while the database said "sold." That was the moment I realized: the model cannot be the source of truth.**
+
+I was building SoffIA's core loop. The LLM needed to identify patients, check availability, confirm bookings — but only in that order, and only when the previous step was validated. At any point, the model could hallucinate a tool call that skipped a step. I needed a way to say: *"in this state, you can only see these tools."*
+
+So I built a state machine. Hardcoded. Tightly coupled to SoffIA's database schema and its specific LLM provider. It worked, but it wasn't reusable. I didn't care — it was a single product.
+
+**The second time was a consulting client.** Different domain, different LLM, different database. They had the same problem: their agent kept calling tools out of order. I rebuilt the same pattern from scratch. Different code structure, different provider integration, different tool schemas. Same logic.
+
+That's when I noticed the pattern. The state machine logic was identical — only the tools and transitions changed. But extracting it would take time, and the client needed delivery, not infrastructure.
+
+**The third time broke me.** I decided to use an existing framework instead of rebuilding. Installed the package. Added the integration. Configured the state machine. Simple enough — until I needed a loop shield. The framework didn't have one. I had to override a core class. The dependency started dictating my architecture.
+
+That's the moment you realize: a framework that doesn't fit your use case costs more than building your own. Not in code — in constraints.
+
+**The fourth time was different.**
+
+I was starting a new project. Same pattern again — tools gated by state, with loop detection, rollback, and fresh-state validation before each LLM call. I opened my old SoffIA code, my client code, and the hacked-together framework override, and I asked: *"what would this look like if I extracted the common core?"*
+
+I isolated the state machine into a ~300-line core with zero dependencies. The provider integration became an adapter. The tool schemas became generic. The loop shield and gate refresh became configuration options, not hardcoded logic.
+
+I wrote 45 tests. Mostly edge cases I had debugged at 2 AM in production systems — the kind of failures you only know to test for after they've burned you.
+
+**The result is reactive-fsm.** A TypeScript library that controls LLM tool access via state machines — with zero runtime dependencies, swappable provider adapters, and the loop shield and gate refresh patterns that emerged from two years of production AI systems.
+
+The API is declarative. States, transitions, and tool gates are defined upfront. The LLM operates inside the current state. It cannot escape:
+
+```typescript
+import { createMachine } from "reactive-fsm";
+
+const machine = createMachine({
+  initialState: "triage",
+  states: {
+    triage: {
+      tools: ["check_service", "check_availability"],
+      on: { ready: "booking", unavailable: "done" },
+    },
+    booking: {
+      tools: ["confirm", "invoice"],
+      on: { confirmed: "done" },
+    },
+    done: { tools: [] },
+  },
+});
+```
+
+**The guardrail is structural, not textual.**
+
+The most common failure pattern in LLM-powered systems is the model calling a tool it shouldn't have access to. The standard fix is a better system prompt: *"never confirm a booking before identity is verified."* But prompts leak. The model finds a path around them, especially under pressure or ambiguity.
+
+Reactive-fsm's approach is different: **the tool doesn't exist in the LLM's context until the state machine says it does.** The model cannot confirm a booking during identity verification because `confirm_booking` is not in its context. There's no prompt to bypass. The guardrail is enforced by the runtime, not by the LLM.
+
+**Gate refresh solved a class of bugs I had accepted as inevitable.**
+
+In concurrent systems — which every production AI system is — the world changes between the LLM's decision and the tool execution. A patient books a slot while another patient is confirming. A naive state machine confirms both and creates a conflict.
+
+Reactive-fsm checks state freshness before each LLM call. If the slot is taken, the current transition is aborted and the machine moves to a configured fallback state. The model never confirms a booking that no longer exists:
+
+```typescript
+const machine = createMachine({
+  initialState: "booking",
+  gateRefresh: {
+    beforeEachStep: async (context) => {
+      const available = await checkSlot(context.slotId);
+      return available ? undefined : "unavailable";
+    },
+  },
+});
+```
+
+**The library is MIT. Zero dependencies. TypeScript. Five adapters: OpenAI, Anthropic, Vercel AI SDK, LangChain, Gemini.**
+
+I'm not claiming this is the best architecture for every AI system. I'm claiming it's the architecture I rebuilt four times before realizing it should be a library. If you're building a production AI system that touches money, schedules, or liabilities, you will eventually need a state machine to control what your LLM can touch.
+
+If you're dealing with LLMs that call tools they shouldn't, reactive-fsm is MIT and takes 30 seconds to install. I wrote it because I got tired of fixing the same bug at 2 AM. You can install it and not make the same mistakes I made.
