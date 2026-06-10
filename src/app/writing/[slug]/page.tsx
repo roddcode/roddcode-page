@@ -40,6 +40,15 @@ export default async function PostPage(props: {
   const params = await props.params;
   let post: ReturnType<typeof getPostBySlug> | undefined;
   let allPosts: ReturnType<typeof getAllPosts> = [];
+
+  const related: Record<string, string[]> = {
+    "deterministic-ai": ["fourth-time-fsm-library", "db-fat-llm-light"],
+    "fourth-time-fsm-library": ["deterministic-ai", "domain-context-before-production-access"],
+    "domain-context-before-production-access": ["server-centric-state", "network-asymmetry"],
+    "network-asymmetry": ["server-centric-state", "deterministic-ai"],
+    "server-centric-state": ["domain-context-before-production-access", "network-asymmetry"],
+  };
+
   try {
     post = getPostBySlug(params.slug);
     allPosts = getAllPosts();
@@ -49,7 +58,9 @@ export default async function PostPage(props: {
 
   if (!post) notFound();
 
-  const otherPosts = allPosts.filter((p) => p.slug !== params.slug);
+  const relatedSlugs = (related[params.slug] || []).filter((s) =>
+    allPosts.some((p) => p.slug === s)
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -116,27 +127,37 @@ export default async function PostPage(props: {
           />
         </div>
 
-        {otherPosts.length > 0 && (
+        {relatedSlugs.length > 0 && (
           <footer className="mt-24 border-t border-border/40 pt-12">
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
-              More essays
+              Read next
             </p>
             <div className="flex flex-col gap-6">
-              {otherPosts.map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/writing/${p.slug}`}
-                  className="group flex flex-col gap-1"
-                >
-                  <span className="text-sm text-secondary-foreground group-hover:text-foreground transition-colors font-medium">
-                    {p.title}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {p.summary}
-                  </span>
-                </Link>
-              ))}
+              {relatedSlugs.map((s) => {
+                const related = allPosts.find((p) => p.slug === s);
+                if (!related) return null;
+                return (
+                  <Link
+                    key={s}
+                    href={`/writing/${s}`}
+                    className="group flex flex-col gap-1"
+                  >
+                    <span className="text-sm text-secondary-foreground group-hover:text-foreground transition-colors font-medium">
+                      {related.title}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {related.summary}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
+            <Link
+              href="/writing"
+              className="text-xs font-mono text-primary hover:text-foreground transition-colors mt-6 inline-block"
+            >
+              ← View all essays
+            </Link>
           </footer>
         )}
       </article>

