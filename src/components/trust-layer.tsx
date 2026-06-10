@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 const activityLogs = [
   "[1d ago] optimized reactive FSM tool transitions in SoffIA",
   "[2d ago] hardened session boundary token lifecycles",
-  "[3d ago] initialized core engine resilient-fetcher",
+  "[3d ago] published reactive-fsm v1.3.0 — 5 adapters, 86 tests",
 ];
 
 export function TrustLayer() {

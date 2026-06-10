@@ -44,15 +44,9 @@ export const PHILOSOPHY_TENETS = [
 
 export const OPEN_SOURCE_PROJECTS = [
   {
-    name: "resilient-fetcher",
+    name: "reactive-fsm",
     description:
-      "TypeScript utility for Next.js that wraps native fetch with exponential backoff, circuit breaking, and UI fallback states.",
-    href: "https://github.com/roddcode/resilient-fetcher",
-  },
-  {
-    name: "ssr-auth-pipeline",
-    description:
-      "OAuth2 token lifecycle manager for Next.js. Handles access/refresh token rotation entirely server-side. Zero tokens in client-side storage.",
-    href: "https://github.com/roddcode/ssr-auth-pipeline",
+      "Zero-dependency TypeScript library for controlling LLM tool access via state machines. MIT, 5 adapters, 86 tests.",
+    href: "https://npmjs.com/package/reactive-fsm",
   },
 ] as const;
