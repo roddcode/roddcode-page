@@ -1,5 +1,4 @@
 import { SITE } from "@/lib/constants";
-import Link from "next/link";
 
 export function Hero() {
   return (
@@ -46,27 +45,27 @@ export function Hero() {
           className="flex flex-wrap gap-4 mt-4 animate-fade-in-up"
           style={{ animationDelay: "240ms" }}
         >
-          <Link
+          <a
             href="#background"
             className="bg-foreground text-background hover:bg-foreground/90 px-6 py-3 text-sm font-medium transition-colors duration-100 ease-out will-change-transform active:scale-[0.98]"
             style={{ borderRadius: "2px" }}
           >
             3yr Timeline →
-          </Link>
-          <Link
+          </a>
+          <a
             href="#meteor"
             className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-6 py-3 text-sm font-sans transition-colors duration-100 ease-out will-change-transform active:scale-[0.98]"
             style={{ borderRadius: "2px" }}
           >
             METEOR Case Study ↓
-          </Link>
-          <Link
+          </a>
+          <a
             href="#handshake"
             className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-6 py-3 text-sm font-sans transition-colors duration-100 ease-out will-change-transform active:scale-[0.98]"
             style={{ borderRadius: "2px" }}
           >
             Initiate Handshake →
-          </Link>
+          </a>
         </div>
       </div>
     </section>
