@@ -13,8 +13,11 @@ export default function ServicesPage() {
       <section className="py-24 container-site">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-6xl text-foreground mb-6 leading-tight">
-            I build production AI systems for companies that lose money while
-            nobody is watching.
+            I build production AI systems for{" "}
+            <span className="text-primary">
+              companies that lose money while nobody is watching
+            </span>
+            .
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed mb-20 max-w-xl">
             Autonomous agents. Enterprise CRM migration. Custom development.
