@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Services | roddcode",
+  title: "RoddCode | Services",
   description:
     "I build production AI systems for companies that lose money while nobody is watching. Autonomous agents, CRM migration, custom development, and technical audits — from $500.",
 };
