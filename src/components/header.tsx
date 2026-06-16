@@ -30,6 +30,12 @@ export function Header() {
               Writing
             </Link>
             <Link
+              href="/services"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Services
+            </Link>
+            <Link
               href="/cv-alejandro-alvarado-fullstack.pdf"
               target="_blank"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
