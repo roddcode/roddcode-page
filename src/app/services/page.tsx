@@ -4,7 +4,7 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Services | roddcode",
   description:
-    "I build production AI systems for companies that lose money while nobody is watching. Autonomous agents from $3,000, CRM migration from $5,000, and technical audits from $500.",
+    "I build production AI systems for companies that lose money while nobody is watching. Autonomous agents, CRM migration, custom development, and technical audits — from $500.",
 };
 
 export default function ServicesPage() {
@@ -17,8 +17,9 @@ export default function ServicesPage() {
             nobody is watching.
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed mb-20 max-w-xl">
-            Autonomous agents. Enterprise CRM migration. Technical audits. Based
-            in Lima, working with clients in LATAM and the US.
+            Autonomous agents. Enterprise CRM migration. Custom development.
+            Technical audits. Based in Lima, working with clients in LATAM and
+            the US.
           </p>
 
           <div className="flex flex-col gap-16">
@@ -75,6 +76,15 @@ export default function ServicesPage() {
                 eliminated $1,000/month in licenses.
               </p>
 
+              <Image
+                src="/meteor-crm-dark.webp"
+                alt="METEOR CRM — Leads Dashboard"
+                width={1600}
+                height={770}
+                className="w-full h-auto rounded-sm border border-border/30 mb-6"
+                sizes="(max-width: 48rem) calc(100vw - 3rem), 45rem"
+              />
+
               <div className="flex items-center gap-4 mb-4">
                 <span className="text-xl font-mono text-primary tabular-nums">
                   FROM $5,000
@@ -122,6 +132,41 @@ export default function ServicesPage() {
                   "Architecture review",
                   "Written report",
                   "Actionable next steps",
+                ].map((h) => (
+                  <span
+                    key={h}
+                    className="text-xs font-mono text-muted-foreground border border-border/40 rounded-sm px-3 py-1"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Development */}
+            <div className="border border-border/60 rounded-sm p-8 bg-muted/5">
+              <h2 className="text-2xl text-foreground font-medium mb-2">
+                Custom Development & Automation
+              </h2>
+              <p className="text-sm text-secondary-foreground leading-relaxed max-w-lg mb-6">
+                Web applications, SaaS MVPs, API integrations, workflow
+                automations — anything that turns manual processes into
+                software. If your team is doing something a machine should do,
+                let us build it.
+              </p>
+
+              <div className="flex items-center gap-4 mb-4">
+                <span className="text-xl font-mono text-primary tabular-nums">
+                  FROM $2,000
+                </span>
+                <span className="text-sm text-muted-foreground">2–8 weeks</span>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "Web apps & SaaS MVPs",
+                  "API integrations",
+                  "Workflow automation",
                 ].map((h) => (
                   <span
                     key={h}
