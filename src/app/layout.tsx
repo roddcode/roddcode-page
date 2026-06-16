@@ -1,5 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
@@ -61,9 +63,11 @@ export default function RootLayout({
           className="fixed inset-0 z-50 pointer-events-none mix-blend-overlay opacity-[0.015] bg-noise"
           aria-hidden="true"
         />
-        {children}
+        <Header />
+        <main id="main-content">{children}</main>
         <SpeedInsights />
         <Analytics />
+        <Footer />
       </body>
     </html>
   );

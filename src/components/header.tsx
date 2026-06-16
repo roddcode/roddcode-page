@@ -4,14 +4,7 @@ import Link from "next/link";
 
 export function Header() {
   return (
-    <>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-background focus:border focus:border-primary focus:text-foreground focus:text-sm focus:font-mono focus:rounded-sm"
-      >
-        Skip to main content
-      </a>
-      <header className="sticky top-0 z-50 h-14 bg-background/80 backdrop-blur-md border-b border-border/20 flex items-center">
+    <header className="sticky top-0 z-50 h-14 bg-background/80 backdrop-blur-md border-b border-border/20 flex items-center">
         <div className="container-site w-full flex items-center justify-between">
           <Link
             href="/"
@@ -57,6 +50,5 @@ export function Header() {
           </nav>
         </div>
       </header>
-    </>
   );
 }

@@ -65,6 +65,41 @@ export default function ServicesPage() {
               </div>
             </div>
 
+            {/* Custom Development */}
+            <div className="border border-border/60 rounded-sm p-8 bg-muted/5">
+              <h2 className="text-2xl text-foreground font-medium mb-2">
+                Custom Development & Automation
+              </h2>
+              <p className="text-sm text-secondary-foreground leading-relaxed max-w-lg mb-6">
+                Web applications, SaaS MVPs, API integrations, workflow
+                automations — anything that turns manual processes into
+                software. If your team is doing something a machine should do,
+                let us build it.
+              </p>
+
+              <div className="flex items-center gap-4 mb-4">
+                <span className="text-xl font-mono text-primary tabular-nums">
+                  FROM $2,000
+                </span>
+                <span className="text-sm text-muted-foreground">2–8 weeks</span>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "Web apps & SaaS MVPs",
+                  "API integrations",
+                  "Workflow automation",
+                ].map((h) => (
+                  <span
+                    key={h}
+                    className="text-xs font-mono text-muted-foreground border border-border/40 rounded-sm px-3 py-1"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             {/* CRM Migration */}
             <div className="border border-border/60 rounded-sm p-8 bg-muted/5">
               <h2 className="text-2xl text-foreground font-medium mb-2">
@@ -94,9 +129,9 @@ export default function ServicesPage() {
 
               <div className="flex flex-wrap gap-3">
                 {[
-                  "Vue.js + .NET + SQL Server",
                   "53% process time ↓",
                   "ROI in &lt; 2 months",
+                  "Stack-agnostic",
                 ].map((h) => (
                   <span
                     key={h}
@@ -132,41 +167,6 @@ export default function ServicesPage() {
                   "Architecture review",
                   "Written report",
                   "Actionable next steps",
-                ].map((h) => (
-                  <span
-                    key={h}
-                    className="text-xs font-mono text-muted-foreground border border-border/40 rounded-sm px-3 py-1"
-                  >
-                    {h}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Custom Development */}
-            <div className="border border-border/60 rounded-sm p-8 bg-muted/5">
-              <h2 className="text-2xl text-foreground font-medium mb-2">
-                Custom Development & Automation
-              </h2>
-              <p className="text-sm text-secondary-foreground leading-relaxed max-w-lg mb-6">
-                Web applications, SaaS MVPs, API integrations, workflow
-                automations — anything that turns manual processes into
-                software. If your team is doing something a machine should do,
-                let us build it.
-              </p>
-
-              <div className="flex items-center gap-4 mb-4">
-                <span className="text-xl font-mono text-primary tabular-nums">
-                  FROM $2,000
-                </span>
-                <span className="text-sm text-muted-foreground">2–8 weeks</span>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                {[
-                  "Web apps & SaaS MVPs",
-                  "API integrations",
-                  "Workflow automation",
                 ].map((h) => (
                   <span
                     key={h}
