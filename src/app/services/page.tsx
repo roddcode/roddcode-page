@@ -77,7 +77,7 @@ export default function ServicesPage() {
                 Web applications, SaaS MVPs, API integrations, workflow
                 automations — anything that turns manual processes into
                 software. If your team is doing something a machine should do,
-                let us build it.
+                let me build it.
               </p>
 
               <div className="flex items-center gap-4 mb-4">
@@ -205,6 +205,24 @@ export default function ServicesPage() {
             — Dra. Jomara Herrera, Cirujana Dentista · Clínica Castro y Herrera
           </p>
         </div>
+
+        <div className="max-w-2xl relative mt-16">
+          <span
+            className="absolute -top-6 -left-2 text-8xl leading-none text-foreground opacity-10 select-none font-serif"
+            aria-hidden
+          >
+            &ldquo;
+          </span>
+          <p className="text-2xl md:text-3xl leading-snug text-foreground relative z-10 font-sans">
+            Trabajé con devs toda mi carrera. Alejandro es el único que entregaba
+            antes de que el cliente lo pidiera. Eso no es desarrollo. Es
+            anticipación.
+          </p>
+          <p className="text-sm font-mono text-muted-foreground mt-6">
+            — Abraham Mantilla Elorriaga, Especialista en Generación de Demanda
+            B2B · SoffIA
+          </p>
+        </div>
       </section>
 
       {/* Process */}
@@ -227,7 +245,7 @@ export default function ServicesPage() {
               },
               {
                 step: "03",
-                title: "We build in milestones.",
+                title: "I build in milestones.",
                 desc: "You pay per milestone delivered. You see progress every week.",
               },
               {
@@ -265,7 +283,7 @@ export default function ServicesPage() {
               {
                 question: "What if it doesn't work?",
                 answer:
-                  "You pay per milestone delivered. You see progress every week. If something's not working, we catch it before it becomes a problem.",
+                  "You pay per milestone delivered. You see progress every week. If something's not working, I catch it before it becomes a problem.",
               },
               {
                 question: "What does the process look like?",

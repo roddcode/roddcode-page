@@ -141,7 +141,7 @@ export function CaseStudyMeteor() {
             <div className="md:hidden flex flex-col gap-3">
               {[
                 { step: "01", title: "Vue.js SPA", desc: "Tailwind CSS frontend consuming REST APIs" },
-                { step: "02", title: ".NET API", desc: "JWT Middleware — access + refresh token rotation" },
+                { step: "02", title: ".NET API", desc: "JWT Middleware — dedicated /auth/refresh endpoint" },
                 { step: "03", title: "SQL Server", desc: "Parameterized stored procedures for reporting" },
               ].map((s, i) => (
                 <div key={s.step} className="flex gap-4 items-start">
@@ -188,11 +188,12 @@ export function CaseStudyMeteor() {
               <p className="text-sm text-secondary-foreground leading-relaxed">
                 Built a stateless auth flow with JWT and refresh tokens between
                 the Vue.js SPA and the C# .NET API. Access tokens carried the
-                user session in a signed claim, issued with short expiry and
-                rotated transparently via refresh tokens stored in HttpOnly
-                cookies. The token lifecycle was enforced middleware-side on
-                every protected route, eliminating server-side session storage
-                entirely.
+                user session in a signed claim, issued with short expiry. The
+                middleware validated tokens on every protected route and
+                returned 401 on expiration — the client then called a dedicated
+                <code className="text-xs bg-muted px-1 py-0.5 rounded-sm"> /auth/refresh</code> endpoint to rotate the
+                pair atomically inside a serializable transaction, eliminating
+                race conditions inherent to middleware-side rotation.
               </p>
               <CodeBlock
                 title="JwtRefreshMiddleware.cs"
@@ -221,29 +222,58 @@ export function CaseStudyMeteor() {
         }
         catch (SecurityTokenExpiredException)
         {
-            var refreshToken = context.Request.Cookies["refresh_token"];
-            if (refreshToken is null)
-            {
-                context.Response.StatusCode = 401;
-                return;
-            }
-
-            var newAccessToken = await RotateRefreshToken(refreshToken);
-            context.Response.Cookies.Append("refresh_token",
-                newAccessToken.RefreshToken,
-                new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                });
-
-            context.Request.Headers["Authorization"] =
-                $"Bearer {newAccessToken.AccessToken}";
-            context.User = ValidateToken(newAccessToken.AccessToken);
+            context.Response.StatusCode = 401;
+            return;
         }
 
         await _next(context);
+    }
+}
+
+// Refresh rotation moved to dedicated endpoint
+// to avoid race conditions on parallel requests
+// POST /auth/refresh
+public async Task<IResult> RefreshEndpoint(
+    HttpContext context,
+    Database db)
+{
+    var refreshToken = context.Request.Cookies["refresh_token"];
+    if (refreshToken is null)
+        return Results.Unauthorized();
+
+    await using var tx = await db.Connection
+        .BeginTransactionAsync(IsolationLevel.Serializable);
+    try
+    {
+        var stored = await db.RefreshTokens
+            .FindAsync(refreshToken);
+        if (stored is null || stored.ExpiresAt < DateTime.UtcNow)
+            return Results.Unauthorized();
+
+        db.RefreshTokens.Remove(stored);
+        var newPair = TokenIssuer.IssuePair(stored.UserId);
+        db.RefreshTokens.Add(new Pair
+        {
+            Token = newPair.RefreshToken,
+            UserId = stored.UserId,
+            ExpiresAt = DateTime.UtcNow.AddDays(7)
+        });
+        await db.SaveChangesAsync();
+
+        context.Response.Cookies.Append("refresh_token",
+            newPair.RefreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+        return Results.Ok(new
+            { AccessToken = newPair.AccessToken });
+    }
+    finally
+    {
+        await tx.DisposeAsync();
     }
 }`}
               />

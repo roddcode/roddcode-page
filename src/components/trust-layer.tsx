@@ -35,6 +35,25 @@ export function TrustLayer() {
         </p>
       </div>
 
+      {/* Testimonial 2 — Abraham */}
+      <div className="max-w-3xl mb-20 relative">
+        <span
+          className="absolute -top-6 -left-2 text-8xl leading-none text-foreground opacity-10 select-none font-serif"
+          aria-hidden
+        >
+          &ldquo;
+        </span>
+        <p className="text-3xl leading-snug text-foreground relative z-10 font-sans">
+          Trabajé con devs toda mi carrera. Alejandro es el único que entregaba
+          antes de que el cliente lo pidiera. Eso no es desarrollo. Es
+          anticipación.
+        </p>
+        <p className="text-sm font-mono text-muted-foreground mt-6">
+          — Abraham Mantilla Elorriaga, Especialista en Generación de Demanda
+          B2B · SoffIA
+        </p>
+      </div>
+
       {/* Tooling — open source */}
       <div className="mb-16 max-w-xl">
         <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
