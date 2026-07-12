@@ -13,3 +13,5 @@ npm-debug.log*
 pnpm-debug.log*
 src/content/writing/_drafts/
 status.md
+_drafts/
+.atl/
