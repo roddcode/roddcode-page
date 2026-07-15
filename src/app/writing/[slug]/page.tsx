@@ -183,6 +183,7 @@ export default async function PostPage(props: {
         </div>
 
         <div className="mt-8 border-t border-border/40 pt-8">
+          {/* Subscribe section — enable when newsletter is live
           <p className="text-sm text-foreground font-medium mb-2">Subscribe</p>
           <p className="text-xs text-muted-foreground mb-4">High-signal architecture essays. No spam.</p>
           <form
@@ -205,7 +206,8 @@ export default async function PostPage(props: {
               Subscribe
             </button>
           </form>
-        </div>
+          */}
+          </div>
 
         <footer className="mt-8 border-t border-border/40 pt-8">
           <div className="flex items-center gap-4">

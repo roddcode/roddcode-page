@@ -47,9 +47,14 @@ export function getAllPosts(includeDrafts = false): PostMetadata[] {
   const posts = files
     .filter((file) => file.endsWith(".mdx") && (includeDrafts || !file.startsWith("_")))
     .map((file) => {
-      const { meta } = getPostBySlug(file);
-      return meta;
+      try {
+        const { meta } = getPostBySlug(file);
+        return meta;
+      } catch {
+        return null;
+      }
     })
+    .filter((p): p is PostMetadata => p !== null)
     .sort((a, b) => (new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1));
 
   return posts;

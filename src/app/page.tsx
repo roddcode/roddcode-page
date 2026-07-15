@@ -4,7 +4,9 @@ import { CaseStudySoffia } from "@/components/case-study-soffia";
 import { Handshake } from "@/components/handshake";
 import { Hero } from "@/components/hero";
 import { ProcessSection } from "@/components/process-section";
+import { SectionReveal } from "@/components/section-reveal";
 import { ServicesPreview } from "@/components/services-preview";
+import { StaggerContainer, StaggerItem } from "@/components/stagger-list";
 import { TrustLayer } from "@/components/trust-layer";
 import Link from "next/link";
 
@@ -27,25 +29,28 @@ export default function HomePage() {
 
       <ServicesPreview />
 
-      <section className="py-24 container-site">
+      <SectionReveal>
         <div className="max-w-2xl">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">Achievements</p>
-          <div className="flex flex-col gap-0">
+          <StaggerContainer className="flex flex-col gap-0">
             {[
               { label: "Replaced InConcert at Movistar (Telefónica)", metric: "-53% process · -$1K/mo licenses · ROI <2mo" },
               { label: "Autonomous agent for dental clinic", metric: "<8s response · <8% no-show · $0.001/booking" },
               { label: "reactive-fsm", metric: "86 tests · 5 adapters · MIT · zero dependencies" },
               { label: "Tech talk at TechHouse", metric: "AI in production · July 2026 · Lima" },
             ].map((a) => (
-              <div key={a.label} className="flex items-baseline gap-2 py-2 border-b border-border/20 last:border-0">
-                <span className="text-sm text-foreground">{a.label}</span>
-                <span className="text-xs text-muted-foreground hidden sm:inline">— {a.metric}</span>
-              </div>
+              <StaggerItem key={a.label}>
+                <div className="flex items-baseline gap-2 py-2 border-b border-border/20 last:border-0">
+                  <span className="text-sm text-foreground">{a.label}</span>
+                  <span className="text-xs text-muted-foreground hidden sm:inline">— {a.metric}</span>
+                </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
-      </section>
-      <section className="py-24 container-site">
+      </SectionReveal>
+
+      <SectionReveal>
         <div className="max-w-2xl">
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">Engineering philosophy</p>
           <div className="flex flex-col gap-3">
@@ -58,7 +63,8 @@ export default function HomePage() {
             <Link href="/writing/server-centric-state" className="text-sm text-foreground hover:text-primary transition-colors">Server-Centric State — The browser is a rendering surface, not a vault.</Link>
           </div>
         </div>
-      </section>
+      </SectionReveal>
+
       <TrustLayer />
       <Handshake />
     </>

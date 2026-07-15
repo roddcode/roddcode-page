@@ -1,3 +1,7 @@
+"use client";
+
+import { m } from "framer-motion";
+
 const steps = [
   {
     step: "01",
@@ -21,13 +25,29 @@ const steps = [
   },
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+} as const;
+
+const item = {
+  hidden: { opacity: 0, x: -12 },
+  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 350, damping: 28 } },
+} as const;
+
 export function ProcessSection() {
   return (
     <section className="py-24 container-site">
       <h2 className="text-4xl md:text-5xl mb-16 leading-tight">How I work</h2>
-      <div className="flex flex-col gap-8 max-w-2xl">
+      <m.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-50px" }}
+        className="flex flex-col gap-8 max-w-2xl"
+      >
         {steps.map((s) => (
-          <div key={s.step} className="flex gap-6">
+          <m.div key={s.step} variants={item} className="flex gap-6">
             <span className="text-xs font-mono text-primary tabular-nums shrink-0 pt-0.5">
               {s.step}
             </span>
@@ -39,9 +59,9 @@ export function ProcessSection() {
                 {s.desc}
               </p>
             </div>
-          </div>
+          </m.div>
         ))}
-      </div>
+      </m.div>
     </section>
   );
 }

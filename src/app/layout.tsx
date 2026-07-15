@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
+import { LazyMotion, domAnimation } from "framer-motion";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -69,11 +70,13 @@ export default function RootLayout({
           className="fixed inset-0 z-50 pointer-events-none mix-blend-overlay opacity-[0.015] bg-noise"
           aria-hidden="true"
         />
-        <Header />
-        <main id="main-content">{children}</main>
-        <SpeedInsights />
-        <Analytics />
-        <Footer />
+        <LazyMotion features={domAnimation} strict>
+          <Header />
+          <main id="main-content">{children}</main>
+          <SpeedInsights />
+          <Analytics />
+          <Footer />
+        </LazyMotion>
       </body>
     </html>
   );
