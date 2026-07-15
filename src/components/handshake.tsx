@@ -19,7 +19,13 @@ export function Handshake() {
           and replace legacy enterprise infrastructure.
         </p>
         <p className="text-sm text-muted-foreground mb-12">
-          If your system with AI handles something that can't fail, let's talk 30 minutes. If I have nothing to contribute, I'll tell you in the first 10.
+          If your AI-powered system handles something that can't fail, let's talk 30 minutes. If I have nothing to contribute, I'll tell you in the first 10.
+        </p>
+        <p className="text-sm text-muted-foreground mb-12">
+          Curious how I think about production risk?{" "}
+          <a href="/writing/domain-context-before-production-access" className="text-muted-foreground hover:text-foreground transition-colors underline decoration-border/50 underline-offset-2">
+            Read about the time I almost cost a client its tax audit trail →
+          </a>
         </p>
 
         <div className="flex flex-wrap gap-4 mb-12">
@@ -51,7 +57,7 @@ export function Handshake() {
           >
             {SITE.email}
           </a>
-          <span className="ml-4">· Response &lt; 4h</span>
+          <span className="ml-4">· Response {'<'} 4h</span>
         </p>
       </div>
     </section>

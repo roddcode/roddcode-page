@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 import Image from "next/image";
+import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "RoddCode | Services",
@@ -27,8 +28,9 @@ export default function ServicesPage() {
           <div className="flex flex-col gap-16">
             {/* AI Agents */}
             <div className="border border-border/60 rounded-sm p-8 bg-muted/5">
-              <h2 className="text-2xl text-foreground font-medium mb-2">
+              <h2 className="text-2xl text-foreground font-medium mb-2 flex items-center gap-3">
                 Autonomous AI Agents
+                <span className="text-[10px] font-mono text-primary border border-primary/30 rounded-sm px-1.5 py-0.5">Most requested</span>
               </h2>
               <p className="text-sm text-secondary-foreground leading-relaxed max-w-lg mb-6">
                 WhatsApp agents that book, remind, and qualify leads 24/7 — with
@@ -132,7 +134,7 @@ export default function ServicesPage() {
               <div className="flex flex-wrap gap-3">
                 {[
                   "53% process time ↓",
-                  "ROI in &lt; 2 months",
+                  "ROI in < 2 months",
                   "Stack-agnostic",
                 ].map((h) => (
                   <span
@@ -186,7 +188,7 @@ export default function ServicesPage() {
                 Post-Deploy Retainer
               </h2>
               <p className="text-sm text-secondary-foreground leading-relaxed max-w-lg mb-6">
-                SLA &lt;24h for bugs, 1 monthly review call, uptime monitoring.
+                SLA {'<'}24h for bugs, 1 monthly review call, uptime monitoring.
                 New features are scoped separately — the retainer covers
                 keeping your system running, not rebuilding it.
               </p>
@@ -200,7 +202,7 @@ export default function ServicesPage() {
 
               <div className="flex flex-wrap gap-3">
                 {[
-                  "SLA &lt; 24h for bugs",
+                  "SLA < 24h for bugs",
                   "Monthly review call",
                   "Uptime monitoring",
                 ].map((h) => (
@@ -214,47 +216,6 @@ export default function ServicesPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Testimonial */}
-      <section className="pb-24 container-site">
-        <div className="max-w-2xl relative">
-          <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
-            Trusted by
-          </p>
-          <span
-            className="absolute -top-6 -left-2 text-8xl leading-none text-foreground opacity-10 select-none font-serif"
-            aria-hidden
-          >
-            &ldquo;
-          </span>
-          <p className="text-2xl md:text-3xl leading-snug text-foreground relative z-10 font-sans">
-            Antes perdíamos leads los fines de semana. Ahora SoffIA los
-            convierte mientras dormimos. Mi equipo llegó el lunes con 4 citas
-            nuevas ya pagadas.
-          </p>
-          <p className="text-sm font-mono text-muted-foreground mt-6">
-            — Dra. Jomara Herrera, Cirujana Dentista · Clínica Castro y Herrera
-          </p>
-        </div>
-
-        <div className="max-w-2xl relative mt-16">
-          <span
-            className="absolute -top-6 -left-2 text-8xl leading-none text-foreground opacity-10 select-none font-serif"
-            aria-hidden
-          >
-            &ldquo;
-          </span>
-          <p className="text-2xl md:text-3xl leading-snug text-foreground relative z-10 font-sans">
-            Trabajé con devs toda mi carrera. Alejandro es el único que entregaba
-            antes de que el cliente lo pidiera. Eso no es desarrollo. Es
-            anticipación.
-          </p>
-          <p className="text-sm font-mono text-muted-foreground mt-6">
-            — Abraham Mantilla Elorriaga, Especialista en Generación de Demanda
-            B2B · SoffIA
-          </p>
         </div>
       </section>
 
@@ -294,12 +255,27 @@ export default function ServicesPage() {
               {
                 question: "What if it doesn't work?",
                 answer:
-                  "You pay per milestone delivered. You see progress every week. If something's not working, I catch it before it becomes a problem.",
+                  "During the build: you pay per milestone, so you never fund something broken — I catch failures before they ship. After launch: the Post-Deploy Retainer covers a <24h SLA fix. Without it, I still triage and quote the fix before it becomes your problem.",
               },
               {
-                question: "What does the process look like?",
+                question: "How do we communicate during the build?",
                 answer:
-                  "A 30-minute call (free). A proposal with 2–3 options. Milestone-based payment. You own everything at the end.",
+                  "Weekly async updates, plus a live call at each milestone. All specs, code, and docs in English.",
+              },
+              {
+                question: "Do you work with startups outside LATAM?",
+                answer:
+                  "Yes. I work remotely with clients in LATAM, Spain, and the US. Payment in USD or EUR.",
+              },
+              {
+                question: "What stack do you use?",
+                answer:
+                  "Next.js, TypeScript, .NET, PostgreSQL, DeepSeek, Docker. Stack-agnostic for legacy migrations — I've worked with Vue.js, Angular, SQL Server, and PHP.",
+              },
+              {
+                question: "Can you work with my existing codebase?",
+                answer:
+                  "Yes. I specialize in taking over existing systems — whether it's fixing a broken AI agent, migrating a legacy CRM, or extending a codebase that needs architecture discipline.",
               },
             ].map((q) => (
               <div key={q.question}>
@@ -338,7 +314,7 @@ export default function ServicesPage() {
               Book your free audit
             </a>
             <a
-              href="mailto:devale.alvarado@gmail.com?subject=Services%20Inquiry"
+              href={`mailto:${SITE.email}?subject=Services%20Inquiry`}
               className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-8 py-4 text-sm font-sans transition-colors duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center"
               style={{ borderRadius: "2px" }}
             >
@@ -346,7 +322,7 @@ export default function ServicesPage() {
             </a>
           </div>
           <p className="text-sm text-muted-foreground mt-6">
-            devale.alvarado@gmail.com · Response &lt; 4h
+            {SITE.email} · Response {'<'} 4h
           </p>
         </div>
       </section>

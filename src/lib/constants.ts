@@ -5,7 +5,7 @@ export const SITE = {
   url: "https://roddcode.com",
   author: "Alejandro Alvarado",
   location: "Lima, PE",
-  email: "devale.alvarado@gmail.com",
+  email: "roddcode.dev@gmail.com",
   cal: "https://cal.com/roddcode/intro",
   github: "https://github.com/roddcode",
   linkedin: "https://www.linkedin.com/in/alejandro-alvarado-roddcode/",

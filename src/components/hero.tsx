@@ -4,12 +4,18 @@ export function Hero() {
   return (
     <section className="py-32 md:py-40 container-site">
       <div className="flex flex-col gap-8 max-w-4xl">
-        <p
-          className="text-sm font-mono text-muted-foreground animate-fade-in-up"
-          style={{ animationDelay: "0ms" }}
-        >
-          Alejandro Alvarado
-        </p>
+        <div className="flex items-center gap-3 animate-fade-in-up" style={{ animationDelay: "0ms" }}>
+          <span className="relative flex size-8 shrink-0">
+            <img src="/alejandro.webp" alt="Alejandro Alvarado" className="size-8 rounded-full" />
+            <span className="absolute -bottom-0.5 -right-0.5 flex size-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex size-3 rounded-full bg-primary ring-2 ring-background" />
+            </span>
+          </span>
+          <p className="text-sm font-mono text-muted-foreground">
+            Alejandro Alvarado
+          </p>
+        </div>
 
         <h1
           className="text-5xl md:text-7xl leading-[1.05] tracking-tight text-pretty animate-fade-in-up"
@@ -26,8 +32,8 @@ export function Hero() {
         >
           Autonomous agents at{" "}
           <span className="text-primary">$0.001/booking</span>. Enterprise CRM
-          replacement at <span className="text-primary">Movistar</span>.
-          Architecture that ships — milestone-based, not hourly.
+          that replaced InConcert at{" "}
+          <span className="text-primary">Movistar</span>.
         </p>
 
         <div

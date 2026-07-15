@@ -1,23 +1,23 @@
 const steps = [
   {
     step: "01",
-    title: "You tell me the problem.",
-    desc: "30 minutes, free. We talk about what's broken, what it's costing you, and what you need.",
+    title: "30-min call, free.",
+    desc: "You tell me the problem. I tell you if I can help.",
   },
   {
     step: "02",
-    title: "Architecture spec before code.",
-    desc: "I design the architecture and share specs first. You see the plan before I write a single line.",
+    title: "Spec with prices.",
+    desc: "2–3 approaches with timelines and trade-offs. You choose what fits.",
   },
   {
     step: "03",
-    title: "I build in milestones.",
-    desc: "You pay per milestone delivered. Code review at every step. You see progress every week.",
+    title: "Milestone-based build.",
+    desc: "You pay per delivery. Code review at every step. You see progress every week.",
   },
   {
     step: "04",
-    title: "It ships, you own it.",
-    desc: "The system goes to production. You own the code. No vendor lock-in. Optional retainer post-deploy.",
+    title: "You own the code.",
+    desc: "No lock-in. Optional retainer post-deploy. The system goes to production.",
   },
 ];
 

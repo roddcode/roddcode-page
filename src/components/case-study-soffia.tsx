@@ -9,7 +9,7 @@ export function CaseStudySoffia() {
       className="py-24 container-site content-visibility-auto scroll-mt-20"
     >
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
-        CASE STUDY 02 — Autonomous Agent for a Dental Clinic
+        CASE STUDY 02 — SoffIA: Autonomous Agent for a Dental Clinic
       </p>
       <h2 className="text-4xl md:text-5xl mb-12 leading-tight">
         Architecture of an autonomous agent
@@ -278,7 +278,7 @@ export function CaseStudySoffia() {
                 </strong>
                 : state management and business logic live in PostgreSQL via a
                 deterministic flow protected by mutex locks. The LLM operates
-                purely as a semantic router — stateless, enjaulado, and
+                purely as a semantic router — stateless, sandboxed, and
                 cost-controlled by the Loop Shield.
               </p>
             </div>

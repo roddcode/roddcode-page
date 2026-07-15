@@ -12,9 +12,15 @@ const PostMetadataSchema = z.object({
   slug: z.string().optional(),
   themes: z.array(z.string()).optional().default([]),
   series: z.string().optional(),
+  readingTime: z.number().optional(),
 });
 
 export type PostMetadata = z.infer<typeof PostMetadataSchema>;
+
+function calculateReadingTime(content: string): number {
+  const words = content.split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
 
 export function getPostBySlug(slug: string) {
   const realSlug = slug.replace(/\.mdx$/, "");
@@ -26,9 +32,10 @@ export function getPostBySlug(slug: string) {
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
-  const meta = PostMetadataSchema.parse({ ...data, slug: realSlug });
+  const readingTime = calculateReadingTime(content);
+  const meta = PostMetadataSchema.parse({ ...data, slug: realSlug, readingTime });
 
-  return { slug: realSlug, meta, content };
+  return { slug: realSlug, meta, content, readingTime };
 }
 
 export function getAllPosts(includeDrafts = false): PostMetadata[] {

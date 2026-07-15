@@ -7,9 +7,9 @@ const services = [
     desc: "2h deep-dive + written report. Find the bug before it finds you.",
   },
   {
-    title: "Custom Build",
+    title: "Custom Development",
     price: "from $3,000",
-    desc: "AI agents, CRMs, integrations. Milestone-based, not hourly.",
+    desc: "Web apps, SaaS MVPs, integrations, automations. Fixed milestones.",
   },
   {
     title: "Post-Deploy Retainer",

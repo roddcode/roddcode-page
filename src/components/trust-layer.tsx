@@ -1,5 +1,4 @@
 import { OPEN_SOURCE_PROJECTS } from "@/lib/constants";
-import { ArrowUpRight } from "lucide-react";
 
 export function TrustLayer() {
   return (
@@ -51,8 +50,7 @@ export function TrustLayer() {
           anticipación.
         </p>
         <p className="text-sm font-mono text-muted-foreground mt-6">
-          — Abraham Mantilla Elorriaga, Especialista en Generación de Demanda
-          B2B · SoffIA
+          — Abraham Mantilla Elorriaga, Socio Comercial · SoffIA
         </p>
       </div>
 
@@ -69,23 +67,23 @@ export function TrustLayer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="reactive-fsm on npm, opens in new tab"
-              className={`flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-16 group py-6 ${
-                i < OPEN_SOURCE_PROJECTS.length - 1
-                  ? "border-b border-border/40"
-                  : ""
-              }`}
+              className="group flex items-center gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-muted/20"
             >
-              <h3 className="text-base text-foreground leading-snug flex items-center gap-2 group-hover:text-foreground transition-colors font-medium shrink-0 md:w-56">
+              <span className="flex size-5 shrink-0 items-center justify-center font-mono text-xs text-foreground border border-border/40 rounded-sm">
+                λ
+              </span>
+              <span className="w-24 shrink-0 truncate text-sm font-medium text-foreground sm:w-28">
                 {project.name}
-                <ArrowUpRight
-                  size={14}
-                  strokeWidth={1.5}
-                  className="text-muted-foreground group-hover:text-foreground transition-colors"
-                />
-              </h3>
-              <p className="text-sm text-secondary-foreground leading-relaxed grow">
+              </span>
+              <span className="hidden min-w-0 flex-1 truncate text-sm text-muted-foreground md:block">
                 {project.description}
-              </p>
+              </span>
+              <span className="hidden h-1 w-14 shrink-0 overflow-hidden rounded-full bg-border sm:block lg:w-20">
+                <span className="block h-full rounded-full bg-primary transition-all duration-500 group-hover:bg-foreground" style={{ width: "100%" }} />
+              </span>
+              <span className="flex w-20 shrink-0 items-center justify-end gap-1 font-mono text-xs tabular-nums text-muted-foreground transition-colors group-hover:text-foreground-2">
+                <span>86 tests · 5 adapters</span>
+              </span>
             </a>
           ))}
         </div>
