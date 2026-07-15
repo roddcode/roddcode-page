@@ -3,6 +3,7 @@ title: "Network Asymmetry: Why Your App Needs a Resilience Layer"
 date: "2026-05-18"
 summary: "External APIs fail. A deep dive into exponential backoff, circuit breakers, and graceful degradation in production environments."
 slug: "network-asymmetry"
+themes: [architecture, resilience, production, apis]
 ---
 
 Friday 5 PM, the WhatsApp API stopped responding. A clinic's busiest hour. Patients were writing to confirm appointments, ask about prices, reschedule. The WhatsApp Business API returned 503s for 20 minutes. Every message sent during that window was lost — no retry, no queue, no fallback.

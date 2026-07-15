@@ -1,5 +1,4 @@
 import { SITE } from "@/lib/constants";
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export function Header() {
@@ -18,35 +17,25 @@ export function Header() {
           >
             <Link
               href="/writing"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors py-3"
             >
               Writing
             </Link>
             <Link
               href="/services"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors py-3"
             >
               Services
             </Link>
             <Link
-              href="/cv-alejandro-alvarado-fullstack.pdf"
-              target="_blank"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              CV
-            </Link>
-            <Link
-              href={SITE.linkedin}
+              href={SITE.cal}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              aria-label="Book a call, opens in new tab"
+              className="text-xs text-primary hover:text-foreground transition-colors font-medium py-3"
             >
-              LinkedIn
-              <ArrowUpRight size={10} strokeWidth={1.5} />
+              Book a call
             </Link>
-            <span className="text-xs text-muted-foreground">
-              {SITE.location}
-            </span>
           </nav>
         </div>
       </header>

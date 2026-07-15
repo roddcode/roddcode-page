@@ -4,7 +4,7 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "RoddCode | Services",
   description:
-    "I build production AI systems for companies that lose money while nobody is watching. Autonomous agents, CRM migration, custom development, and technical audits — from $500.",
+    "Production AI systems for transactional businesses. Autonomous agents, CRM migration, custom development, and technical audits — from $500.",
 };
 
 export default function ServicesPage() {
@@ -21,8 +21,7 @@ export default function ServicesPage() {
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed mb-20 max-w-xl">
             Autonomous agents. Enterprise CRM migration. Custom development.
-            Technical audits. Based in Lima, working with clients in LATAM and
-            the US.
+            Technical audits. Remote — LATAM, Spain, and US clients.
           </p>
 
           <div className="flex flex-col gap-16">
@@ -40,7 +39,7 @@ export default function ServicesPage() {
 
               <Image
                 src="/captura-crm-soffia.webp"
-                alt="SoffIA CRM Dashboard"
+                alt="AI Agent CRM Dashboard"
                 width={1517}
                 height={908}
                 className="w-full h-auto rounded-sm border border-border/30 mb-6"
@@ -49,7 +48,7 @@ export default function ServicesPage() {
 
               <div className="flex items-center gap-4 mb-4">
                 <span className="text-xl font-mono text-primary tabular-nums">
-                  FROM $3,000
+                  FROM $4,000
                 </span>
                 <span className="text-sm text-muted-foreground">3–6 weeks</span>
               </div>
@@ -82,7 +81,7 @@ export default function ServicesPage() {
 
               <div className="flex items-center gap-4 mb-4">
                 <span className="text-xl font-mono text-primary tabular-nums">
-                  FROM $2,000
+                  FROM $3,000
                 </span>
                 <span className="text-sm text-muted-foreground">2–8 weeks</span>
               </div>
@@ -160,9 +159,9 @@ export default function ServicesPage() {
 
               <div className="flex items-center gap-4 mb-4">
                 <span className="text-xl font-mono text-primary tabular-nums">
-                  FROM $500
+                  $1,500
                 </span>
-                <span className="text-sm text-muted-foreground">2 hours + report</span>
+                <span className="text-sm text-muted-foreground">2 hours + report (first 5 clients at $800)</span>
               </div>
 
               <div className="flex flex-wrap gap-3">
@@ -170,6 +169,40 @@ export default function ServicesPage() {
                   "Architecture review",
                   "Written report",
                   "Actionable next steps",
+                ].map((h) => (
+                  <span
+                    key={h}
+                    className="text-xs font-mono text-muted-foreground border border-border/40 rounded-sm px-3 py-1"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Retainer */}
+            <div className="border border-border/60 rounded-sm p-8 bg-muted/5">
+              <h2 className="text-2xl text-foreground font-medium mb-2">
+                Post-Deploy Retainer
+              </h2>
+              <p className="text-sm text-secondary-foreground leading-relaxed max-w-lg mb-6">
+                SLA &lt;24h for bugs, 1 monthly review call, uptime monitoring.
+                New features are scoped separately — the retainer covers
+                keeping your system running, not rebuilding it.
+              </p>
+
+              <div className="flex items-center gap-4 mb-4">
+                <span className="text-xl font-mono text-primary tabular-nums">
+                  $1,500–3,000/month
+                </span>
+                <span className="text-sm text-muted-foreground">month-to-month, cancel anytime</span>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "SLA &lt; 24h for bugs",
+                  "Monthly review call",
+                  "Uptime monitoring",
                 ].map((h) => (
                   <span
                     key={h}
@@ -231,40 +264,18 @@ export default function ServicesPage() {
           <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-8">
             How it works
           </p>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6">
             {[
-              {
-                step: "01",
-                title: "You tell me the problem.",
-                desc: "30 minutes, free. We talk about what's broken, what it's costing you, and what you need.",
-              },
-              {
-                step: "02",
-                title: "I send you options.",
-                desc: "2–3 approaches with prices, timelines, and trade-offs. You choose what fits.",
-              },
-              {
-                step: "03",
-                title: "I build in milestones.",
-                desc: "You pay per milestone delivered. You see progress every week.",
-              },
-              {
-                step: "04",
-                title: "It ships, you keep it.",
-                desc: "The system goes to production. You own the code. No vendor lock-in.",
-              },
+              { step: "01", title: "30-min call, free.", desc: "You tell me the problem. I tell you if I can help." },
+              { step: "02", title: "Spec with prices.", desc: "2–3 approaches with timelines and trade-offs." },
+              { step: "03", title: "Milestone-based build.", desc: "You pay per delivery. Code review at every step." },
+              { step: "04", title: "You own the code.", desc: "No lock-in. Optional retainer post-deploy." },
             ].map((s) => (
               <div key={s.step} className="flex gap-6">
-                <span className="text-xs font-mono text-primary tabular-nums shrink-0 pt-0.5">
-                  {s.step}
-                </span>
+                <span className="text-xs font-mono text-primary tabular-nums shrink-0 pt-0.5">{s.step}</span>
                 <div>
-                  <p className="text-sm text-foreground font-medium mb-1">
-                    {s.title}
-                  </p>
-                  <p className="text-sm text-secondary-foreground leading-relaxed">
-                    {s.desc}
-                  </p>
+                  <p className="text-sm text-foreground font-medium mb-1">{s.title}</p>
+                  <p className="text-sm text-secondary-foreground leading-relaxed">{s.desc}</p>
                 </div>
               </div>
             ))}
@@ -320,7 +331,8 @@ export default function ServicesPage() {
               href="https://cal.com/roddcode/intro"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-foreground text-background hover:bg-foreground/90 px-8 py-4 text-sm font-medium transition-colors duration-100 ease-out will-change-transform active:scale-[0.98] inline-flex items-center"
+              aria-label="Book your free audit, opens in new tab"
+              className="bg-foreground text-background hover:bg-foreground/90 px-8 py-4 text-sm font-medium transition-colors duration-100 ease-out active:scale-[0.98] active:will-change-transform inline-flex items-center"
               style={{ borderRadius: "2px" }}
             >
               Book your free audit

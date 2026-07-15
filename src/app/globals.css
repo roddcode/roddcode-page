@@ -6,9 +6,9 @@
   --color-background: oklch(0.12 0 0);
   --color-foreground: oklch(0.95 0 0);
   --color-muted: oklch(0.17 0 0);
-  --color-muted-foreground: oklch(0.72 0 0);
+  --color-muted-foreground: oklch(0.55 0 0);
   /* Secondary text */
-  --color-secondary-foreground: oklch(0.75 0 0);
+  --color-secondary-foreground: oklch(0.78 0 0);
   /* Tertiary / dashes */
   --color-tertiary: oklch(0.5 0 0);
   --color-primary: oklch(0.6 0.15 45);
@@ -25,7 +25,7 @@
   --radius-sm: 2px;
   --radius-md: 4px;
 
-  --animate-fade-in-up: fade-in-up 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes fade-in-up {

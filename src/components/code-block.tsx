@@ -13,10 +13,10 @@ export function CodeBlock({
     <div className="bg-muted border border-border/50 rounded-sm overflow-hidden w-full">
       {title && (
         <div className="flex items-center justify-between px-4 py-2 border-b border-border/20 bg-muted/80">
-          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+          <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
             {title}
           </span>
-          <span className="text-[10px] font-mono text-muted-foreground">
+          <span className="text-xs font-mono text-muted-foreground">
             {lang}
           </span>
         </div>

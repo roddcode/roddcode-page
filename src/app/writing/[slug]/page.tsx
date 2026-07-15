@@ -1,6 +1,7 @@
 import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
-import { getAllPosts, getPostBySlug } from "@/lib/mdx";
+import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
+import { ReadingTracker } from "@/components/reading-tracker";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -41,14 +42,6 @@ export default async function PostPage(props: {
   let post: ReturnType<typeof getPostBySlug> | undefined;
   let allPosts: ReturnType<typeof getAllPosts> = [];
 
-  const related: Record<string, string[]> = {
-    "deterministic-ai": ["fourth-time-fsm-library", "db-fat-llm-light"],
-    "fourth-time-fsm-library": ["deterministic-ai", "domain-context-before-production-access"],
-    "domain-context-before-production-access": ["server-centric-state", "network-asymmetry"],
-    "network-asymmetry": ["server-centric-state", "deterministic-ai"],
-    "server-centric-state": ["domain-context-before-production-access", "network-asymmetry"],
-  };
-
   try {
     post = getPostBySlug(params.slug);
     allPosts = getAllPosts();
@@ -58,9 +51,7 @@ export default async function PostPage(props: {
 
   if (!post) notFound();
 
-  const relatedSlugs = (related[params.slug] || []).filter((s) =>
-    allPosts.some((p) => p.slug === s)
-  );
+  const relatedSlugs = getRelatedPosts(params.slug, allPosts, 2).map((p) => p.slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -82,6 +73,7 @@ export default async function PostPage(props: {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <article className="py-24 container-site max-w-3xl min-h-[80vh]">
+        <ReadingTracker slug={params.slug} />
         <div className="mb-8">
           <Link
             href="/writing"

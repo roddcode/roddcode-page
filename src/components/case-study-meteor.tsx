@@ -9,7 +9,7 @@ export function CaseStudyMeteor() {
       className="py-24 container-site content-visibility-auto scroll-mt-20"
     >
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
-        CASE STUDY 02 — METEOR
+        CASE STUDY 01 — METEOR
       </p>
       <h2 className="text-4xl md:text-5xl mb-12 leading-tight">
         CRM that replaced InConcert at Movistar

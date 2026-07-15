@@ -40,8 +40,9 @@ export default function WritingIndex() {
                   day: "numeric",
                 })}
               </time>
-              <h2 className="text-xl font-medium text-secondary-foreground group-hover:text-foreground transition-colors">
+              <h2 className="text-xl font-medium text-secondary-foreground group-hover:text-foreground transition-colors flex items-center gap-2">
                 {post.title}
+                {post.series && <span className="text-[10px] font-mono text-muted-foreground border border-border/40 rounded-sm px-1.5 py-0.5">{post.series}</span>}
               </h2>
               <p className="text-muted-foreground leading-relaxed text-sm">
                 {post.summary}

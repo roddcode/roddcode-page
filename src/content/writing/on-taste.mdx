@@ -1,0 +1,211 @@
+---
+title: "DB-Fat, LLM-Light — or how I stopped asking the AI to decide things"
+date: "2026-07-14"
+summary: "The LLM doesn't know what's true. It knows what sounds right. Deterministic architecture is the only way to put AI in production without hallucinating money, appointments, or promises the system can't keep."
+slug: "on-taste"
+themes: [ai, architecture, deterministic, production]
+series: "db-fat-llm-light"
+---
+
+Two bugs, same root cause.
+
+The first: a patient asked to book an appointment. The LLM, eager to help, started confirming — name, service, time. What it didn't check was whether this was a returning patient or someone new. Without identity validation, the system booked a slot under a name that didn't exist in the database.
+
+The second: a different patient, different day. The LLM output a confirmation. Name, service, time — all correct. The database threw a foreign key violation because `doctorId` was `null`. The prompt said nothing about `doctorId` being required. The model assumed `null` was acceptable.
+
+Two different failures. Same architecture: **the LLM had write access to the database without structural guardrails.**
+
+This is not a prompt problem. It's a delegation problem.
+
+---
+
+## The model cannot be the source of truth
+
+LLMs don't distinguish between a fact and a convincing fiction. They're trained to maximize the probability of the next token, not to verify the truth of what they generate. Temperature, sampling strategy, and internal state introduce variance.
+
+Given the same input, the model produces different outputs on different runs. That's fine for a chatbot. It's not fine for a system that books medical appointments.
+
+When my agent confirms a 10 AM appointment with Dr. Ríos on Friday, that confirmation must map to an actual database row, a calendar event, and a scheduled reminder. The LLM cannot approximate this.
+
+Most teams try to solve this with prompts. "Never confirm a booking without verifying identity. Always check availability before responding." The model ignores this at the worst possible moment — when the context is long, when the pressure is high, when the "respond affirmatively" pattern outweighs the instruction.
+
+Prompts aren't contracts. They're suggestions.
+
+Architecture, on the other hand, is a contract.
+
+---
+
+## DB-Fat, LLM-Light
+
+The thesis is simple: **the LLM reasons, the database decides.**
+
+The model receives only the tools it needs at each step of the flow. During identity verification, it has no access to booking tools. During booking, it can't modify prices. The database holds atomic locks that prevent two confirmations from landing on the same slot.
+
+The LLM is an employee with read-only access. It can suggest, recommend, explain — but it can't write to the database without passing through a gate that validates the operation against the system's current state.
+
+Every state transition flows through a function that checks both the transition rules and the current database state:
+
+```typescript
+type ConversationState =
+  | "idle"
+  | "identity_check"
+  | "service_selection"
+  | "availability_query"
+  | "booking_confirmation"
+  | "payment_pending";
+
+const VALID_TRANSITIONS: Record<ConversationState, ConversationState[]> = {
+  idle: ["identity_check"],
+  identity_check: ["service_selection"],
+  service_selection: ["availability_query"],
+  availability_query: ["booking_confirmation"],
+  booking_confirmation: ["payment_pending", "idle"],
+  payment_pending: ["idle"],
+};
+
+function transition(current: ConversationState, next: ConversationState): ConversationState {
+  if (!VALID_TRANSITIONS[current].includes(next)) {
+    throw new Error(`Invalid transition: ${current} → ${next}`);
+  }
+  return next;
+}
+```
+
+The LLM operates inside one state at a time. It cannot see tools from other states. It cannot transition itself.
+
+This isn't theory. It's running in production today for a real dental clinic in Lima. Since January 2026, the system has processed hundreds of bookings without a single hallucination reaching a patient.
+
+---
+
+## The four principles
+
+### 1. Read-only access for the model
+
+The LLM doesn't write to the database. Ever. It suggests an operation, the system validates it against current state, and only if conditions are met does the system execute.
+
+During identity verification, the model can call `lookup_patient` and `register_new_patient`. It cannot call `book_appointment`. The booking tool doesn't exist in this state — not in the context, not in the system prompt, not available.
+
+In practice, this is enforced with progressive tool gating:
+
+```typescript
+const result = await generateText({
+  model,
+  messages,
+  experimental_prepareStep: async ({ toolResults }) => {
+    const currentState = await getConversationState(patientId);
+    return {
+      tools: TOOLS_BY_STATE[currentState],
+      system: buildSystemPrompt(currentState, clinicConfig),
+    };
+  },
+});
+```
+
+The model receives exactly the context and capabilities relevant to its current position in the FSM.
+
+### 2. Validate in the database, not in the prompt
+
+If the slot exists, the database knows it. If it doesn't, the database knows it. The LLM shouldn't have an opinion.
+
+State transitions run inside a PostgreSQL function that encapsulates both the FSM logic and the business rules:
+
+```sql
+CREATE OR REPLACE FUNCTION advance_gate(
+  p_conversation_id UUID,
+  p_from_state TEXT,
+  p_to_state TEXT
+) RETURNS JSONB
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  v_current_state TEXT;
+  v_result JSONB;
+BEGIN
+  SELECT current_state INTO v_current_state
+  FROM conversations
+  WHERE id = p_conversation_id
+  FOR UPDATE;
+
+  IF v_current_state IS NULL THEN
+    RETURN jsonb_build_object('ok', false, 'reason', 'conversation_not_found');
+  END IF;
+
+  IF v_current_state != p_from_state THEN
+    RETURN jsonb_build_object('ok', false, 'reason', 'stale_state');
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM valid_transitions
+    WHERE from_state = p_from_state AND to_state = p_to_state
+  ) THEN
+    RETURN jsonb_build_object('ok', false, 'reason', 'invalid_transition');
+  END IF;
+
+  UPDATE conversations
+  SET current_state = p_to_state, updated_at = NOW()
+  WHERE id = p_conversation_id;
+
+  RETURN jsonb_build_object('ok', true, 'state', p_to_state);
+END;
+$$;
+```
+
+`FOR UPDATE` locks the row. If two concurrent requests try to transition the same conversation, one waits and gets the fresh state. Atomic validation is more reliable than any instruction you can give the model.
+
+### 3. Progressive gate-gating
+
+At each step of the flow, the LLM only sees the tools corresponding to that step. During patient identification, booking tools don't exist. During payment, price modification tools don't exist.
+
+Tool schemas are validated with Zod before execution. If the model calls `book_appointment` with a malformed date, a missing doctor ID, or a service that doesn't exist in the clinic's catalog, the SDK throws before `execute` is called:
+
+```typescript
+const bookAppointmentSchema = z.object({
+  patientId: z.string().uuid(),
+  doctorId: z.string().uuid(),
+  serviceId: z.string().uuid(),
+  startTime: z.string().datetime({ offset: true }),
+  durationMinutes: z.number().int().min(15).max(180),
+  notes: z.string().max(500).optional(),
+});
+
+const bookAppointment = tool({
+  description: "Book a confirmed appointment slot",
+  parameters: bookAppointmentSchema,
+  execute: async (params) => {
+    return await createAppointment(params);
+  },
+});
+```
+
+If the model can't see a tool, it can't call it — no matter how creative its prompt is.
+
+### 4. Loop Shield against cognitive cycles
+
+LLMs tend to repeat tool-calling patterns in long contexts or under uncertainty. The Loop Shield detects this repetition and forces a transition to a safe state:
+
+```typescript
+// LOOP SHIELD: From Step 4 onward, if tools appear in two consecutive
+// steps, it's a cognitive loop. Tracks tool presence, not identity.
+if (stepNumber >= 4) {
+  const prevStepHadTools = (steps[stepNumber - 1]?.toolCalls?.length ?? 0) > 0;
+  const prevPrevStepHadTools = (steps[stepNumber - 2]?.toolCalls?.length ?? 0) > 0;
+  if (prevStepHadTools && prevPrevStepHadTools) {
+    return { toolChoice: 'none' };
+  }
+}
+```
+
+It's the equivalent of a circuit breaker, but for the model's reasoning.
+
+---
+
+## What this means for you
+
+When you hire me to build a system with AI, you're not buying a clever prompt. You're buying:
+
+- A database that is the source of truth for every decision
+- A model that operates with explicit, verifiable constraints
+- A pipeline where every critical operation has an atomic lock or a server-side validation
+- Zero tolerance for the model deciding something the database didn't confirm
+
+The system isn't "smart." It's deterministic. And in production, determinism is more valuable than intelligence.

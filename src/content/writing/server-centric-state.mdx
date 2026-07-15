@@ -3,6 +3,7 @@ title: "Server-Centric State: Authentication Patterns for Next.js"
 date: "2026-05-10"
 summary: "Critical state belongs on the server. Examining HttpOnly cookies, server-side sessions, and zero client-side token storage."
 slug: "server-centric-state"
+themes: [architecture, security, nextjs, auth]
 ---
 
 A client asked me to audit their Next.js app. Revenue dashboard, user profiles, payment history — standard B2B SaaS. I opened DevTools, checked Application > Local Storage, and found the access token. Plain text. No prefix, no encryption.

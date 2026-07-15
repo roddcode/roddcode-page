@@ -38,7 +38,7 @@ export function ProcessComparison() {
       </div>
 
       {/* Key wins — compact */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           {
             metric: "15 → 13",
@@ -58,7 +58,7 @@ export function ProcessComparison() {
         ].map((w) => (
           <div
             key={w.label}
-            className="border border-border/40 rounded-sm p-4 text-center bg-muted/[0.04]"
+            className="border border-border/40 rounded-sm p-4 text-center bg-muted/5"
           >
             <p className="text-lg font-mono text-primary tabular-nums mb-0.5">
               {w.metric}
@@ -66,7 +66,7 @@ export function ProcessComparison() {
             <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-1">
               {w.label}
             </p>
-            <p className="text-[10px] text-muted-foreground leading-snug">
+            <p className="text-xs text-muted-foreground leading-snug">
               {w.detail}
             </p>
           </div>

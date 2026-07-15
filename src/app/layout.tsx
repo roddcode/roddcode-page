@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 const ebGaramond = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-eb-garamond",
-  display: "swap",
+  display: "optional",
   weight: ["400", "500", "600"],
 });
 
@@ -59,6 +59,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} dark`}
     >
       <body className="min-h-screen bg-background text-foreground font-sans antialiased relative">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:rounded-sm"
+        >
+          Skip to content
+        </a>
         <div
           className="fixed inset-0 z-50 pointer-events-none mix-blend-overlay opacity-[0.015] bg-noise"
           aria-hidden="true"

@@ -1,7 +1,7 @@
 export const SITE = {
   title: "RoddCode | Engineering AI Infrastructure",
   description:
-    "I build production AI and enterprise systems. Architect of SoffIA, an autonomous agent for medical clinics — plus the CRM that replaced InConcert at Movistar.",
+    "I build production AI systems for transactional businesses where a model hallucination costs money. Ex-VML (Movistar).",
   url: "https://roddcode.com",
   author: "Alejandro Alvarado",
   location: "Lima, PE",

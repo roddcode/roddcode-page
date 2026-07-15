@@ -9,7 +9,7 @@ export function CaseStudySoffia() {
       className="py-24 container-site content-visibility-auto scroll-mt-20"
     >
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-6">
-        CASE STUDY 01 — SoffIA Core
+        CASE STUDY 02 — Autonomous Agent for a Dental Clinic
       </p>
       <h2 className="text-4xl md:text-5xl mb-12 leading-tight">
         Architecture of an autonomous agent
@@ -40,7 +40,7 @@ export function CaseStudySoffia() {
       <div className="flex flex-col gap-6 mb-20 max-w-3xl">
         <Image
           src="/captura-crm-soffia.webp"
-          alt="SoffIA CRM Dashboard"
+          alt="AI Agent CRM Dashboard"
           width={1517}
           height={908}
           className="w-full h-auto rounded-sm border border-border/30"
@@ -116,9 +116,9 @@ export function CaseStudySoffia() {
               xmlns="http://www.w3.org/2000/svg"
               className="w-full h-auto hidden md:block"
               role="img"
-              aria-label="SoffIA ingress pipeline: Redis Buffer → Debounce Lock → QStash Enqueue → Idempotency Gate"
+              aria-label="Ingress pipeline: Redis Buffer → Debounce Lock → QStash Enqueue → Idempotency Gate"
             >
-              <title>SoffIA Ingress Pipeline</title>
+              <title>Ingress Pipeline</title>
               <defs>
                 <marker
                   id="arrow"
@@ -273,7 +273,6 @@ export function CaseStudySoffia() {
                 ARCHITECTURAL PRINCIPLE
               </p>
               <p className="text-sm text-secondary-foreground leading-relaxed">
-                SoffIA is{" "}
                 <strong className="text-foreground font-medium">
                   DB-Fat, LLM-Light
                 </strong>
