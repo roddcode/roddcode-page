@@ -78,7 +78,7 @@ export function LogsConsole() {
         </div>
       </div>
 
-      <p className="mt-4 text-center font-mono text-[10px] text-muted-foreground">
+      <p className="mt-4 text-center font-mono text-[11px] text-muted-foreground">
         Por dentro, el sistema corriendo
       </p>
     </div>

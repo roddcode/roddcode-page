@@ -1,6 +1,7 @@
 import { HeroBackground } from "@/components/hero-background";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { SITE } from "@/lib/constants";
+import Image from "next/image";
 import Link from "next/link";
 
 export function Hero() {
@@ -39,7 +40,19 @@ export function Hero() {
               </a>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-white/10 pt-5 font-mono text-[11px] text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-5 font-mono text-[11px] text-muted-foreground">
+              <span className="flex items-center gap-2.5">
+                <Image
+                  src="/alejandro.webp"
+                  alt="Alejandro Alvarado"
+                  width={64}
+                  height={64}
+                  className="size-8 rounded-full border border-white/10 object-cover"
+                />
+                <span className="text-secondary-foreground">
+                  Alejandro Alvarado
+                </span>
+              </span>
               <span className="flex items-center gap-2">
                 <span className="relative flex size-1.5" aria-hidden>
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
@@ -58,7 +71,7 @@ export function Hero() {
             style={{ animationDelay: "180ms" }}
           >
             <InteractiveDemo />
-            <p className="mt-4 text-center font-mono text-[10px] text-muted-foreground">
+            <p className="mt-4 text-center font-mono text-[11px] text-muted-foreground">
               El modelo propone. La base decide. Cuatro dominios, la misma
               disciplina.
             </p>

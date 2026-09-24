@@ -37,7 +37,7 @@ const trajectory = [
   {
     period: "2026",
     title: "SoffIA",
-    detail: "Sistema de IA determinista para una clínica dental",
+    detail: "Sistema de IA determinista para clínicas dentales y esteticas",
     result: "Citas perdidas de 25% a menos de 8%",
   },
 ];
@@ -134,7 +134,7 @@ export function HomeContent() {
       {/* Results */}
       <section
         id="resultados"
-        className="scroll-mt-20 border-t border-white/5 bg-white/[0.015] py-24"
+        className="scroll-mt-20 border-t border-white/5 bg-white/[0.015] py-16"
       >
         <div className="container-site grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <Reveal>
@@ -147,8 +147,11 @@ export function HomeContent() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="mb-2 font-sans text-4xl font-medium tracking-tight text-primary md:text-5xl">
-              <CountUp value={25} suffix="% → <8%" />
+            <p className="mb-2 font-sans text-4xl font-medium tracking-tight md:text-5xl">
+              <span className="text-muted-foreground/40">25% → </span>
+              <span className="text-primary">
+                <CountUp value={8} prefix="<" suffix="%" />
+              </span>
             </p>
             <p className="mb-1 text-sm font-medium">citas perdidas</p>
             <p className="text-xs text-muted-foreground">
@@ -159,7 +162,7 @@ export function HomeContent() {
             <p className="mb-2 font-sans text-4xl font-medium tracking-tight text-primary md:text-5xl">
               <CountUp value={0.001} decimals={3} prefix="$" />
             </p>
-            <p className="mb-1 text-sm font-medium">por reserva</p>
+            <p className="mb-1 text-sm font-medium">costo por reserva</p>
             <p className="text-xs text-muted-foreground">
               Atención 24/7 sin intervención humana.
             </p>
@@ -181,7 +184,7 @@ export function HomeContent() {
       {/* Trajectory */}
       <section
         id="trayectoria"
-        className="container-site scroll-mt-20 py-24 md:py-32"
+        className="container-site scroll-mt-20 py-16 md:py-32"
       >
         <Reveal>
           <SectionTitle>Trayectoria</SectionTitle>
@@ -213,7 +216,7 @@ export function HomeContent() {
       {/* Cases */}
       <section
         id="casos"
-        className="scroll-mt-20 border-t border-white/5 py-24 md:py-32"
+        className="scroll-mt-20 border-t border-white/5 py-16 md:py-32"
       >
         <div className="container-site">
           <Reveal>
@@ -239,7 +242,7 @@ export function HomeContent() {
                 </BrowserFrame>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+                <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
                   Caso 01 · METEOR
                 </p>
                 <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
@@ -294,7 +297,7 @@ export function HomeContent() {
                 </BrowserFrame>
               </Reveal>
               <Reveal delay={0.1} className="lg:order-1">
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+                <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
                   Caso 02 · SoffIA
                 </p>
                 <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
@@ -315,8 +318,11 @@ export function HomeContent() {
                     </p>
                   </div>
                   <div>
-                    <p className="font-sans text-xl font-medium text-primary">
-                      <CountUp value={25} suffix="% → <8%" />
+                    <p className="font-sans text-xl font-medium">
+                      <span className="text-muted-foreground/40">25% → </span>
+                      <span className="text-primary">
+                        <CountUp value={8} prefix="<" suffix="%" />
+                      </span>
                     </p>
                     <p className="text-xs text-muted-foreground">
                       citas perdidas
@@ -326,7 +332,9 @@ export function HomeContent() {
                     <p className="font-sans text-xl font-medium text-primary">
                       $0.001
                     </p>
-                    <p className="text-xs text-muted-foreground">por reserva</p>
+                    <p className="text-xs text-muted-foreground">
+                      costo por reserva
+                    </p>
                   </div>
                 </div>
               </Reveal>
@@ -337,7 +345,7 @@ export function HomeContent() {
                 <NdcDiagram />
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+                <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
                   Caso 03 · Motor de vuelos
                 </p>
                 <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
@@ -382,7 +390,7 @@ export function HomeContent() {
       {/* Method */}
       <section
         id="metodo"
-        className="scroll-mt-20 border-t border-white/5 bg-white/[0.015] py-24 md:py-32"
+        className="scroll-mt-20 border-t border-white/5 bg-white/[0.015] py-16 md:py-32"
       >
         <div className="container-site">
           <Reveal>
@@ -409,7 +417,7 @@ export function HomeContent() {
       {/* Pricing */}
       <section
         id="precios"
-        className="container-site scroll-mt-20 py-24 md:py-32"
+        className="container-site scroll-mt-20 py-16 md:py-32"
       >
         <Reveal>
           <SectionTitle>Precios</SectionTitle>
@@ -435,7 +443,7 @@ export function HomeContent() {
       {/* Exclusions */}
       <section
         id="exclusiones"
-        className="scroll-mt-20 border-t border-white/5 py-24"
+        className="scroll-mt-20 border-t border-white/5 py-16"
       >
         <div className="container-site">
           <Reveal>
@@ -467,7 +475,7 @@ export function HomeContent() {
       {/* Trust */}
       <section
         id="confianza"
-        className="scroll-mt-20 border-t border-white/5 bg-white/[0.015] py-24 md:py-32"
+        className="scroll-mt-20 border-t border-white/5 bg-white/[0.015] py-16 md:py-32"
       >
         <div className="container-site">
           <Reveal>
@@ -506,7 +514,7 @@ export function HomeContent() {
       {/* FAQ */}
       <section
         id="preguntas"
-        className="container-site scroll-mt-20 py-24 md:py-32"
+        className="container-site scroll-mt-20 py-16 md:py-32"
       >
         <Reveal>
           <SectionTitle>Preguntas</SectionTitle>
@@ -525,7 +533,7 @@ export function HomeContent() {
       {/* Closing */}
       <section
         id="cierre"
-        className="scroll-mt-20 border-t border-white/5 py-28"
+        className="scroll-mt-20 border-t border-white/5 py-20 md:py-28"
       >
         <div className="container-site flex flex-col items-center gap-6 text-center">
           <Reveal>
@@ -561,7 +569,14 @@ export function HomeContent() {
             </div>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="font-mono text-[11px] text-muted-foreground">
+            <p className="flex items-center gap-2.5 font-mono text-[11px] text-muted-foreground">
+              <Image
+                src="/alejandro.webp"
+                alt=""
+                width={48}
+                height={48}
+                className="size-6 rounded-full border border-white/10 object-cover"
+              />
               Alejandro Alvarado · roddcode
             </p>
           </Reveal>
