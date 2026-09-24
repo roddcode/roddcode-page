@@ -13,6 +13,14 @@ npm-debug.log*
 pnpm-debug.log*
 src/content/writing/_drafts/
 status.md
+archive-status.md
 _drafts/
 .atl/
 claude.md
+
+# /lab — playground local: nunca se sube (gate 404 en producción dentro de la página)
+src/app/lab/
+src/components/lab-shell.tsx
+src/components/nav-rail.tsx
+src/components/nav-dots.tsx
+src/components/nav-float.tsx

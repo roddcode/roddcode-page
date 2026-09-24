@@ -33,7 +33,11 @@ export function getPostBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
   const readingTime = calculateReadingTime(content);
-  const meta = PostMetadataSchema.parse({ ...data, slug: realSlug, readingTime });
+  const meta = PostMetadataSchema.parse({
+    ...data,
+    slug: realSlug,
+    readingTime,
+  });
 
   return { slug: realSlug, meta, content, readingTime };
 }
@@ -45,7 +49,10 @@ export function getAllPosts(includeDrafts = false): PostMetadata[] {
 
   const files = fs.readdirSync(contentDirectory);
   const posts = files
-    .filter((file) => file.endsWith(".mdx") && (includeDrafts || !file.startsWith("_")))
+    .filter(
+      (file) =>
+        file.endsWith(".mdx") && (includeDrafts || !file.startsWith("_")),
+    )
     .map((file) => {
       try {
         const { meta } = getPostBySlug(file);
@@ -55,7 +62,9 @@ export function getAllPosts(includeDrafts = false): PostMetadata[] {
       }
     })
     .filter((p): p is PostMetadata => p !== null)
-    .sort((a, b) => (new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1));
+    .sort((a, b) =>
+      new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1,
+    );
 
   return posts;
 }
@@ -63,7 +72,7 @@ export function getAllPosts(includeDrafts = false): PostMetadata[] {
 export function getRelatedPosts(
   slug: string,
   posts: PostMetadata[],
-  count = 2
+  count = 2,
 ): PostMetadata[] {
   const current = posts.find((p) => p.slug === slug);
   if (!current?.themes?.length) return [];

@@ -1,11 +1,15 @@
+import { JsonLd } from "@/components/json-ld";
+import {
+  ChromeFooter,
+  ChromeHeader,
+  ChromeNoise,
+} from "@/components/site-chrome";
+import { SITE } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
-import { SITE } from "@/lib/constants";
+import { LazyMotion, domAnimation } from "framer-motion";
 import type { Metadata } from "next";
 import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
-import { LazyMotion, domAnimation } from "framer-motion";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +28,7 @@ const ebGaramond = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-eb-garamond",
   display: "optional",
+  preload: false,
   weight: ["400", "500", "600"],
 });
 
@@ -33,7 +38,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "es_ES",
     siteName: "RoddCode",
     title: SITE.title,
     description: SITE.description,
@@ -56,7 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} dark`}
     >
       <body className="min-h-screen bg-background text-foreground font-sans antialiased relative">
@@ -64,18 +69,16 @@ export default function RootLayout({
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:rounded-sm"
         >
-          Skip to content
+          Saltar al contenido
         </a>
-        <div
-          className="fixed inset-0 z-50 pointer-events-none mix-blend-overlay opacity-[0.015] bg-noise"
-          aria-hidden="true"
-        />
+        <ChromeNoise />
         <LazyMotion features={domAnimation} strict>
-          <Header />
+          <ChromeHeader />
           <main id="main-content">{children}</main>
+          <JsonLd />
           <SpeedInsights />
           <Analytics />
-          <Footer />
+          <ChromeFooter />
         </LazyMotion>
       </body>
     </html>

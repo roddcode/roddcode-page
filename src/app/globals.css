@@ -1,20 +1,66 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@theme inline {
-  /* Materialidad Warmed Void — OKLCH */
-  --color-background: oklch(0.12 0 0);
-  --color-foreground: oklch(0.95 0 0);
-  --color-muted: oklch(0.17 0 0);
-  --color-muted-foreground: oklch(0.55 0 0);
-  /* Secondary text */
-  --color-secondary-foreground: oklch(0.78 0 0);
-  /* Tertiary / dashes */
-  --color-tertiary: oklch(0.5 0 0);
-  --color-primary: oklch(0.6 0.15 45);
-  /* Bronze Desaturado */
-  --color-border: oklch(0.2 0 0);
-  --color-ring: var(--color-primary);
+/* Raw tokens — dark (default) */
+:root {
+  --background: oklch(0.145 0.004 260);
+  --foreground: oklch(0.96 0.002 260);
+  --muted: oklch(0.2 0.005 260);
+  --muted-foreground: oklch(0.62 0.01 260);
+  --secondary-foreground: oklch(0.78 0.008 260);
+  --tertiary: oklch(0.52 0.01 260);
+  --primary: oklch(0.8 0.1 200);
+  --success: oklch(0.8 0.14 155);
+  --danger: oklch(0.7 0.17 25);
+  --border: oklch(0.24 0.006 260);
+  --ink: oklch(1 0 0);
+}
+
+/* Light — /lab experiment only */
+.light {
+  color-scheme: light;
+  --background: oklch(0.975 0.002 260);
+  --foreground: oklch(0.22 0.006 260);
+  --muted: oklch(0.94 0.003 260);
+  --muted-foreground: oklch(0.5 0.012 260);
+  --secondary-foreground: oklch(0.38 0.008 260);
+  --tertiary: oklch(0.62 0.01 260);
+  --primary: oklch(0.55 0.11 200);
+  --success: oklch(0.55 0.13 155);
+  --danger: oklch(0.55 0.17 25);
+  --border: oklch(0.88 0.004 260);
+  --ink: oklch(0.22 0.006 260);
+}
+
+/* Surfaces that stay dark in both themes (console, device frames) */
+.surface-dark {
+  color-scheme: dark;
+  --background: oklch(0.145 0.004 260);
+  --foreground: oklch(0.96 0.002 260);
+  --muted: oklch(0.2 0.005 260);
+  --muted-foreground: oklch(0.62 0.01 260);
+  --secondary-foreground: oklch(0.78 0.008 260);
+  --tertiary: oklch(0.52 0.01 260);
+  --primary: oklch(0.8 0.1 200);
+  --success: oklch(0.8 0.14 155);
+  --danger: oklch(0.7 0.17 25);
+  --border: oklch(0.24 0.006 260);
+  --ink: oklch(1 0 0);
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-primary: var(--primary);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-border: var(--border);
+  --color-white: var(--ink);
+  --color-ring: var(--primary);
 
   /* Fuentes (La Tensión SOTA) */
   --font-serif: var(--font-eb-garamond), Georgia, serif;
@@ -24,7 +70,6 @@
   /* Radios quirúrgicos */
   --radius-sm: 2px;
   --radius-md: 4px;
-
 }
 
 @layer base {
@@ -48,9 +93,9 @@
     font-family: var(--font-sans);
   }
 
-  /* La Firma: Selection Bronze */
+  /* La Firma: Selection Cian Instrumento */
   ::selection {
-    background-color: oklch(0.553 0.174 38.4 / 0.3);
+    background-color: oklch(0.8 0.1 200 / 0.25);
     color: var(--color-foreground);
   }
 
@@ -106,8 +151,6 @@
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
-
-
 
 /* =============================================
    SISTEMA MDX — PROSE OVERRIDES (SURGICAL SOTA)
@@ -258,4 +301,179 @@
     border-color: var(--color-border);
     margin: 3em 0;
   }
+}
+
+/* =============================================
+   EXPEDIENTE — versión de prueba (papel)
+   ============================================= */
+
+@layer components {
+  .exp {
+    --exp-paper: #f5f6f2;
+    --exp-ink: #171a1e;
+    --exp-muted: #6b7069;
+    --exp-rule: #c7ccc2;
+    --exp-verified: #2f6b4f;
+    --exp-finding: #8c2f24;
+    background-color: var(--exp-paper);
+    color: var(--exp-ink);
+    font-family: var(--font-source-serif), Georgia, serif;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .exp ::selection {
+    background-color: color-mix(in oklch, var(--exp-verified) 25%, transparent);
+    color: var(--exp-ink);
+  }
+
+  .exp-display {
+    font-family: var(--font-archivo), system-ui, sans-serif;
+    font-variant-numeric: normal;
+  }
+
+  .exp-seal {
+    border: 1.5px solid var(--exp-verified);
+    color: var(--exp-verified);
+    border-radius: 2px;
+    transform: rotate(-0.6deg);
+    font-family: var(--font-archivo), system-ui, sans-serif;
+  }
+}
+
+/* Lenis (smooth scroll) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Hero: grilla de ingeniería + glow que sigue el mouse */
+.hero-grid {
+  background-image: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--ink) 4.5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--ink) 4.5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 70% at 25% 10%,
+    black 20%,
+    transparent 75%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 25% 10%,
+    black 20%,
+    transparent 75%
+  );
+}
+
+.hero-grid-live {
+  background-image: linear-gradient(
+      to right,
+      oklch(0.8 0.1 200 / 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, oklch(0.8 0.1 200 / 0.12) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(
+    320px circle at var(--gx, 30%) var(--gy, 15%),
+    black,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    320px circle at var(--gx, 30%) var(--gy, 15%),
+    black,
+    transparent 72%
+  );
+  opacity: 0;
+}
+
+.hero-ambient {
+  background: radial-gradient(
+    ellipse 60% 50% at 85% 0%,
+    oklch(0.8 0.1 200 / 0.04),
+    transparent 70%
+  );
+}
+
+.hero-glow-halo,
+.hero-glow-core {
+  border-radius: 9999px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.hero-glow-halo {
+  width: 880px;
+  height: 880px;
+  margin: -440px 0 0 -440px;
+  background: radial-gradient(
+    circle,
+    oklch(0.8 0.1 200 / 0.07),
+    transparent 62%
+  );
+}
+
+.hero-glow-core {
+  width: 300px;
+  height: 300px;
+  margin: -150px 0 0 -150px;
+  background: radial-gradient(
+    circle,
+    oklch(0.87 0.1 200 / 0.11),
+    transparent 68%
+  );
+}
+
+/* Hidden native scrollbar when the dots nav replaces it */
+html.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+html.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hero entrance — CSS-only so the LCP paint does not wait for hydration */
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-enter {
+  animation: hero-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter {
+    animation: none;
+  }
+}
+
+/* Pixel badger — canvas sprite (walk cycle lives inside the canvas) */
+.pixel-badger canvas {
+  transition: filter 250ms ease;
+}
+
+.pixel-badger:hover canvas {
+  filter: brightness(1.2);
 }

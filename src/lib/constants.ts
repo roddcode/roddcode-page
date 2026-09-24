@@ -1,12 +1,13 @@
 export const SITE = {
-  title: "RoddCode | Engineering AI Infrastructure",
+  title: "roddcode | Sistemas con IA que no fallan cuando hay plata en juego",
   description:
-    "I build production AI systems for transactional businesses where a model hallucination costs money. Ex-VML (Movistar).",
+    "Auditoría e ingeniería de sistemas con IA para negocios transaccionales en LATAM y España. El modelo propone, la base de datos decide.",
   url: "https://roddcode.com",
   author: "Alejandro Alvarado",
   location: "Lima, PE",
   email: "roddcode.dev@gmail.com",
   cal: "https://cal.com/roddcode/intro",
+  whatsapp: "",
   github: "https://github.com/roddcode",
   linkedin: "https://www.linkedin.com/in/alejandro-alvarado-roddcode/",
 } as const;

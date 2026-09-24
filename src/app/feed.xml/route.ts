@@ -22,7 +22,7 @@ export async function GET() {
       <link>${baseUrl}/writing/${post.slug}</link>
       <guid>${baseUrl}/writing/${post.slug}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-    </item>`
+    </item>`,
       )
       .join("")}
   </channel>

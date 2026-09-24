@@ -1,80 +1,79 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "RoddCode — Alejandro Alvarado";
+export const alt =
+  "roddcode — Sistemas con IA que no fallan cuando hay plata en juego";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function Image() {
   return new ImageResponse(
-    (
-      <div
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: "80px",
+        backgroundColor: "#090a0c",
+        fontFamily: "ui-sans-serif, system-ui, sans-serif",
+      }}
+    >
+      <span
         style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          padding: "80px",
-          backgroundColor: "#1a1a1a",
-          fontFamily: "Georgia, serif",
+          fontFamily: "ui-monospace, monospace",
+          fontSize: 20,
+          color: "#83868c",
+          marginBottom: 28,
         }}
       >
+        roddcode
+      </span>
+      <h1
+        style={{
+          fontSize: 64,
+          fontWeight: 500,
+          color: "#f1f2f3",
+          lineHeight: 1.15,
+          letterSpacing: "-0.02em",
+          margin: "0 0 40px 0",
+          maxWidth: 980,
+        }}
+      >
+        Sistemas con IA que no fallan cuando hay plata en juego.
+      </h1>
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <div
+          style={{
+            width: 10,
+            height: 10,
+            backgroundColor: "#64d1d7",
+            borderRadius: 2,
+          }}
+        />
         <span
           style={{
             fontFamily: "ui-monospace, monospace",
             fontSize: 20,
-            color: "#888",
-            marginBottom: 24,
+            color: "#64d1d7",
           }}
         >
-          roddcode
+          el modelo propone, la base decide
         </span>
-        <h1
-          style={{
-            fontSize: 72,
-            fontWeight: 500,
-            color: "#f2f2f2",
-            lineHeight: 1.1,
-            margin: "0 0 16px 0",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          I build production AI
-          <br />
-          and enterprise systems.
-        </h1>
-        <p
-          style={{
-            fontSize: 28,
-            color: "#a1a1a0",
-            fontFamily: "ui-sans-serif, sans-serif",
-            margin: 0,
-          }}
-        >
-          Alejandro Alvarado · Full-stack AI Engineer
-        </p>
-        <div
-          style={{
-            position: "absolute",
-            bottom: 80,
-            right: 80,
-            width: 120,
-            height: 120,
-            borderRadius: "50%",
-            border: "2px solid #c2410c",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: "ui-monospace, monospace",
-            fontSize: 48,
-            color: "#c2410c",
-          }}
-        >
-          {">_"}
-        </div>
       </div>
-    ),
+      <span
+        style={{
+          position: "absolute",
+          bottom: 80,
+          right: 80,
+          fontFamily: "ui-monospace, monospace",
+          fontSize: 20,
+          color: "#83868c",
+        }}
+      >
+        roddcode.com
+      </span>
+    </div>,
     {
       ...size,
     },

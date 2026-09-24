@@ -7,8 +7,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://roddcode.com";
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
-    { url: `${baseUrl}/writing`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/writing`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
   ];
 
   const postPages: MetadataRoute.Sitemap = posts.map((post) => ({

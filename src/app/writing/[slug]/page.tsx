@@ -1,7 +1,7 @@
 import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
-import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
 import { ReadingTracker } from "@/components/reading-tracker";
+import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -21,6 +21,7 @@ export async function generateMetadata({
     return {
       title: `${meta.title} | roddcode`,
       description: meta.summary,
+      alternates: { canonical: `/writing/${slug}` },
       openGraph: { title: meta.title, description: meta.summary },
     };
   } catch {
@@ -51,7 +52,9 @@ export default async function PostPage(props: {
 
   if (!post) notFound();
 
-  const relatedSlugs = getRelatedPosts(params.slug, allPosts, 2).map((p) => p.slug);
+  const relatedSlugs = getRelatedPosts(params.slug, allPosts, 2).map(
+    (p) => p.slug,
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -61,7 +64,9 @@ export default async function PostPage(props: {
     datePublished: post.meta.date,
     wordCount: post.content.split(/\s+/).length,
     timeRequired: `PT${post.readingTime}M`,
-    image: `https://roddcode.com/og?title=${encodeURIComponent(post.meta.title)}`,
+    inLanguage: "en",
+    mainEntityOfPage: `https://roddcode.com/writing/${params.slug}`,
+    image: `https://roddcode.com/writing/${params.slug}/opengraph-image`,
     author: {
       "@type": "Person",
       name: "Alejandro Alvarado",
@@ -74,6 +79,7 @@ export default async function PostPage(props: {
     <>
       <script
         type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data, contenido propio serializado
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <article className="py-24 container-site max-w-3xl min-h-[80vh]">
@@ -207,14 +213,23 @@ export default async function PostPage(props: {
             </button>
           </form>
           */}
-          </div>
+        </div>
 
         <footer className="mt-8 border-t border-border/40 pt-8">
           <div className="flex items-center gap-4">
-            <img src="/alejandro.webp" alt="Alejandro Alvarado" className="size-10 rounded-full" />
+            <img
+              src="/alejandro.webp"
+              alt="Alejandro Alvarado"
+              className="size-10 rounded-full"
+            />
             <div>
-              <p className="text-sm text-foreground font-medium">Alejandro Alvarado</p>
-              <p className="text-xs text-muted-foreground">Building AI systems that don't hallucinate in production. DB-Fat, LLM-Light.</p>
+              <p className="text-sm text-foreground font-medium">
+                Alejandro Alvarado
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Building AI systems that don't hallucinate in production.
+                DB-Fat, LLM-Light.
+              </p>
             </div>
           </div>
         </footer>

@@ -1,80 +1,70 @@
-"use client";
-
+import { HeroBackground } from "@/components/hero-background";
+import { InteractiveDemo } from "@/components/interactive-demo";
 import { SITE } from "@/lib/constants";
-import { m, useReducedMotion } from "framer-motion";
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-} as const;
-
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 400, damping: 30 } },
-} as const;
+import Link from "next/link";
 
 export function Hero() {
-  const shouldReduceMotion = useReducedMotion();
+  const cta = SITE.whatsapp || SITE.cal;
 
   return (
-    <section className="py-32 md:py-40 container-site">
-      <m.div
-        variants={shouldReduceMotion ? undefined : container}
-        initial={shouldReduceMotion ? undefined : "hidden"}
-        animate={shouldReduceMotion ? undefined : "show"}
-        className="flex flex-col gap-8 max-w-4xl"
-      >
-        <m.div variants={shouldReduceMotion ? undefined : item}>
-          <div className="flex items-center gap-3">
-            <span className="relative flex size-8 shrink-0">
-              <img src="/alejandro.webp" alt="Alejandro Alvarado" className="size-8 rounded-full" />
-              <span className="absolute -bottom-0.5 -right-0.5 flex size-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex size-3 rounded-full bg-primary ring-2 ring-background" />
+    <section id="inicio" className="relative overflow-hidden">
+      <HeroBackground />
+      <div className="container-site relative">
+        <div className="grid items-center gap-12 py-16 lg:min-h-[calc(100dvh-3.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-16 lg:py-0">
+          <div className="hero-enter flex flex-col gap-8">
+            <h1 className="max-w-3xl text-balance font-sans text-4xl font-medium leading-[1.05] tracking-tight md:text-[2.75rem]">
+              Sistemas con IA que no fallan cuando hay plata en juego.
+            </h1>
+            <p className="max-w-lg text-lg leading-relaxed text-secondary-foreground">
+              Auditoría e ingeniería para sistemas que manejan reservas, pagos o
+              datos de clientes.
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                href={cta}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="hero-cta"
+                className="bg-primary px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-primary/90"
+                style={{ borderRadius: 2 }}
+              >
+                Hablemos 30 minutos
+              </Link>
+              <a
+                href="#casos"
+                className="border border-white/15 px-6 py-3 text-sm text-secondary-foreground transition-colors hover:border-white/40 hover:text-foreground"
+                style={{ borderRadius: 2 }}
+              >
+                Ver los casos
+              </a>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-white/10 pt-5 font-mono text-[11px] text-muted-foreground">
+              <span className="flex items-center gap-2">
+                <span className="relative flex size-1.5" aria-hidden>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                  <span className="relative inline-flex size-1.5 rounded-full bg-success" />
+                </span>
+                <span className="text-secondary-foreground">
+                  Disponible para un proyecto
+                </span>
               </span>
-            </span>
-            <p className="text-sm font-mono text-muted-foreground">
-              Alejandro Alvarado
+              <span>Lima, PE · trabajo con equipos de LATAM y España</span>
+            </div>
+          </div>
+
+          <div
+            className="hero-enter w-full"
+            style={{ animationDelay: "180ms" }}
+          >
+            <InteractiveDemo />
+            <p className="mt-4 text-center font-mono text-[10px] text-muted-foreground">
+              El modelo propone. La base decide. Cuatro dominios, la misma
+              disciplina.
             </p>
           </div>
-        </m.div>
-
-        <m.div variants={item}>
-          <h1 className="text-5xl md:text-7xl leading-[1.05] tracking-tight text-pretty">
-            I build AI systems that don't
-            <br />
-            hallucinate in production.
-          </h1>
-        </m.div>
-
-        <m.p variants={item} className="text-xl text-secondary-foreground font-sans font-normal max-w-2xl leading-relaxed">
-          Autonomous agents at{" "}
-          <span className="text-primary">$0.001/booking</span>. Enterprise CRM
-          that replaced InConcert at{" "}
-          <span className="text-primary">Movistar</span>.
-        </m.p>
-
-        <m.div variants={item} className="flex flex-wrap gap-4">
-          <a
-            href="#meteor"
-            className="bg-foreground text-background hover:bg-foreground/90 px-6 py-3 text-sm font-medium transition-colors duration-100 ease-out active:scale-[0.98] active:will-change-transform"
-            style={{ borderRadius: "2px" }}
-          >
-            METEOR Case Study ↓
-          </a>
-          <a
-            href={SITE.cal}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Book a 30-min call, opens in new tab"
-            data-track="hero-book-call"
-            className="border border-border hover:border-muted-foreground/30 text-secondary-foreground hover:text-foreground px-6 py-3 text-sm font-sans transition-colors duration-100 ease-out active:scale-[0.98] active:will-change-transform"
-            style={{ borderRadius: "2px" }}
-          >
-            Book a 30-min call →
-          </a>
-        </m.div>
-      </m.div>
+        </div>
+      </div>
     </section>
   );
 }
