@@ -65,6 +65,15 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} dark`}
     >
       <body className="min-h-screen bg-background text-foreground font-sans antialiased relative">
+        <noscript>
+          <style
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: rescate estático para navegación sin JS
+            dangerouslySetInnerHTML={{
+              __html:
+                "[data-reveal]{opacity:1!important;transform:none!important}",
+            }}
+          />
+        </noscript>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:rounded-sm"

@@ -8,7 +8,7 @@ export function Hero() {
   const cta = SITE.whatsapp || SITE.cal;
 
   return (
-    <section id="inicio" className="relative overflow-hidden">
+    <section id="inicio" className="relative cursor-crosshair overflow-hidden">
       <HeroBackground />
       <div className="container-site relative">
         <div className="grid items-center gap-12 py-16 lg:min-h-[calc(100dvh-3.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-16 lg:py-0">

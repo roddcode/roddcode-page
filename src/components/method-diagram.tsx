@@ -59,7 +59,7 @@ export function MethodDiagram() {
           viewBox="0 0 980 280"
           className="w-full"
           role="img"
-          aria-label="Esquema del método: el sistema arma un prompt dinámico y las tools del estado, el agente elige tools en iteraciones, cada tool valida contra reglas y base de datos, y la respuesta depende de las tools usadas"
+          aria-label="Esquema del método: el sistema arma un prompt dinámico y las tools del estado, el modelo elige tools en iteraciones, cada tool valida contra reglas y base de datos, y la respuesta depende de las tools usadas"
         >
           <defs>
             <marker
@@ -129,7 +129,7 @@ export function MethodDiagram() {
             className="stroke-muted-foreground/60"
           />
 
-          <Node x={408} y={118} w={136} title="03 · Agente" dashed>
+          <Node x={408} y={118} w={136} title="03 · Modelo" dashed>
             <text x={422} y={166} className={desc}>
               elige qué tool usar
             </text>
@@ -214,7 +214,7 @@ export function MethodDiagram() {
           <div className="flex flex-col gap-2 rounded-lg border border-dashed border-white/15 p-4">
             <div className="rounded-md border border-dashed border-white/20 bg-white/[0.02] p-4">
               <p className="font-mono text-[10px] text-muted-foreground">03</p>
-              <p className="text-sm font-medium">Agente</p>
+              <p className="text-sm font-medium">Modelo</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 elige qué tool usar
               </p>

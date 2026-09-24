@@ -14,22 +14,21 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center container-site">
-      <p className="text-primary font-mono text-sm mb-4">SYSTEM DEGRADATION</p>
-      <h1 className="text-3xl font-bold tracking-tighter mb-4">
-        A critical error occurred
+    <div className="container-site flex min-h-[70vh] flex-col items-center justify-center text-center">
+      <p className="mb-4 font-mono text-sm text-danger">Error</p>
+      <h1 className="mb-4 font-sans text-3xl font-medium tracking-tight">
+        Algo se rompió de este lado.
       </h1>
-      <p className="text-muted-foreground text-center max-w-md mb-8">
-        The application state has been compromised. Please reset the system
-        boundary.
+      <p className="mb-8 max-w-md text-secondary-foreground">
+        El error quedó registrado. Prueba de nuevo; si sigue, escríbeme.
       </p>
       <button
         type="button"
         onClick={reset}
-        className="text-sm font-medium text-background bg-foreground hover:bg-foreground/90 px-6 py-3 transition-all duration-100 ease-out will-change-transform active:scale-[0.98]"
-        style={{ borderRadius: "2px" }}
+        className="bg-primary px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-primary/90"
+        style={{ borderRadius: 2 }}
       >
-        Reboot system
+        Reintentar
       </button>
     </div>
   );

@@ -138,8 +138,8 @@ const dossiers = [
 const pricing = [
   {
     title: "Auditoría técnica",
-    price: "Desde $250",
-    desc: "Revisión profunda de tu sistema y un reporte escrito con los riesgos priorizados.",
+    price: "Desde $500",
+    desc: "Tres días: reviso qué toca plata y dónde no puede fallar; te llevas un reporte con los riesgos priorizados y en qué orden arreglarlos.",
   },
   {
     title: "Build por milestone",

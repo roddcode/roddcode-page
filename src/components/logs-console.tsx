@@ -37,7 +37,7 @@ export function LogsConsole() {
             </span>
           </span>
           <span className="font-mono text-[10px] text-muted-foreground/70">
-            agente
+            modelo
           </span>
         </div>
 
@@ -46,7 +46,7 @@ export function LogsConsole() {
           className="flex h-[440px] flex-col gap-1.5 overflow-y-auto p-5 font-mono text-[12px] leading-relaxed [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <p className="mb-2 text-muted-foreground/80">
-            <span className="text-primary">$</span> tail -f logs/agente.log
+            <span className="text-primary">$</span> tail -f logs/modelo.log
           </p>
 
           <AnimatePresence initial={false}>

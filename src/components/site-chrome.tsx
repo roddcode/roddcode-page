@@ -5,24 +5,20 @@ import { Header } from "@/components/header";
 import { WhatsappFloat } from "@/components/whatsapp-float";
 import { usePathname } from "next/navigation";
 
-function useIsStandaloneRoute() {
+function useIsLegacyRoute() {
   const pathname = usePathname();
   if (!pathname) return false;
-  return (
-    pathname === "/" ||
-    pathname.startsWith("/dossier") ||
-    pathname.startsWith("/lab")
-  );
+  return pathname.startsWith("/writing");
 }
 
 export function ChromeHeader() {
-  const standalone = useIsStandaloneRoute();
-  return standalone ? null : <Header />;
+  const legacy = useIsLegacyRoute();
+  return legacy ? <Header /> : null;
 }
 
 export function ChromeFooter() {
-  const standalone = useIsStandaloneRoute();
-  if (standalone) return null;
+  const legacy = useIsLegacyRoute();
+  if (!legacy) return null;
   return (
     <>
       <Footer />
@@ -32,8 +28,8 @@ export function ChromeFooter() {
 }
 
 export function ChromeNoise() {
-  const standalone = useIsStandaloneRoute();
-  if (standalone) return null;
+  const legacy = useIsLegacyRoute();
+  if (!legacy) return null;
   return (
     <div
       className="fixed inset-0 z-50 pointer-events-none mix-blend-overlay opacity-[0.015] bg-noise"

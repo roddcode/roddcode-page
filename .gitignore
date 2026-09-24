@@ -17,6 +17,7 @@ archive-status.md
 _drafts/
 .atl/
 claude.md
+arquitectura.md
 
 # /lab — playground local: nunca se sube (gate 404 en producción dentro de la página)
 src/app/lab/

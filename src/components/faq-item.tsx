@@ -6,16 +6,25 @@ import { useId, useState } from "react";
 export function FaqItem({
   question,
   answer,
+  delay = 0,
 }: {
   question: string;
   answer: string;
+  delay?: number;
 }) {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
   const contentId = useId();
 
   return (
-    <div className="border-t border-white/10 last:border-b">
+    <m.div
+      data-reveal
+      className="border-t border-white/10 last:border-b"
+      initial={reduced ? false : { opacity: 0, y: 16 }}
+      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -54,6 +63,6 @@ export function FaqItem({
           {answer}
         </p>
       </m.div>
-    </div>
+    </m.div>
   );
 }

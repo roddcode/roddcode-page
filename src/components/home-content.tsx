@@ -18,7 +18,7 @@ const trajectory = [
     period: "2023–2024",
     title: "Web, CRM comercial y ERP logístico",
     detail:
-      "Extensiones sobre SINTAD, con logística, transporte, cargo y aduanas",
+      "Extensiones sobre SINTAD (el ERP que usa el cliente): logística, transporte, cargo y aduanas",
     result: "Funcionalidades end-to-end en 4 áreas",
   },
   {
@@ -45,13 +45,13 @@ const trajectory = [
 const pricing = [
   {
     title: "Auditoría técnica",
-    price: "Desde $250",
-    desc: "Revisión profunda de tu sistema y un reporte escrito con los riesgos priorizados.",
+    price: "Desde $500",
+    desc: "Tres días: reviso qué toca plata y dónde no puede fallar; te llevas un reporte con los riesgos priorizados y en qué orden arreglarlos.",
   },
   {
     title: "Build por milestone",
     price: "Desde $2,000",
-    desc: "Apps, integraciones, migraciones y agentes. Entregas cada dos semanas, pago por entrega.",
+    desc: "Apps, integraciones, migraciones y sistemas con IA. Entregas cada dos semanas, pago por entrega.",
   },
   {
     title: "Retainer",
@@ -94,7 +94,7 @@ export const questions = [
   {
     question: "¿Trabajas con mi stack?",
     answer:
-      "Frontend en React y TypeScript; backend en .NET y SQL Server; integraciones XML, SOAP y JSON. Si tu stack es otro, te lo digo en la primera llamada.",
+      "Frontend en React y TypeScript; backend en .NET y SQL Server; integraciones XML, SOAP y JSON. Con otro stack también puedo auditar; y si para construir no soy la persona, te recomiendo a alguien que sí en la misma llamada.",
   },
   {
     question: "¿Cómo sé que puedes con un sistema crítico?",
@@ -164,7 +164,8 @@ export function HomeContent() {
             </p>
             <p className="mb-1 text-sm font-medium">costo por reserva</p>
             <p className="text-xs text-muted-foreground">
-              Atención 24/7 sin intervención humana.
+              24/7: captura el 100% de los leads fuera de horario y deriva a una
+              persona solo cuando el caso lo pide.
             </p>
           </Reveal>
           <Reveal delay={0.24}>
@@ -396,10 +397,10 @@ export function HomeContent() {
           <Reveal>
             <SectionTitle>El método</SectionTitle>
             <p className="mb-12 max-w-2xl text-secondary-foreground">
-              El agente no toca la base de datos: usa tools. El sistema le arma
-              el prompt según el estado y le habilita solo las tools que
-              corresponden. El agente itera hasta terminar, y la respuesta
-              depende de las tools que usó.
+              El modelo no toca la base de datos: propone acciones y el sistema
+              las valida contra reglas. Se habilitan solo las tools que el
+              estado permite, y la iteración sigue hasta terminar. La respuesta
+              depende de lo que realmente pasó.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -481,9 +482,9 @@ export function HomeContent() {
           <Reveal>
             <SectionTitle>No me creas. Revisa el código.</SectionTitle>
             <p className="mb-8 max-w-xl text-secondary-foreground">
-              reactive-fsm es mi librería abierta: 86 tests, 5 adapters, MIT. Es
-              la misma disciplina de «la base decide» que corre en producción,
-              con cada test a la vista para que la audites.
+              reactive-fsm es mi librería abierta: 86 tests, 5 adapters, MIT. La
+              misma disciplina de validación que corre en producción, con cada
+              test a la vista para que la audites.
             </p>
             <ul className="max-w-xl">
               {verification.map((item) => (
@@ -519,12 +520,13 @@ export function HomeContent() {
         <Reveal>
           <SectionTitle>Preguntas</SectionTitle>
         </Reveal>
-        <div className="max-w-2xl">
-          {questions.map((item) => (
+        <div className="max-w-2xl lg:max-w-3xl">
+          {questions.map((item, i) => (
             <FaqItem
               key={item.question}
               question={item.question}
               answer={item.answer}
+              delay={i * 0.03}
             />
           ))}
         </div>
@@ -609,6 +611,12 @@ export function HomeContent() {
             >
               LinkedIn
             </a>
+            <Link
+              href="/privacidad"
+              className="transition-colors hover:text-foreground"
+            >
+              Privacidad
+            </Link>
           </nav>
           <a href="#top" className="transition-colors hover:text-foreground">
             Arriba

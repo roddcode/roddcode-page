@@ -20,7 +20,7 @@ const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
 const SCENARIOS: Scenario[] = [
   {
-    tab: "Agente",
+    tab: "Turnos",
     input: "Reserva el sábado a las 15:00",
     system: "Agenda",
     toolCall: "crear_reserva(sáb, 15:00)",
@@ -196,7 +196,7 @@ export function InteractiveDemo() {
             key={item.tab}
             type="button"
             onClick={() => setIndex(i)}
-            className={`rounded-md border px-2.5 py-2 text-left font-mono text-xs transition-colors md:px-3 ${
+            className={`cursor-crosshair rounded-md border px-2.5 py-2 text-left font-mono text-xs transition-colors md:px-3 ${
               i === index
                 ? "border-primary/60 bg-primary/10 text-foreground"
                 : "border-white/10 text-muted-foreground hover:border-white/25 hover:text-foreground"

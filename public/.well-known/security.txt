@@ -1,0 +1,4 @@
+Contact: mailto:roddcode.dev@gmail.com
+Expires: 2027-03-24T00:00:00.000Z
+Canonical: https://roddcode.com/.well-known/security.txt
+Preferred-Languages: es, en

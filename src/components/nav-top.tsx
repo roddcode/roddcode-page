@@ -12,7 +12,9 @@ import Link from "next/link";
 import { useState } from "react";
 
 const LINKS = [
+  { id: "trayectoria", label: "Trayectoria" },
   { id: "casos", label: "Casos" },
+  { id: "metodo", label: "Método" },
   { id: "precios", label: "Precios" },
   { id: "preguntas", label: "Preguntas" },
 ] as const;
@@ -57,7 +59,7 @@ export function NavTop() {
               key={link.id}
               href={`#${link.id}`}
               aria-current={active === link.id ? "true" : undefined}
-              className={`hidden text-xs transition-colors sm:block ${
+              className={`hidden text-xs transition-colors md:block ${
                 active === link.id
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground"

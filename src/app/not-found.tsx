@@ -2,20 +2,20 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center container-site">
-      <p className="text-primary font-mono text-sm mb-4">404 ERROR</p>
-      <h1 className="text-3xl font-bold tracking-tighter mb-4">
-        Resource not found
+    <div className="container-site flex min-h-[70vh] flex-col items-center justify-center text-center">
+      <p className="mb-4 font-mono text-sm text-primary">404</p>
+      <h1 className="mb-4 font-sans text-3xl font-medium tracking-tight">
+        Esta página no existe.
       </h1>
-      <p className="text-muted-foreground text-center max-w-md mb-8">
-        The requested system resource does not exist or has been moved.
+      <p className="mb-8 max-w-md text-secondary-foreground">
+        El enlace está roto o la página se movió.
       </p>
       <Link
         href="/"
-        className="text-sm font-medium text-background bg-foreground hover:bg-foreground/90 px-6 py-3 transition-all duration-100 ease-out will-change-transform active:scale-[0.98]"
-        style={{ borderRadius: "2px" }}
+        className="bg-primary px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-primary/90"
+        style={{ borderRadius: 2 }}
       >
-        Return to nominal system
+        Volver al inicio
       </Link>
     </div>
   );
