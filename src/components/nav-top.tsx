@@ -1,5 +1,6 @@
 "use client";
 
+import { AnchorLink } from "@/components/anchor-link";
 import { SITE } from "@/lib/constants";
 import { useActiveSection } from "@/lib/use-active-section";
 import {
@@ -55,7 +56,7 @@ export function NavTop() {
           className="flex items-center gap-6"
         >
           {LINKS.map((link) => (
-            <Link
+            <AnchorLink
               key={link.id}
               href={`#${link.id}`}
               aria-current={active === link.id ? "true" : undefined}
@@ -66,7 +67,7 @@ export function NavTop() {
               }`}
             >
               {link.label}
-            </Link>
+            </AnchorLink>
           ))}
           <Link
             href={cta}

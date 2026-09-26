@@ -144,7 +144,7 @@ export function MethodDiagram() {
             className="stroke-muted-foreground/60"
           />
           <text x={566} y={140} textAnchor="middle" className={label}>
-            elige
+            llama
           </text>
 
           <Node x={592} y={118} w={160} title="04 · Tool" accent>

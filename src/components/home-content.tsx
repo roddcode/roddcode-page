@@ -1,3 +1,4 @@
+import { AnchorLink } from "@/components/anchor-link";
 import { BrowserFrame } from "@/components/browser-frame";
 import { ChatWhatsapp } from "@/components/chat-whatsapp";
 import { CountUp } from "@/components/count-up";
@@ -37,7 +38,7 @@ const trajectory = [
   {
     period: "2026",
     title: "SoffIA",
-    detail: "Sistema de IA determinista para clínicas dentales y esteticas",
+    detail: "Sistema de IA determinista para clínicas dentales y estéticas",
     result: "Citas perdidas de 25% a menos de 8%",
   },
 ];
@@ -46,17 +47,32 @@ const pricing = [
   {
     title: "Auditoría técnica",
     price: "Desde $500",
-    desc: "Tres días: reviso qué toca plata y dónde no puede fallar; te llevas un reporte con los riesgos priorizados y en qué orden arreglarlos.",
+    desc: "Sé qué puede romperse antes de que cueste dinero.",
+    points: [
+      "Revisión completa en 3 días",
+      "Reporte con riesgos priorizados",
+      "Lo ejecute yo o tu equipo",
+    ],
   },
   {
-    title: "Build por milestone",
+    title: "Desarrollo a medida",
     price: "Desde $2,000",
-    desc: "Apps, integraciones, migraciones y sistemas con IA. Entregas cada dos semanas, pago por entrega.",
+    desc: "Tu integración o sistema en producción.",
+    points: [
+      "Alcance cerrado y precio fijo",
+      "Entregas revisables cada 2 semanas",
+      "Webs, Apps, integraciones, migraciones e IA",
+    ],
   },
   {
     title: "Retainer",
     price: "Desde $250/mes",
-    desc: "SLA menor a 24 horas para bugs y una revisión mensual. El alcance depende del sistema.",
+    desc: "Soporte continuo para lo que ya corre.",
+    points: [
+      "Bugs con respuesta en menos de 24 h",
+      "Revisión mensual de riesgos",
+      "Sin contratar un equipo completo",
+    ],
   },
 ];
 
@@ -79,9 +95,9 @@ const verification = [
     href: "https://npmjs.com/package/reactive-fsm",
   },
   {
-    label: "Ver la trayectoria",
-    detail: "LinkedIn: experiencia y contexto",
-    href: "https://www.linkedin.com/in/alejandro-alvarado-roddcode/",
+    label: "Auditar exactly-once",
+    detail: "npm: idempotencia para agentes, MIT",
+    href: "https://npmjs.com/package/exactly-once",
   },
 ];
 
@@ -164,8 +180,8 @@ export function HomeContent() {
             </p>
             <p className="mb-1 text-sm font-medium">costo por reserva</p>
             <p className="text-xs text-muted-foreground">
-              24/7: captura el 100% de los leads fuera de horario y deriva a una
-              persona solo cuando el caso lo pide.
+              24/7: atiende fuera de horario y deriva a una persona solo cuando
+              el caso lo pide.
             </p>
           </Reveal>
           <Reveal delay={0.24}>
@@ -191,7 +207,7 @@ export function HomeContent() {
           <SectionTitle>Trayectoria</SectionTitle>
           <p className="mb-12 max-w-2xl text-secondary-foreground">
             De un ERP logístico a la integración de aerolíneas. El patrón no
-            cambió: sistemas que tocan plata y no pueden fallar.
+            cambió: sistemas que tocan dinero y no pueden fallar.
           </p>
         </Reveal>
         <div className="flex flex-col">
@@ -223,8 +239,7 @@ export function HomeContent() {
           <Reveal>
             <SectionTitle>Casos en producción</SectionTitle>
             <p className="mb-16 max-w-2xl text-secondary-foreground">
-              Los tres con datos de producción. Los números salen de ahí, no de
-              una demo.
+              Tres sistemas en producción. Números reales, no demos.
             </p>
           </Reveal>
 
@@ -306,8 +321,8 @@ export function HomeContent() {
                 </h3>
                 <p className="mb-6 text-sm leading-relaxed text-secondary-foreground">
                   Reglas deterministas: el modelo propone, la base de datos
-                  decide. Captura el 100% de los leads fuera de horario, valida
-                  comprobantes y deriva a una persona cuando hace falta.
+                  decide. Atiende fuera de horario, cobra con link de pago y
+                  deriva a una persona cuando hace falta.
                 </p>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
@@ -350,13 +365,14 @@ export function HomeContent() {
                   Caso 03 · Motor de vuelos
                 </p>
                 <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
-                  Las 7 operaciones NDC de Air Europa en un motor en producción
+                  Integro sistemas viejos y cerrados sin romper producción
                 </h3>
                 <p className="mb-6 text-sm leading-relaxed text-secondary-foreground">
-                  AirShopping, OfferPrice, OrderCreate, OrderRetrieve,
-                  OrderChange, OrderCancel y UpSell contra PROS. Builders y
-                  parsers XML a mano, homologación desde otras aerolíneas ya
-                  integradas.
+                  Si tu empresa corre sobre un sistema legacy que parece
+                  intocable, lo integro sin romper producción: AirShopping,
+                  OfferPrice, OrderCreate, OrderRetrieve, OrderChange,
+                  OrderCancel y UpSell contra PROS, con homologación desde otras
+                  aerolíneas ya integradas.
                 </p>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
@@ -375,10 +391,10 @@ export function HomeContent() {
                   </div>
                   <div>
                     <p className="font-sans text-xl font-medium text-primary">
-                      3
+                      {"✓"}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      repos en release
+                      en producción, con agencias reales
                     </p>
                   </div>
                 </div>
@@ -400,7 +416,9 @@ export function HomeContent() {
               El modelo no toca la base de datos: propone acciones y el sistema
               las valida contra reglas. Se habilitan solo las tools que el
               estado permite, y la iteración sigue hasta terminar. La respuesta
-              depende de lo que realmente pasó.
+              depende de lo que realmente pasó. Cuando el proyecto no lleva IA,
+              aplico la misma disciplina: nada toca dinero sin validación en
+              base.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -429,12 +447,22 @@ export function HomeContent() {
         <div className="grid gap-6 md:grid-cols-3">
           {pricing.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.08}>
-              <div className="flex h-full flex-col gap-3 rounded-lg border border-white/10 bg-white/[0.02] p-6 transition-colors hover:border-primary/40">
+              <div className="flex h-full flex-col gap-3 rounded-lg border border-white/10 bg-white/[0.02] p-6">
                 <p className="font-mono text-xs text-primary">{item.price}</p>
                 <h3 className="font-sans text-lg font-medium">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="text-sm leading-relaxed text-foreground">
                   {item.desc}
                 </p>
+                <ul className="mt-auto border-t border-white/10 pt-3">
+                  {item.points.map((point) => (
+                    <li
+                      key={point}
+                      className="py-1 text-sm leading-relaxed text-muted-foreground"
+                    >
+                      {point}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
           ))}
@@ -482,9 +510,10 @@ export function HomeContent() {
           <Reveal>
             <SectionTitle>No me creas. Revisa el código.</SectionTitle>
             <p className="mb-8 max-w-xl text-secondary-foreground">
-              reactive-fsm es mi librería abierta: 86 tests, 5 adapters, MIT. La
-              misma disciplina de validación que corre en producción, con cada
-              test a la vista para que la audites.
+              Mis librerías abiertas, MIT: reactive-fsm con 86 tests y 5
+              adapters, y exactly-once en construcción abierta. La misma
+              disciplina de validación que corre en producción, a la vista para
+              que la audites.
             </p>
             <ul className="max-w-xl">
               {verification.map((item) => (
@@ -540,7 +569,7 @@ export function HomeContent() {
         <div className="container-site flex flex-col items-center gap-6 text-center">
           <Reveal>
             <h2 className="max-w-3xl text-balance font-sans text-3xl font-medium tracking-tight md:text-5xl">
-              Si tu sistema con IA maneja algo que no puede fallar, hablemos.
+              Si tu sistema maneja algo que no puede fallar, hablemos.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -618,9 +647,12 @@ export function HomeContent() {
               Privacidad
             </Link>
           </nav>
-          <a href="#top" className="transition-colors hover:text-foreground">
+          <AnchorLink
+            href="#top"
+            className="transition-colors hover:text-foreground"
+          >
             Arriba
-          </a>
+          </AnchorLink>
         </div>
       </footer>
     </div>

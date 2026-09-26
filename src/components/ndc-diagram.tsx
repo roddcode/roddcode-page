@@ -26,7 +26,7 @@ export function NdcDiagram() {
             </span>
           ))}
           <span className="font-mono text-[10px] text-muted-foreground">
-            tres dialectos del mismo estándar
+            sistemas viejos que hablan distinto
           </span>
         </div>
       </div>
@@ -39,14 +39,13 @@ export function NdcDiagram() {
       </p>
 
       <div className="rounded-md border border-primary/40 bg-white/[0.02] p-4">
-        <p className="font-mono text-[10px] text-primary">MI PARTE</p>
+        <p className="font-mono text-[10px] text-primary">AIR EUROPA</p>
         <p className="mt-1 text-sm font-medium">
-          Air Europa: las 7 operaciones
+          Las 7 operaciones, sin romper producción
         </p>
         <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
           AirShopping, OfferPrice, OrderCreate, OrderRetrieve, OrderChange,
-          OrderCancel y UpSell. Builders y parsers a mano, homologación desde
-          otras aerolíneas.
+          OrderCancel y UpSell contra PROS, homologada desde otras aerolíneas.
         </p>
         <p className="mt-2 text-xs text-success">
           ✓ en producción, con agencias reales

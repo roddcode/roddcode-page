@@ -65,7 +65,7 @@ const procedure = [
   {
     num: "02",
     title: "Auditoría.",
-    text: "Es el primer servicio pago (ver honorarios), no viene incluida en la llamada. Reviso qué toca plata y dónde no puede fallar. Te doy dos o tres enfoques con tiempos y contras.",
+    text: "Es el primer servicio pago (ver honorarios), no viene incluida en la llamada. Reviso qué toca dinero y dónde no puede fallar. Te doy dos o tres enfoques con tiempos y contras.",
   },
   {
     num: "03",
@@ -139,10 +139,10 @@ const pricing = [
   {
     title: "Auditoría técnica",
     price: "Desde $500",
-    desc: "Tres días: reviso qué toca plata y dónde no puede fallar; te llevas un reporte con los riesgos priorizados y en qué orden arreglarlos.",
+    desc: "Tres días: reviso qué toca dinero y dónde no puede fallar; te llevas un reporte con los riesgos priorizados y en qué orden arreglarlos.",
   },
   {
-    title: "Build por milestone",
+    title: "Desarrollo a medida",
     price: "Desde $2,000",
     desc: "Apps, integraciones, migraciones y agentes. Entregas cada dos semanas, pago por entrega.",
   },
@@ -247,7 +247,7 @@ export default function DossierPage() {
       <main className="mx-auto max-w-3xl px-6">
         <Section num="1" title="Resumen">
           <h1 className="exp-display mb-6 max-w-2xl text-4xl leading-[1.1] tracking-tight md:text-5xl">
-            Sistemas con IA que no fallan cuando hay plata en juego.
+            Sistemas con IA que no fallan cuando hay dinero en juego.
           </h1>
           <p className="mb-10 max-w-2xl text-lg leading-relaxed">
             Auditoría e ingeniería para sistemas que manejan reservas, pagos o
@@ -293,7 +293,7 @@ export default function DossierPage() {
 
         <Section num="2" title="Objeto">
           <p className="mb-8 max-w-2xl">
-            Cuando un sistema con IA toca plata, se rompe de tres formas. Y las
+            Cuando un sistema con IA toca dinero, se rompe de tres formas. Y las
             tres cuestan.
           </p>
           <div className="grid max-w-2xl gap-6">

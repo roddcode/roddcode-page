@@ -1,3 +1,4 @@
+import { AnchorLink } from "@/components/anchor-link";
 import { HeroBackground } from "@/components/hero-background";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { SITE } from "@/lib/constants";
@@ -14,11 +15,11 @@ export function Hero() {
         <div className="grid items-center gap-12 py-16 lg:min-h-[calc(100dvh-3.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:gap-16 lg:py-0">
           <div className="hero-enter flex flex-col gap-8">
             <h1 className="max-w-3xl text-balance font-sans text-4xl font-medium leading-[1.05] tracking-tight md:text-[2.75rem]">
-              Sistemas con IA que no fallan cuando hay plata en juego.
+              Sistemas con IA que no fallan cuando hay dinero en juego.
             </h1>
             <p className="max-w-lg text-lg leading-relaxed text-secondary-foreground">
-              Auditoría e ingeniería para sistemas que manejan reservas, pagos o
-              datos de clientes.
+              Apps, integraciones legacy y sistemas con IA que manejan reservas,
+              pagos o datos. Si toca dinero, se valida en base.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <Link
@@ -31,13 +32,13 @@ export function Hero() {
               >
                 Hablemos 30 minutos
               </Link>
-              <a
+              <AnchorLink
                 href="#casos"
                 className="border border-white/15 px-6 py-3 text-sm text-secondary-foreground transition-colors hover:border-white/40 hover:text-foreground"
                 style={{ borderRadius: 2 }}
               >
                 Ver los casos
-              </a>
+              </AnchorLink>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-5 font-mono text-[11px] text-muted-foreground">

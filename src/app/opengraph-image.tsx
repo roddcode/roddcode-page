@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "roddcode — Sistemas con IA que no fallan cuando hay plata en juego";
+  "roddcode — Sistemas con IA que no fallan cuando hay dinero en juego";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,7 +40,7 @@ export default function Image() {
           maxWidth: 980,
         }}
       >
-        Sistemas con IA que no fallan cuando hay plata en juego.
+        Sistemas con IA que no fallan cuando hay dinero en juego.
       </h1>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <div
