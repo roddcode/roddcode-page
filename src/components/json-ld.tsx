@@ -5,24 +5,38 @@ type FaqEntry = { question: string; answer: string };
 const person = {
   "@type": "Person",
   "@id": `${SITE.url}/#person`,
-  name: SITE.author,
+  name: "Rodrigo Alejandro Alvarado",
+  alternateName: ["Rodrigo Alvarado", "Alejandro Alvarado", "roddcode"],
   url: SITE.url,
-  jobTitle: "Ingeniero de software",
+  jobTitle: "AI Engineer",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Lima",
     addressCountry: "PE",
   },
-  sameAs: [SITE.github, SITE.linkedin],
-  knowsAbout: [
-    "Sistemas de IA deterministas",
-    "TypeScript",
-    "React",
-    "Next.js",
-    ".NET",
-    "SQL Server",
-    "Integraciones ERP y CRM",
+  sameAs: [
+    SITE.github,
+    SITE.linkedin,
+    "https://npmjs.com/package/reactive-fsm",
+    "https://npmjs.com/package/exactly-once",
   ],
+  knowsAbout: [
+    "AI agents",
+    "LLM tool gating",
+    "Deterministic systems",
+    "TypeScript",
+    ".NET",
+    "PostgreSQL",
+    "Azure",
+    "Transactional integrations",
+  ],
+};
+
+const profilePage = {
+  "@type": "ProfilePage",
+  "@id": `${SITE.url}/#profilepage`,
+  url: SITE.url,
+  mainEntity: { "@id": `${SITE.url}/#person` },
 };
 
 const website = {
@@ -32,17 +46,6 @@ const website = {
   url: SITE.url,
   inLanguage: "es",
   publisher: { "@id": `${SITE.url}/#person` },
-};
-
-const service = {
-  "@type": "ProfessionalService",
-  "@id": `${SITE.url}/#service`,
-  name: "roddcode",
-  url: SITE.url,
-  description: SITE.description,
-  founder: { "@id": `${SITE.url}/#person` },
-  areaServed: ["Perú", "España", "Latinoamérica"],
-  sameAs: [SITE.github, SITE.linkedin],
 };
 
 function JsonLdScript({ data }: { data: unknown }) {
@@ -60,7 +63,7 @@ export function JsonLd() {
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
-        "@graph": [person, website, service],
+        "@graph": [person, website, profilePage],
       }}
     />
   );

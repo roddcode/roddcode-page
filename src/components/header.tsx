@@ -21,6 +21,12 @@ export function Header() {
             Casos
           </Link>
           <Link
+            href="/cv"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors py-3"
+          >
+            CV
+          </Link>
+          <Link
             href="/#preguntas"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors py-3"
           >

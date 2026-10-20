@@ -22,7 +22,17 @@ export async function generateMetadata({
       title: `${meta.title} | roddcode`,
       description: meta.summary,
       alternates: { canonical: `/writing/${slug}` },
-      openGraph: { title: meta.title, description: meta.summary },
+      openGraph: {
+        title: meta.title,
+        description: meta.summary,
+        locale: "en_US",
+        type: "article",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: meta.title,
+        description: meta.summary,
+      },
     };
   } catch {
     return { title: "Not Found | roddcode" };

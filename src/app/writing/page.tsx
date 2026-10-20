@@ -5,6 +5,17 @@ export const metadata = {
   title: "Writing | roddcode",
   description: "High-signal, low-noise architecture essays.",
   alternates: { canonical: "/writing" },
+  openGraph: {
+    title: "Writing | roddcode",
+    description: "High-signal, low-noise architecture essays.",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Writing | roddcode",
+    description: "High-signal, low-noise architecture essays.",
+  },
 };
 
 export default function WritingIndex() {

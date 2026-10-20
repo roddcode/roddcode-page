@@ -1,7 +1,7 @@
 export const SITE = {
-  title: "Sistemas con IA que no fallan cuando hay dinero en juego | roddcode",
+  title: "AI Engineer | Agentes LLM y sistemas transaccionales | roddcode",
   description:
-    "Auditoría e ingeniería de sistemas con IA para negocios transaccionales en LATAM y España. El modelo propone, la base de datos decide.",
+    "AI Engineer. Diseño la capa de control determinista entre LLMs y bases de datos críticas. TypeScript, .NET, PostgreSQL, Azure. Abierto a roles remotos (US / LATAM / EU).",
   url: "https://roddcode.com",
   author: "Alejandro Alvarado",
   location: "Lima, PE",

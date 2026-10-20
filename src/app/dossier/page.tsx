@@ -7,5 +7,5 @@ import { permanentRedirect } from "next/navigation";
  * durante la Fase 2.
  */
 export default function DossierPage() {
-  permanentRedirect("/#casos");
+  permanentRedirect("/consulting");
 }

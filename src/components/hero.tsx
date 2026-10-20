@@ -1,7 +1,6 @@
 import { AnchorLink } from "@/components/anchor-link";
 import { HeroBackground } from "@/components/hero-background";
 import { InteractiveDemo } from "@/components/interactive-demo";
-import { SITE } from "@/lib/constants";
 import Image from "next/image";
 
 export function Hero() {
@@ -28,11 +27,11 @@ export function Hero() {
                 Ver sistemas
               </AnchorLink>
               <a
-                href={`mailto:${SITE.email}`}
+                href="/cv"
                 className="border border-white/15 px-6 py-3 text-sm text-secondary-foreground transition-colors hover:border-white/40 hover:text-foreground"
                 style={{ borderRadius: 2 }}
               >
-                Escríbeme
+                Leer CV
               </a>
             </div>
 

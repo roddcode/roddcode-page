@@ -28,6 +28,18 @@ export function Footer() {
             GitHub
           </Link>
           <Link
+            href="/cv"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            CV
+          </Link>
+          <Link
+            href="/consulting"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Consulting
+          </Link>
+          <Link
             href={`mailto:${SITE.email}`}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >

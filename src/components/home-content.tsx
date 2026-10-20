@@ -191,66 +191,12 @@ export function HomeContent() {
           <Reveal>
             <SectionTitle>Casos en producción</SectionTitle>
             <p className="mb-16 max-w-2xl text-secondary-foreground">
-              Tres sistemas en producción. Números reales, no demos.
+              Tres sistemas en producción, con el rol, las decisiones y las
+              métricas de cada uno.
             </p>
           </Reveal>
 
           <div className="flex flex-col gap-24">
-            <div className="grid items-center gap-10 lg:grid-cols-2">
-              <Reveal>
-                <BrowserFrame url="meteor.movistar">
-                  <Image
-                    src="/meteor-crm-dark.webp"
-                    alt="Dashboard de leads de METEOR"
-                    width={1600}
-                    height={770}
-                    className="h-auto w-full"
-                    sizes="(max-width: 64rem) calc(100vw - 3rem), 36rem"
-                  />
-                </BrowserFrame>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
-                  Caso 01 · METEOR
-                </p>
-                <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
-                  El CRM que reemplazó a InConcert en Movistar
-                </h3>
-                <p className="mb-6 text-sm leading-relaxed text-secondary-foreground">
-                  Proceso de 169 a 79 minutos, dos pasos menos y tres
-                  herramientas en una. El reporting que requería un
-                  desarrollador escribiendo consultas a mano pasó a descargas de
-                  cinco segundos.
-                </p>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <p className="font-sans text-xl font-medium text-primary">
-                      <CountUp value={53} suffix="%" />
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      menos proceso
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-sans text-xl font-medium text-primary">
-                      $1,000
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      al mes menos
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-sans text-xl font-medium text-primary">
-                      {"<2"}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      meses de ROI
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            </div>
-
             <div className="grid items-center gap-10 lg:grid-cols-2">
               <Reveal className="lg:order-2">
                 <BrowserFrame url="soffia.clinica">
@@ -266,10 +212,10 @@ export function HomeContent() {
               </Reveal>
               <Reveal delay={0.1} className="lg:order-1">
                 <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
-                  Caso 02 · SoffIA
+                  Caso 01 · SoffIA (CoreOS)
                 </p>
                 <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
-                  El sistema que atiende, agenda y valida pagos en una clínica
+                  El agente que agenda y valida pagos en una clínica
                 </h3>
                 <p className="mb-6 text-sm leading-relaxed text-secondary-foreground">
                   Reglas deterministas: el modelo propone, la base de datos
@@ -314,17 +260,15 @@ export function HomeContent() {
               </Reveal>
               <Reveal delay={0.1}>
                 <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
-                  Caso 03 · Motor de vuelos
+                  Caso 02 · Air Europa NDC
                 </p>
                 <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
-                  Integro sistemas viejos y cerrados sin romper producción
+                  Las 7 operaciones NDC en un motor en producción
                 </h3>
                 <p className="mb-6 text-sm leading-relaxed text-secondary-foreground">
-                  Si tu empresa corre sobre un sistema legacy que parece
-                  intocable, lo integro sin romper producción: AirShopping,
-                  OfferPrice, OrderCreate, OrderRetrieve, OrderChange,
-                  OrderCancel y UpSell contra PROS, con homologación desde otras
-                  aerolíneas ya integradas.
+                  Integré las 7 operaciones de Air Europa dentro de un motor
+                  .NET que ya orquestaba 12+ proveedores. Lideré la migración
+                  del motor de .NET 6 a .NET 10 con paridad 50/50 byte a byte.
                 </p>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
@@ -343,10 +287,65 @@ export function HomeContent() {
                   </div>
                   <div>
                     <p className="font-sans text-xl font-medium text-primary">
-                      {"✓"}
+                      <CountUp value={18} />
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      en producción, con agencias reales
+                      ofertas en vivo por búsqueda
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+
+            <div className="grid items-center gap-10 lg:grid-cols-2">
+              <Reveal>
+                <BrowserFrame url="meteor.movistar">
+                  <Image
+                    src="/meteor-crm-dark.webp"
+                    alt="Dashboard de leads de METEOR"
+                    width={1600}
+                    height={770}
+                    className="h-auto w-full"
+                    sizes="(max-width: 64rem) calc(100vw - 3rem), 36rem"
+                  />
+                </BrowserFrame>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-primary">
+                  Caso 03 · METEOR
+                </p>
+                <h3 className="mb-4 text-balance font-sans text-2xl font-medium tracking-tight md:text-3xl">
+                  El CRM que reemplazó a InConcert en Movistar
+                </h3>
+                <p className="mb-6 text-sm leading-relaxed text-secondary-foreground">
+                  Proceso de 169 a 79 minutos, dos pasos menos y tres
+                  herramientas en una. El reporting que requería un
+                  desarrollador escribiendo consultas a mano pasó a reportes de
+                  cinco minutos.
+                </p>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <p className="font-sans text-xl font-medium text-primary">
+                      <CountUp value={53} suffix="%" />
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      menos proceso
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-sans text-xl font-medium text-primary">
+                      $1,000
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      al mes menos
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-sans text-xl font-medium text-primary">
+                      {"<2"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      meses de ROI
                     </p>
                   </div>
                 </div>
@@ -395,7 +394,7 @@ export function HomeContent() {
             <SectionTitle>No me creas. Revisa el código.</SectionTitle>
             <p className="mb-8 max-w-xl text-secondary-foreground">
               Mis librerías abiertas, MIT: reactive-fsm con 86 tests y 5
-              adapters, y exactly-once en construcción abierta. La misma
+              adapters, y exactly-once, idempotencia para tool calls. La misma
               disciplina de validación que corre en producción, a la vista para
               que la audites.
             </p>
@@ -507,6 +506,18 @@ export function HomeContent() {
               className="transition-colors hover:text-foreground"
             >
               Writing
+            </Link>
+            <Link
+              href="/cv"
+              className="transition-colors hover:text-foreground"
+            >
+              CV
+            </Link>
+            <Link
+              href="/consulting"
+              className="transition-colors hover:text-foreground"
+            >
+              Consulting
             </Link>
             <a
               href={SITE.github}
