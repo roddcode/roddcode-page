@@ -1,7 +1,6 @@
 "use client";
 
 import { AnchorLink } from "@/components/anchor-link";
-import { SITE } from "@/lib/constants";
 import { useActiveSection } from "@/lib/use-active-section";
 import {
   m,
@@ -16,14 +15,13 @@ const LINKS = [
   { id: "trayectoria", label: "Trayectoria" },
   { id: "casos", label: "Casos" },
   { id: "metodo", label: "Método" },
-  { id: "precios", label: "Precios" },
+  { id: "confianza", label: "Código" },
   { id: "preguntas", label: "Preguntas" },
 ] as const;
 
 const IDS = LINKS.map((link) => link.id);
 
 export function NavTop() {
-  const cta = SITE.whatsapp || SITE.cal;
   const reduced = useReducedMotion();
   const { scrollY, scrollYProgress } = useScroll();
   const [hidden, setHidden] = useState(false);
@@ -69,16 +67,14 @@ export function NavTop() {
               {link.label}
             </AnchorLink>
           ))}
-          <Link
-            href={cta}
-            target="_blank"
-            rel="noopener noreferrer"
+          <AnchorLink
+            href="#cierre"
             data-track="nav-cta"
             className="bg-primary px-4 py-2 text-xs font-medium text-background transition-colors hover:bg-primary/90"
             style={{ borderRadius: 2 }}
           >
-            Hablemos 30 minutos
-          </Link>
+            Contacto
+          </AnchorLink>
         </nav>
       </div>
       <m.span

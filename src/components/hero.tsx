@@ -3,11 +3,8 @@ import { HeroBackground } from "@/components/hero-background";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { SITE } from "@/lib/constants";
 import Image from "next/image";
-import Link from "next/link";
 
 export function Hero() {
-  const cta = SITE.whatsapp || SITE.cal;
-
   return (
     <section id="inicio" className="relative cursor-crosshair overflow-hidden">
       <HeroBackground />
@@ -22,23 +19,21 @@ export function Hero() {
               pagos o datos. Si toca dinero, se valida en base.
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href={cta}
-                target="_blank"
-                rel="noopener noreferrer"
+              <AnchorLink
+                href="#casos"
                 data-track="hero-cta"
                 className="bg-primary px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-primary/90"
                 style={{ borderRadius: 2 }}
               >
-                Hablemos 30 minutos
-              </Link>
-              <AnchorLink
-                href="#casos"
+                Ver sistemas
+              </AnchorLink>
+              <a
+                href={`mailto:${SITE.email}`}
                 className="border border-white/15 px-6 py-3 text-sm text-secondary-foreground transition-colors hover:border-white/40 hover:text-foreground"
                 style={{ borderRadius: 2 }}
               >
-                Ver los casos
-              </AnchorLink>
+                Escríbeme
+              </a>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-5 font-mono text-[11px] text-muted-foreground">
@@ -60,10 +55,10 @@ export function Hero() {
                   <span className="relative inline-flex size-1.5 rounded-full bg-success" />
                 </span>
                 <span className="text-secondary-foreground">
-                  Disponible para un proyecto
+                  Abierto a roles remotos
                 </span>
               </span>
-              <span>Lima, PE · trabajo con equipos de LATAM y España</span>
+              <span>Lima, PE (UTC-5) · US / LATAM / EU</span>
             </div>
           </div>
 

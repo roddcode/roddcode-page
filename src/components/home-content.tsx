@@ -12,8 +12,6 @@ import { SITE } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 
-const cta = SITE.whatsapp || SITE.cal;
-
 const trajectory = [
   {
     period: "2023–2024",
@@ -43,46 +41,6 @@ const trajectory = [
   },
 ];
 
-const pricing = [
-  {
-    title: "Auditoría técnica",
-    price: "Desde $500",
-    desc: "Sé qué puede romperse antes de que cueste dinero.",
-    points: [
-      "Revisión completa en 3 días",
-      "Reporte con riesgos priorizados",
-      "Lo ejecute yo o tu equipo",
-    ],
-  },
-  {
-    title: "Desarrollo a medida",
-    price: "Desde $2,000",
-    desc: "Tu integración o sistema en producción.",
-    points: [
-      "Alcance cerrado y precio fijo",
-      "Entregas revisables cada 2 semanas",
-      "Webs, Apps, integraciones, migraciones e IA",
-    ],
-  },
-  {
-    title: "Retainer",
-    price: "Desde $250/mes",
-    desc: "Soporte continuo para lo que ya corre.",
-    points: [
-      "Bugs con respuesta en menos de 24 h",
-      "Revisión mensual de riesgos",
-      "Sin contratar un equipo completo",
-    ],
-  },
-];
-
-const exclusions = [
-  "El modelo escribe directo en la base de datos, sin control.",
-  "Solo hay presupuesto para probar suerte, no para auditar.",
-  "Nadie del equipo puede dedicarle dos horas por semana.",
-  "Se busca un chatbot para decir que la empresa usa IA.",
-];
-
 const verification = [
   {
     label: "Ver el código",
@@ -103,34 +61,28 @@ const verification = [
 
 export const questions = [
   {
-    question: "¿Trabajas remoto?",
+    question: "¿Qué roles buscas?",
     answer:
-      "Sí. Trabajo con equipos de LATAM y España, en español, por WhatsApp y llamadas.",
+      "Roles remotos full-time o contract como AI Engineer, Applied AI Engineer, Software Engineer o Backend/Fullstack Engineer (.NET + TypeScript) en equipos con sistemas transaccionales.",
   },
   {
-    question: "¿Trabajas con mi stack?",
+    question: "¿En qué huso horario trabajas?",
     answer:
-      "Frontend en React y TypeScript; backend en .NET y SQL Server; integraciones XML, SOAP y JSON. Con otro stack también puedo auditar; y si para construir no soy la persona, te recomiendo a alguien que sí en la misma llamada.",
+      "Lima, Perú (UTC-5), con solapamiento completo para EE.UU., LATAM y mañanas de Europa.",
   },
   {
-    question: "¿Cómo sé que puedes con un sistema crítico?",
+    question: "¿Qué sistemas has llevado a producción?",
     answer:
-      "Por lo que ya corrió en producción: ERP logístico, CRM enterprise para Movistar, el motor NDC de Air Europa y un sistema de IA en una clínica. Tres años, ningún proyecto era una demo. Si no quieres creerme, puedes auditar mi código abierto antes de la llamada.",
+      "SoffIA, un agente de reservas para clínicas; la integración NDC de Air Europa en .NET; y METEOR, el CRM de Movistar en VML (WPP).",
   },
   {
-    question: "¿Qué pasa si algo falla después del deploy?",
+    question: "¿Puedo revisar tu código?",
     answer:
-      "Con retainer tienes SLA menor a 24 horas. Sin retainer, te entrego documentación y specs para que tu equipo pueda mantenerlo.",
-  },
-  { question: "¿Firmas NDA?", answer: "Sí." },
-  {
-    question: "¿Por qué no hacerlo con mi equipo?",
-    answer:
-      "Pueden. Yo entro en lo puntual: auditar un sistema, destrabar una integración o sacar algo a producción. Cuando termino, tu equipo se queda con el código y el contexto.",
+      "Sí. reactive-fsm y exactly-once están en GitHub y npm, y los ensayos de arquitectura en /writing.",
   },
   {
-    question: "¿Cuánto tarda?",
-    answer: "Una auditoría, 3 días. Un build, de 2 a 6 semanas por milestone.",
+    question: "¿Cómo te contacto?",
+    answer: "roddcode.dev@gmail.com o LinkedIn. Respondo en menos de 24 horas.",
   },
 ];
 
@@ -433,74 +385,6 @@ export function HomeContent() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section
-        id="precios"
-        className="container-site scroll-mt-20 py-16 md:py-32"
-      >
-        <Reveal>
-          <SectionTitle>Precios</SectionTitle>
-          <p className="mb-12 max-w-2xl text-secondary-foreground">
-            Sin cotizaciones sorpresa. Pagas por entrega.
-          </p>
-        </Reveal>
-        <div className="grid gap-6 md:grid-cols-3">
-          {pricing.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.08}>
-              <div className="flex h-full flex-col gap-3 rounded-lg border border-white/10 bg-white/[0.02] p-6">
-                <p className="font-mono text-xs text-primary">{item.price}</p>
-                <h3 className="font-sans text-lg font-medium">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-foreground">
-                  {item.desc}
-                </p>
-                <ul className="mt-auto border-t border-white/10 pt-3">
-                  {item.points.map((point) => (
-                    <li
-                      key={point}
-                      className="py-1 text-sm leading-relaxed text-muted-foreground"
-                    >
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Exclusions */}
-      <section
-        id="exclusiones"
-        className="scroll-mt-20 border-t border-white/5 py-16"
-      >
-        <div className="container-site">
-          <Reveal>
-            <SectionTitle>Para quién no es</SectionTitle>
-            <p className="mb-6 max-w-2xl text-secondary-foreground">
-              No trabajo en proyectos donde:
-            </p>
-          </Reveal>
-          <ul className="max-w-2xl">
-            {exclusions.map((item, i) => (
-              <Reveal
-                as="li"
-                key={item}
-                delay={i * 0.05}
-                className="border-t border-white/10 py-4 text-sm last:border-b"
-              >
-                {item}
-              </Reveal>
-            ))}
-          </ul>
-          <Reveal delay={0.2}>
-            <p className="mt-8 max-w-2xl font-medium">
-              Prefiero decir que no rápido antes que dejarte a medias.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* Trust */}
       <section
         id="confianza"
@@ -569,33 +453,33 @@ export function HomeContent() {
         <div className="container-site flex flex-col items-center gap-6 text-center">
           <Reveal>
             <h2 className="max-w-3xl text-balance font-sans text-3xl font-medium tracking-tight md:text-5xl">
-              Si tu sistema maneja algo que no puede fallar, hablemos.
+              Abierto a roles remotos en AI y backend.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="text-sm text-muted-foreground">
-              30 minutos. Si no veo dónde aportar, te lo digo en los primeros
-              10.
+              Lima, PE (UTC-5). Full-time o contract. Si estás construyendo
+              sistemas transaccionales con IA, hablemos.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href={cta}
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href={`mailto:${SITE.email}`}
                 data-track="closing-cta"
                 className="bg-primary px-8 py-4 text-sm font-medium text-background transition-colors hover:bg-primary/90"
                 style={{ borderRadius: 2 }}
               >
-                Hablemos 30 minutos
-              </Link>
+                Escríbeme
+              </a>
               <a
-                href={`mailto:${SITE.email}`}
+                href={SITE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="border border-white/15 px-8 py-4 text-sm text-secondary-foreground transition-colors hover:border-white/40 hover:text-foreground"
                 style={{ borderRadius: 2 }}
               >
-                {SITE.email}
+                LinkedIn
               </a>
             </div>
           </Reveal>
