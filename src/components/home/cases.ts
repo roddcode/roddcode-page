@@ -10,6 +10,7 @@ export type Case = {
   crumb: string;
   result: "blocked" | "committed";
   who: string;
+  avatar: string;
   meta: string;
   message: string;
   typing: string;
@@ -28,6 +29,7 @@ export const CASES: Case[] = [
     crumb: "gate / booking",
     result: "blocked",
     who: "Camila R.",
+    avatar: "/avatars/camila.jpg",
     meta: "patient · WhatsApp · Sat 14:58",
     message:
       "Mi hija tiene fiebre y necesito el turno del sábado a las 15:00. Si está ocupado, dime cuál me sirve.",
@@ -51,6 +53,7 @@ export const CASES: Case[] = [
     crumb: "gate / flight order",
     result: "committed",
     who: "Marco A.",
+    avatar: "/avatars/marco.jpg",
     meta: "travel agent · agency desk",
     message:
       "We have 9 passengers on a group fare. If this offer expires, the price jumps 40%.",
@@ -74,6 +77,7 @@ export const CASES: Case[] = [
     crumb: "gate / crm batch",
     result: "committed",
     who: "Lucía P.",
+    avatar: "/avatars/lucia.jpg",
     meta: "ops · batch #1042",
     message:
       "Finance closes in two hours and the batch already ran twice. I need one report, not two.",

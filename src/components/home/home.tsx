@@ -256,7 +256,13 @@ export function Home() {
             <div className={s.left}>
               <div className={s.who}>
                 <span className={s.avatar} aria-hidden="true">
-                  {current.who.slice(0, 1)}
+                  <img
+                    className={s.avatarImg}
+                    src={current.avatar}
+                    alt=""
+                    width={38}
+                    height={38}
+                  />
                 </span>
                 <span className={s.ident}>
                   <b>{current.who}</b>
@@ -264,7 +270,7 @@ export function Home() {
                 </span>
               </div>
 
-              <div className={s.bubble}>
+              <div key={current.id} className={s.bubble}>
                 <p>{current.message}</p>
               </div>
 
