@@ -62,9 +62,9 @@ export const CASES: Case[] = [
       { label: "Commit with idempotency key", system: "exactly-once", state: "done" },
     ],
     foot: "Committed in 1.2 s",
-    footSub: "order 8F2A · retry-safe",
+    footSub: "same key returns 8F2A",
     reply:
-      "Order 8F2A created. Send the same key twice and you get the same order, not a second ticket.",
+      "Order 8F2A is booked for the nine passengers at the group fare.",
     chip: "committed · one receipt",
     chipState: "committed",
   },
@@ -85,9 +85,9 @@ export const CASES: Case[] = [
       { label: "Compile the summary", system: "report", state: "done" },
     ],
     foot: "Committed in 5.0 s",
-    footSub: "1,842 rows · 0 duplicates",
+    footSub: "the retry was ignored",
     reply:
-      "Batch 1042 processed. 1,842 rows, zero duplicates. The retry was ignored, not merged.",
+      "Batch 1042 processed: 1,842 leads, zero duplicates.",
     chip: "committed · 53% less process time",
     chipState: "committed",
   },

@@ -193,6 +193,15 @@ export function Home() {
             <a href="/writing">Writing</a>
           </nav>
 
+          <a
+            className={s.navCv}
+            href="/cv-alejandro-alvarado.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CV
+          </a>
+
           <a className={s.navCta} href="mailto:roddcode.dev@gmail.com">
             Email
           </a>
@@ -430,7 +439,7 @@ export function Home() {
               <h4>Profile</h4>
               <ul>
                 <li><a href="/about">About</a></li>
-                <li><a href="/cv">CV</a></li>
+                <li><a href="/cv-alejandro-alvarado.pdf" target="_blank" rel="noopener noreferrer">CV</a></li>
                 <li><a href="/consulting">Consulting</a></li>
               </ul>
             </div>
