@@ -14,7 +14,8 @@ export function SystemsStacked() {
               <div className={s.stackHead}>
                 <h3 className={s.stackName}>{sys.title}</h3>
                 <span className={s.stackPeriod}>
-                  {sys.role} · {sys.period}
+                  {sys.discipline}
+                  {sys.scope ? ` · ${sys.scope}` : ""} · {sys.period}
                 </span>
               </div>
 

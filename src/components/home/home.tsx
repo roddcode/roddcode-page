@@ -19,7 +19,35 @@ function Check() {
 function Cross() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" className={s.ic}>
-      <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M4.5 4.5l7 7M11.5 4.5l-7 7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+    </svg>
+  );
+}
+
+function CopyIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={s.ic}>
+      <rect
+        x="6"
+        y="6"
+        width="8"
+        height="8"
+        rx="1.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M10 6V3.5A1.5 1.5 0 0 0 8.5 2h-5A1.5 1.5 0 0 0 2 3.5v5A1.5 1.5 0 0 0 3.5 10H6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
     </svg>
   );
 }
@@ -411,7 +439,13 @@ export function Home() {
               <ul>
                 <li><a href="https://github.com/roddcode" target="_blank" rel="noopener noreferrer">GitHub</a></li>
                 <li><a href="https://www.linkedin.com/in/alejandro-alvarado-roddcode/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                <li><a href="https://www.npmjs.com/package/reactive-fsm" target="_blank" rel="noopener noreferrer">npm</a></li>
+                <li>
+                  <a
+                    href="https://www.npmjs.com/~roddcode"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >NPM</a>
+                </li>
                 <li><a href="mailto:roddcode.dev@gmail.com">Email</a></li>
                 <li><a href="/feed.xml">RSS</a></li>
               </ul>
