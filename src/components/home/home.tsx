@@ -193,12 +193,12 @@ export function Home() {
           <a className={s.btnPrimary} href="#systems">
             See the systems
           </a>
-          <a className={s.btnGhost} href="#method">
-            Read the code
+          <a className={s.btnGhost} href="mailto:roddcode.dev@gmail.com">
+            Email me
           </a>
           <p className={s.avail}>
             <i className={s.availDot} />
-            Open to remote · UTC-5
+            Open to full-time &amp; contract · Remote · UTC-5
           </p>
         </div>
 
@@ -409,9 +409,9 @@ export function Home() {
             <div className={s.col}>
               <h4>Connect</h4>
               <ul>
-                <li><a href="#">GitHub</a></li>
-                <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">npm</a></li>
+                <li><a href="https://github.com/roddcode" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/alejandro-alvarado-roddcode/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://www.npmjs.com/package/reactive-fsm" target="_blank" rel="noopener noreferrer">npm</a></li>
                 <li><a href="mailto:roddcode.dev@gmail.com">Email</a></li>
                 <li><a href="/feed.xml">RSS</a></li>
               </ul>

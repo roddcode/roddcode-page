@@ -16,6 +16,7 @@ export type System = {
   nodes: SystemNode[];
   image?: string;
   period: string;
+  role: string;
   detail: string;
   bullets: string[];
   stack: string[];
@@ -41,6 +42,7 @@ export const SYSTEMS: System[] = [
     ],
     image: "/captura-crm-soffia.webp",
     period: "2026",
+    role: "Sole engineer",
     detail:
       "A WhatsApp booking agent for clinics. The model reads intent; deterministic gates check the calendar, lock the row and confirm. It ran in production for months and the database never let it invent an appointment.",
     bullets: [
@@ -68,6 +70,7 @@ export const SYSTEMS: System[] = [
       { label: "order 8F2A", meta: "committed", state: "ok" },
     ],
     period: "2026",
+    role: "Sole engineer",
     detail:
       "Seven Air Europa NDC 21.3 operations inside a multi-provider flight engine, against hand-written XML contracts. Strict parsing, fail-closed on any mismatch, and a trace for every order.",
     bullets: [
@@ -96,6 +99,7 @@ export const SYSTEMS: System[] = [
     ],
     image: "/meteor-crm-dark.webp",
     period: "2024–2025",
+    role: "Full-stack engineer",
     detail:
       "Replaced InConcert for the Movistar account at VML. The commercial process was redesigned, not ported: 169 minutes became 79, and the licence went away.",
     bullets: [

@@ -13,7 +13,9 @@ export function SystemsStacked() {
             <div className={s.stackText}>
               <div className={s.stackHead}>
                 <h3 className={s.stackName}>{sys.title}</h3>
-                <span className={s.stackPeriod}>{sys.period}</span>
+                <span className={s.stackPeriod}>
+                  {sys.role} · {sys.period}
+                </span>
               </div>
 
               <p className={s.stackSummary}>{sys.detail}</p>
