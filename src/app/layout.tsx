@@ -1,13 +1,7 @@
 import { JsonLd } from "@/components/json-ld";
-import {
-  ChromeFooter,
-  ChromeHeader,
-  ChromeNoise,
-} from "@/components/site-chrome";
 import { SITE } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { LazyMotion, domAnimation } from "framer-motion";
 import type { Metadata } from "next";
 import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -80,15 +74,10 @@ export default function RootLayout({
         >
           Saltar al contenido
         </a>
-        <ChromeNoise />
-        <LazyMotion features={domAnimation} strict>
-          <ChromeHeader />
-          <main id="main-content">{children}</main>
-          <JsonLd />
-          <SpeedInsights />
-          <Analytics />
-          <ChromeFooter />
-        </LazyMotion>
+        <JsonLd />
+        <SpeedInsights />
+        <Analytics />
+        {children}
       </body>
     </html>
   );

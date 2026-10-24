@@ -149,12 +149,12 @@ export function Home() {
   }, [finished, current.result]);
 
   return (
-    <section className={s.hero} id="top">
+    <section className={s.hero} id="main-content">
       <div ref={gridRef} className={s.gridFx} aria-hidden="true" />
 
       <header className={`${s.nav} ${navDark ? s.navDark : ""}`}>
         <div className={s.navInner}>
-          <a className={s.navBrand} href="#top">
+          <a className={s.navBrand} href="#">
             roddcode<span className={s.navDot}>.</span>
           </a>
 
@@ -428,11 +428,7 @@ export function Home() {
             <a href="/.well-known/security.txt">Security</a>
             <button
               type="button"
-              onClick={() =>
-                document
-                  .querySelector("section")
-                  ?.scrollTo({ top: 0, behavior: "smooth" })
-              }
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               Back to top <span className={s.arrow}>↑</span>
             </button>
