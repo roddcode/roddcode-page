@@ -1,5 +1,4 @@
-import { HomeContent, questions } from "@/components/home-content";
-import { JsonLdFaq } from "@/components/json-ld";
+import { Home as HomeView } from "@/components/home/home";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,10 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return (
-    <>
-      <HomeContent />
-      <JsonLdFaq items={questions} />
-    </>
-  );
+  return <HomeView />;
 }

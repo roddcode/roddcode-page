@@ -25,3 +25,5 @@ src/components/lab-shell.tsx
 src/components/nav-rail.tsx
 src/components/nav-dots.tsx
 src/components/nav-float.tsx
+
+.playwright-mcp

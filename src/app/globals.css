@@ -48,7 +48,7 @@
   --ink: oklch(1 0 0);
 }
 
-@theme {
+@theme static {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
@@ -70,6 +70,30 @@
   /* Radios quirúrgicos */
   --radius-sm: 2px;
   --radius-md: 4px;
+
+  /* ---- Paper (home, construido) ---- */
+  --color-paper: #fafaf8;
+  --color-paper-raised: #ffffff;
+  --color-ink: #14140f;
+  --color-ink-2: #26261e;
+  --color-ink-3: #55554c;
+  --color-ink-4: #7d7d73;
+  --color-ink-5: #a3a397;
+  --color-line: #e4e2da;
+  --color-line-soft: #eeeee8;
+  --color-pass: #2f9e4f;
+  --color-pass-ink: #1d6b3c;
+  --color-pass-bg: #eaf5ed;
+  --color-pass-night: #8adf9b;
+  --color-fail: #b4433a;
+  --color-fail-ink: #9c3227;
+  --color-fail-bg: #fbeeec;
+  --color-night: #0b0b09;
+  --color-night-raised: #171714;
+  --color-night-line: #1e1e19;
+
+  --radius-control: 8px;
+  --radius-card: 14px;
 }
 
 @layer base {
