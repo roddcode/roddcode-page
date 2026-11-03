@@ -1775,7 +1775,7 @@ button:hover .arrow {
 }
 
 .stackStack span {
-  color: color-mix(in srgb, var(--color-night-muted) 55%, transparent);
+  color: var(--color-night-muted);
 }
 
 .stackReading {

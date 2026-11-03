@@ -1,3 +1,4 @@
+import { SITE } from "@/lib/constants";
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://roddcode.com/sitemap.xml",
+    sitemap: new URL("/sitemap.xml", SITE.url).href,
   };
 }

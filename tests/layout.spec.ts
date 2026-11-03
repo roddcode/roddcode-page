@@ -210,3 +210,83 @@ test("mobile menu and static sections survive at narrow widths in both languages
     await expect(page.getByRole("menu")).toHaveCount(0);
   }
 });
+
+test("home canonical and language alternatives use the production hostname", async ({
+  page,
+}) => {
+  for (const locale of ["es", "en"]) {
+    await page.goto(`/api/locale?to=${locale}`);
+    for (const [selector, path] of [
+      ['link[rel="canonical"]', locale === "es" ? "/" : "/en"],
+      ['link[rel="alternate"][hreflang="es"]', "/"],
+      ['link[rel="alternate"][hreflang="en"]', "/en"],
+    ]) {
+      const href = await page.locator(selector ?? "").getAttribute("href");
+      expect(new URL(href ?? "").href).toBe(
+        new URL(path ?? "/", "https://www.roddcode.com").href,
+      );
+    }
+  }
+});
+
+test("system stack labels retain readable contrast on the dark background", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const ratios = await page
+    .locator("#systems article p > span")
+    .evaluateAll((labels) => {
+      const luminance = (color: string) => {
+        const rgb =
+          color
+            .match(/[0-9.]+/g)
+            ?.slice(0, 3)
+            .map(Number) ?? [];
+        const channels = rgb.map((n) => {
+          const c = n / 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        });
+        return (
+          (channels[0] ?? 0) * 0.2126 +
+          (channels[1] ?? 0) * 0.7152 +
+          (channels[2] ?? 0) * 0.0722
+        );
+      };
+      return labels.map((label) => {
+        const section = label.closest("section");
+        if (!section) return 0;
+        const foreground = getComputedStyle(label).color;
+        if (!foreground.startsWith("rgb(")) return 0;
+        const fg = luminance(foreground);
+        const bg = luminance(getComputedStyle(section).backgroundColor);
+        return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
+      });
+    });
+  expect(ratios).toHaveLength(3);
+  for (const ratio of ratios) expect(ratio).toBeGreaterThanOrEqual(4.5);
+});
+
+test("the footer waits until it approaches the viewport before requesting WebGL", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
+      value(this: HTMLCanvasElement, ...args: unknown[]) {
+        if (args[0] === "webgl2") this.dataset.webglRequested = "true";
+        return Reflect.apply(original, this, args);
+      },
+      configurable: true,
+      writable: true,
+    });
+  });
+  await page.goto("/");
+  await expect(page.locator("main > section canvas").first()).toHaveAttribute(
+    "data-webgl-requested",
+    "true",
+  );
+  const footer = page.locator("#contact canvas");
+  await expect(footer).not.toHaveAttribute("data-webgl-requested", "true");
+  await footer.scrollIntoViewIfNeeded();
+  await expect(footer).toHaveAttribute("data-webgl-requested", "true");
+});

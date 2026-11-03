@@ -1,10 +1,11 @@
+import { SITE } from "@/lib/constants";
 import { getAllPosts } from "@/lib/mdx";
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();
 
-  const baseUrl = "https://roddcode.com";
+  const baseUrl = SITE.url;
   const now = new Date();
   const languages = { es: baseUrl, en: `${baseUrl}/en` };
 

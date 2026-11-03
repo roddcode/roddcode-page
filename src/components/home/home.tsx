@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { CaseContent, HomeContent, Locale } from "@/content/home";
 import { SITE } from "@/lib/constants";
+import Image from "next/image";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import s from "./home.module.css";
 import { LanguageSelector } from "./language-selector";
@@ -306,12 +307,14 @@ export function Home({
           />
           <Container className={s.heroInner}>
             <p className={s.byline}>
-              <img
+              <Image
                 className={s.bylineAvatar}
                 src="/alejandro.webp"
                 alt=""
                 width={40}
                 height={40}
+                sizes="40px"
+                loading="eager"
               />
               <span className={s.bylineName}>Alejandro Alvarado</span>
               <span className={s.bylineRole}>{t.hero.role}</span>

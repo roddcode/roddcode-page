@@ -1,6 +1,7 @@
 import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { ReadingProgress } from "@/components/reading-progress";
+import { SITE } from "@/lib/constants";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
@@ -92,13 +93,13 @@ export default async function PostPage(props: {
     wordCount: post.content.split(/\s+/).length,
     timeRequired: `PT${post.readingTime}M`,
     inLanguage: "en",
-    mainEntityOfPage: `https://roddcode.com/writing/${params.slug}`,
-    image: `https://roddcode.com/writing/${params.slug}/image`,
+    mainEntityOfPage: `${SITE.url}/writing/${params.slug}`,
+    image: `${SITE.url}/writing/${params.slug}/image`,
     author: {
       "@type": "Person",
       name: "Alejandro Alvarado",
-      url: "https://roddcode.com",
-      image: "https://roddcode.com/alejandro.webp",
+      url: SITE.url,
+      image: new URL("/alejandro.webp", SITE.url).href,
     },
   };
 
@@ -195,7 +196,7 @@ export default async function PostPage(props: {
 
         <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6">
           <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.meta.title)}&url=${encodeURIComponent(`https://roddcode.com/writing/${post.slug}`)}`}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.meta.title)}&url=${encodeURIComponent(`${SITE.url}/writing/${post.slug}`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-[11px] tracking-[0.06em] text-ink-4 uppercase no-underline transition-colors hover:text-accent"
@@ -204,7 +205,7 @@ export default async function PostPage(props: {
             Share on X ↗
           </a>
           <a
-            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://roddcode.com/writing/${post.slug}`)}`}
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE.url}/writing/${post.slug}`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-[11px] tracking-[0.06em] text-ink-4 uppercase no-underline transition-colors hover:text-accent"

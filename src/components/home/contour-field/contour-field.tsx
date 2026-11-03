@@ -462,12 +462,44 @@ export function ContourField({
       typeof palette === "string" ? PALETTES[palette] : palette;
 
     let field: Field | null = null;
-    const id = requestAnimationFrame(() => {
-      field = new Field(canvas, settings, maxDpr);
-    });
+    let idleId: number | undefined;
+    let timerId: ReturnType<typeof globalThis.setTimeout> | undefined;
+
+    const cancelPending = () => {
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      if (timerId !== undefined) globalThis.clearTimeout(timerId);
+      idleId = undefined;
+      timerId = undefined;
+    };
+
+    // Compile near the viewport so the footer does not create its WebGL
+    // context and shaders during the hero's first render.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) {
+          cancelPending();
+          return;
+        }
+        if (field || idleId !== undefined || timerId !== undefined) return;
+        const create = () => {
+          idleId = undefined;
+          timerId = undefined;
+          field = new Field(canvas, settings, maxDpr);
+          observer.disconnect();
+        };
+        if (typeof window.requestIdleCallback === "function") {
+          idleId = window.requestIdleCallback(create, { timeout: 1500 });
+        } else {
+          timerId = globalThis.setTimeout(create, 200);
+        }
+      },
+      { rootMargin: "120px" },
+    );
+    observer.observe(canvas);
 
     return () => {
-      cancelAnimationFrame(id);
+      observer.disconnect();
+      cancelPending();
       field?.dispose();
     };
   }, [palette, maxDpr]);
