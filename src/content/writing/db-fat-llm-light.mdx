@@ -7,15 +7,13 @@ themes: [ai, architecture, deterministic, production]
 series: "db-fat-llm-light"
 ---
 
-Two bugs, same root cause.
+A patient asked to book an appointment. The LLM, eager to help, started confirming — name, service, time. What it didn't check was whether this was a returning patient or someone new. Without identity validation, the system booked a slot under a name that didn't exist in the database.
 
-The first: a patient asked to book an appointment. The LLM, eager to help, started confirming — name, service, time. What it didn't check was whether this was a returning patient or someone new. Without identity validation, the system booked a slot under a name that didn't exist in the database.
+I described another failure involving a missing `doctorId` in [Deterministic AI](/writing/deterministic-ai). Both failures came from the same permission boundary.
 
-The second: a different patient, different day. The LLM output a confirmation. Name, service, time — all correct. The database threw a foreign key violation because `doctorId` was `null`. The prompt said nothing about `doctorId` being required. The model assumed `null` was acceptable.
+The architecture gave the LLM write access to the database without structural guardrails.
 
-Two different failures. Same architecture: **the LLM had write access to the database without structural guardrails.**
-
-This is not a prompt problem. It's a delegation problem.
+The model had permission to confirm operations before the system validated them.
 
 ---
 
@@ -152,7 +150,7 @@ $$;
 
 `FOR UPDATE` locks the row. If two concurrent requests try to transition the same conversation, one waits and gets the fresh state. Atomic validation is more reliable than any instruction you can give the model.
 
-### 3. Progressive gate-gating
+### 3. Tool argument validation
 
 At each step of the flow, the LLM only sees the tools corresponding to that step. During patient identification, booking tools don't exist. During payment, price modification tools don't exist.
 
@@ -201,11 +199,9 @@ It's the equivalent of a circuit breaker, but for the model's reasoning.
 
 ## What this means for you
 
-When you hire me to build a system with AI, you're not buying a clever prompt. You're buying:
+The implementation puts these checks around the model:
 
 - A database that is the source of truth for every decision
 - A model that operates with explicit, verifiable constraints
 - A pipeline where every critical operation has an atomic lock or a server-side validation
 - Zero tolerance for the model deciding something the database didn't confirm
-
-The system isn't "smart." It's deterministic. And in production, determinism is more valuable than intelligence.

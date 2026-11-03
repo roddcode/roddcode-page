@@ -1,0 +1,307 @@
+import type { HomeContent } from "./types";
+
+export const es: HomeContent = {
+  nav: {
+    systems: "Sistemas",
+    demo: "Demo",
+    trajectory: "Trayectoria",
+    menu: "Menú",
+    cv: "CV",
+    cvOpen: "Abrir el CV en PDF",
+    email: "Escríbeme",
+    language: "Idioma",
+    spanish: "Español (Perú)",
+    english: "Inglés (EE. UU.)",
+  },
+  hero: {
+    role: "Ingeniero de IA y Software",
+    h1a: "El modelo propone.",
+    h1b: "La base de datos decide",
+    sub: "Construyo la capa de control determinista entre LLMs y sistemas transaccionales. Valido reservas, pagos y cambios de estado antes de escribirlos en la base de datos.",
+    ctaSystems: "Ver los sistemas",
+    ctaEmail: "Escríbeme",
+    avail: "Tiempo completo o contrato · Remoto · UTC-5",
+  },
+  panel: {
+    brand: "gate",
+    system: "sistema",
+    tryAnother: "Probar otro caso",
+    action: "Acción",
+    batchRun: "Corrida del lote",
+    pill: {
+      running: "En curso",
+      blocked: "Bloqueado",
+      committed: "Confirmado",
+    },
+    tabs: { booking: "Turnos", flight: "Orden de vuelo", crm: "Lote de CRM" },
+  },
+  systems: {
+    title: "Tres sistemas donde una falla costaba dinero.",
+    builtWith: "Construido con",
+    ndc: {
+      search: "Búsqueda",
+      searchTitle: "Una agencia busca un vuelo",
+      engine: "Motor",
+      engineTitle: "12 proveedores en paralelo",
+      opsLabel: "Air Europa · NDC 21.3",
+      ops: "AirShopping · OfferPrice · OrderCreate · OrderRetrieve · OrderChange · OrderCancel · UpSell",
+    },
+  },
+  openSource: {
+    label: "Open source",
+    intro:
+      "Dos librerías MIT para controlar las herramientas de un agente y validar commits idempotentes en PostgreSQL.",
+    packages: [
+      {
+        name: "reactive-fsm",
+        version: "1.4.1",
+        description:
+          "Limita las herramientas disponibles según el estado de la conversación y corta bucles de tool calling.",
+        facts: ["MIT", "86 tests", "5 proveedores"],
+        npm: "https://www.npmjs.com/package/reactive-fsm",
+        repo: "https://github.com/roddcode/reactive-fsm",
+      },
+      {
+        name: "exactly-once",
+        version: "0.2.0",
+        description:
+          "Valida las reglas de dominio y evita que un reintento duplique el commit en PostgreSQL.",
+        facts: ["MIT", "Postgres", "idempotencia"],
+        npm: "https://www.npmjs.com/package/exactly-once",
+        repo: "https://github.com/roddcode/exactly-once",
+      },
+    ],
+  },
+  experience: {
+    title: "Trayectoria.",
+    education:
+      "Desarrollo de Software · SENATI · modalidad dual · tesina: METEOR",
+    base: "Lima, Perú · UTC-5",
+    cvLink: "Ver trayectoria completa",
+    cvMeta: "PDF · 1 página",
+    items: [
+      {
+        id: "soffia",
+        when: "2026",
+        role: "AI Engineer",
+        org: "CoreOS · SoffIA",
+        note: "Agente de reservas por WhatsApp para clínicas. La espera promedio bajó de 47 minutos a menos de 10 segundos.",
+        stack: ["TypeScript", "PostgreSQL", "Docker", "Vercel AI SDK"],
+      },
+      {
+        id: "ndc",
+        logo: "techhouse",
+        when: "2026",
+        role: "Software Engineer",
+        org: "Expertia Travel · vía TechHouse",
+        note: "Implementé la integración NDC 21.3 de Air Europa en su motor de vuelos y después migré el motor entero de .NET 6 a .NET 10 en solitario, con paridad byte a byte.",
+        stack: ["C#/.NET 10", "SOAP/XML", "AKS"],
+      },
+      {
+        id: "vml",
+        when: "2024–2025",
+        role: "Fullstack Engineer",
+        org: "VML (Grupo WPP) · cuenta Movistar",
+        note: "Reemplacé InConcert con METEOR. Los reportes de cada agente pasaron de 30 a 5 minutos.",
+        stack: ["C#/.NET", "Vue.js", "SQL Server"],
+      },
+      {
+        id: "itaw",
+        when: "2024",
+        role: "Programmer Analyst",
+        org: "ITAW Group",
+        note: "De punta a punta en un ERP logístico: APIs REST y lógica de negocio en C#/.NET, SQL Server y MySQL. Construí interfaces con Angular y TypeScript, modernicé componentes heredados y optimicé consultas SQL complejas que recortaron un 30% los tiempos de reportes críticos.",
+        stack: ["C#/.NET", "SQL Server", "MySQL", "Angular", "TypeScript"],
+      },
+      {
+        id: "buho",
+        when: "2023–2024",
+        role: "Web Development Intern",
+        org: "Digital Búho SAC",
+        note: "Desarrollé sitios web corporativos con WordPress y Vue.js, atendí las incidencias técnicas y maqueté las vistas responsivas.",
+        stack: ["WordPress", "Vue.js"],
+      },
+    ],
+  },
+  about: {
+    lede: "Soy Alejandro Alvarado, ingeniero de IA y software en Lima. Llegué al código desde la física y sigo haciéndome la misma pregunta: qué reglas gobiernan el mundo en el que vivimos.",
+    closing:
+      "Trabajo de punta a punta, y el producto, el servicio y las personas me importan más que el código. Un sistema tiene que resolver un problema real.",
+    outside:
+      "También doy charlas, todavía de forma amateur: me gusta hablar de código, pero también de la realidad del mundo en el que vivimos.",
+    stack:
+      "Trabajo con TypeScript, Node.js, React, Next.js, Vue.js, C#/.NET y Python, sobre PostgreSQL, SQL Server y MongoDB, con Docker, Vercel AI SDK, LLMs y Zod.",
+  },
+  contact: {
+    title: "Si tu IA escribe en una base de datos real, hablemos.",
+    body: "Busco un puesto de tiempo completo o contrato como ingeniero de sistemas de IA o backend. Remoto desde Perú (UTC-5). Respondo en menos de 24 horas.",
+    email: "Escríbeme",
+    linkedin: "LinkedIn",
+    mailSubject: "Vi tu portafolio",
+  },
+  footer: {
+    copy: "© 2026 roddcode. Todos los derechos reservados.",
+    work: "Trabajo",
+    profile: "Perfil",
+    connect: "Contacto",
+    privacy: "Privacidad",
+    security: "Seguridad",
+    copyEmail: "Copiar email",
+    systems: "Sistemas",
+    openSource: "Open source",
+    cv: "CV",
+    writing: "Writing",
+  },
+  cases: [
+    {
+      id: "booking",
+      tab: "Turnos",
+      crumb: "gate / turnos",
+      result: "blocked",
+      who: "Camila R.",
+      avatar: "/avatars/camila.jpg",
+      meta: "paciente · WhatsApp · sáb 14:58",
+      message:
+        "Mi hija tiene fiebre y necesito el turno del sábado a las 15:00. Si está ocupado, dime cuál me sirve.",
+      typing: "Revisando la agenda contra el calendario…",
+      steps: [
+        { label: "Interpretar la intención", system: "model", state: "done" },
+        {
+          label: "El estado permite la acción",
+          system: "reactive-fsm",
+          state: "done",
+        },
+        {
+          label: "El horario está libre",
+          system: "PostgreSQL",
+          state: "blocked",
+        },
+        {
+          label: "Devolver alternativas reales",
+          system: "policy",
+          state: "done",
+        },
+      ],
+      foot: "Bloqueado en 42 ms",
+      footSub: "3 alternativas, de la misma consulta",
+      reply:
+        "Ese horario ya está ocupado. Tengo sábado 15:30, sábado 16:00 o lunes 09:00. ¿Cuál te sirve?",
+      chip: "bloqueado · slot_taken",
+      chipState: "blocked",
+    },
+    {
+      id: "flight",
+      tab: "Orden de vuelo",
+      crumb: "gate / orden de vuelo",
+      result: "committed",
+      who: "Marco A.",
+      avatar: "/avatars/marco.jpg",
+      meta: "agente de viajes · mesa de agencia",
+      message:
+        "¿Puedes emitir la tarifa de grupo para 9 pax? La oferta vence pronto y después sube 40%.",
+      typing: "Validando el contrato NDC y la tarifa…",
+      steps: [
+        {
+          label: "Validar el contrato NDC 21.3",
+          system: "parser",
+          state: "done",
+        },
+        { label: "Verificar paridad de tarifa", system: "PROS", state: "done" },
+        { label: "Bloquear la oferta", system: "PostgreSQL", state: "done" },
+        {
+          label: "Confirmar con clave de idempotencia",
+          system: "exactly-once",
+          state: "done",
+        },
+      ],
+      foot: "Confirmado en 1.2 s",
+      footSub: "la misma clave devuelve 8F2A",
+      reply:
+        "Listo. La orden 8F2A quedó confirmada para 9 pasajeros a tarifa de grupo.",
+      chip: "confirmado · un recibo",
+      chipState: "committed",
+    },
+    {
+      id: "crm",
+      tab: "Lote de CRM",
+      crumb: "gate / lote de crm",
+      result: "committed",
+      who: "Lucía P.",
+      avatar: "/avatars/lucia.jpg",
+      meta: "operaciones · lote #1042",
+      message:
+        "El lote corrió dos veces y finanzas cierra en dos horas. ¿Puedes dejar un solo reporte?",
+      typing: "Comparando 3.684 filas contra los hashes guardados…",
+      steps: [
+        { label: "Deduplicar por hash", system: "PostgreSQL", state: "done" },
+        {
+          label: "Validar el esquema del payload",
+          system: "zod",
+          state: "done",
+        },
+        {
+          label: "Escribir con una traza por fila",
+          system: "Serilog",
+          state: "done",
+        },
+        { label: "Generar el reporte único", system: "report", state: "done" },
+      ],
+      foot: "Confirmado en 5.0 s",
+      footSub: "la segunda corrida se ignoró",
+      reply:
+        "El lote 1042 quedó cargado: 1.842 leads. La segunda corrida (1.842 filas) se ignoró, así que hay un solo reporte.",
+      chip: "confirmado · 1 reporte",
+      chipState: "committed",
+    },
+  ],
+  systemsList: [
+    {
+      id: "soffia",
+      title: "SoffIA",
+      kind: "Agente de IA para clínicas",
+      reading: "25% a 12%",
+      readingLabel: "inasistencias",
+      period: "2026",
+      discipline: "IA",
+      scope: "Único ingeniero",
+      detail:
+        "Agente de reservas por WhatsApp para clínicas. El modelo interpreta la intención y PostgreSQL decide: revisa el calendario, bloquea la fila y confirma. Funcionó meses en producción sin inventar un turno.",
+      bullets: [
+        "Máquina de 10 estados, con locks de fila e idempotencia antes de cada commit",
+        "OCR de comprobantes con reglas antifraude",
+      ],
+      stack: ["TypeScript", "PostgreSQL", "Docker", "Vercel AI SDK"],
+      image: "/captura-crm-soffia.webp",
+    },
+    {
+      id: "ndc",
+      title: "Air Europa NDC 21.3",
+      kind: "Integración con motor de vuelos",
+      reading: "7",
+      readingLabel: "operaciones en producción, con agencias reales",
+      period: "2026",
+      discipline: "Backend",
+      scope: "Dueño de la integración",
+      detail:
+        "Integración NDC 21.3 de Air Europa dentro de un motor multiproveedor, contra contratos XML escritos a mano. Parseo estricto, falla cerrada ante cualquier desajuste y una traza por orden.",
+      bullets: ["Builders y parsers SOAP/XML a mano contra PROS"],
+      stack: ["C#/.NET 10", "SOAP/XML", "AKS"],
+    },
+    {
+      id: "meteor",
+      title: "METEOR CRM",
+      kind: "CRM empresarial",
+      reading: "169 → 79",
+      readingLabel: "min por proceso",
+      period: "2024–2025",
+      discipline: "Full-stack",
+      detail:
+        "Para Movistar, rediseñé el proceso comercial con los equipos de ventas.",
+      bullets: [
+        "$1.000/mes en licencias eliminadas, retorno en menos de dos meses",
+      ],
+      stack: ["C#/.NET", "Vue.js", "SQL Server"],
+      image: "/meteor-crm-dark.webp",
+    },
+  ],
+};

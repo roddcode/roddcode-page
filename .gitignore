@@ -11,19 +11,20 @@ Thumbs.db
 *.tsbuildinfo
 npm-debug.log*
 pnpm-debug.log*
+
+# Herramientas locales: estado de agentes y capturas, no es código del proyecto
+.atl/
+.kilo/
+.playwright-mcp/
+test-results/
+_drafts/
 src/content/writing/_drafts/
+
+# Componentes y material retirado: se guarda local, no se publica
+_old/
+
+# Documentos privados de trabajo (no se publican)
+claude.md
 status.md
 archive-status.md
-_drafts/
-.atl/
-claude.md
 arquitectura.md
-
-# /lab — playground local: nunca se sube (gate 404 en producción dentro de la página)
-src/app/lab/
-src/components/lab-shell.tsx
-src/components/nav-rail.tsx
-src/components/nav-dots.tsx
-src/components/nav-float.tsx
-
-.playwright-mcp

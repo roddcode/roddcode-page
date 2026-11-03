@@ -23,31 +23,31 @@ export function CodeBlock({
   };
 
   return (
-    <div className="relative group overflow-hidden rounded-sm my-8">
+    <div className="group relative my-8 overflow-hidden border border-line bg-paper-raised">
       <pre ref={preRef} className={cn("overflow-x-auto", className)} {...props}>
         {children}
       </pre>
       <button
         type="button"
         onClick={onCopy}
-        className="absolute right-3 top-3 w-8 h-8 flex items-center justify-center bg-background/50 backdrop-blur-sm border border-border/50 hover:bg-muted/50 rounded-sm opacity-0 group-hover:opacity-100 transition-all text-muted-foreground hover:text-foreground active:scale-95 overflow-hidden"
+        className="absolute top-2 right-2 flex size-8 items-center justify-center border border-line bg-paper-raised text-ink-4 opacity-0 transition-opacity group-hover:opacity-100 hover:text-accent focus-visible:opacity-100"
         aria-label="Copy code"
       >
         <span
           className={cn(
-            "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-            copied ? "scale-100 opacity-100" : "scale-0 opacity-0",
+            "absolute inset-0 flex items-center justify-center transition-opacity duration-200",
+            copied ? "opacity-100" : "opacity-0",
           )}
         >
-          <Check size={14} strokeWidth={1.5} className="text-green-500" />
+          <Check size={14} strokeWidth={1.6} className="text-pass" />
         </span>
         <span
           className={cn(
-            "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-            copied ? "scale-0 opacity-0" : "scale-100 opacity-100",
+            "absolute inset-0 flex items-center justify-center transition-opacity duration-200",
+            copied ? "opacity-0" : "opacity-100",
           )}
         >
-          <Copy size={14} strokeWidth={1.5} />
+          <Copy size={14} strokeWidth={1.6} />
         </span>
       </button>
     </div>

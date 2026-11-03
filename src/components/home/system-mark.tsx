@@ -1,42 +1,40 @@
 import {
-  BracketsCurly,
-  ChartBar,
-  FlowArrow,
-  Pulse,
+  Activity,
+  Braces,
+  ChartColumn,
+  CircleCheck,
+  Database,
+  GitBranch,
   Repeat,
-  Scan,
-  Scales,
+  Scale,
+  ScanLine,
   ShieldCheck,
-} from "@phosphor-icons/react";
+  Workflow,
+} from "lucide-react";
 
-/** SVG oficial a color, servido desde /public/logos (self-hosted, sin runtime). */
-const FILES: Record<string, string> = {
-  PostgreSQL: "postgresql.webp",
-  PROS: "pros.webp",
-  Serilog: "serilog.webp",
-  zod: "zod.svg",
-  Docker: "docker.svg",
-  Redis: "redis.svg",
-  TypeScript: "typescript.svg",
-  Azure: "azure.svg",
-  ".NET": "dotnet.svg",
-  "Next.js": "nextjs.svg",
-  React: "react.svg",
-  GitHub: "github.svg",
-  LinkedIn: "linkedin.svg",
-  "Node.js": "nodejs.svg",
-};
-
+/**
+ * Icono por el TRABAJO que hace el sistema, no por la marca.
+ *
+ * Antes acá se servían logos oficiales desde /public/logos. El problema era
+ * visual: un logo a color de 18px al lado de un icono de línea pesa distinto,
+ * y en una lista de cinco pasos ese contraste rompe el ritmo. Un set único
+ * (Lucide, mismo trazo y tamaño) deja que el texto cargue la jerarquía.
+ *
+ * Además elimina cinco pedidos de imagen en el panel principal.
+ */
 const ICONS = {
-  model: Scan,
-  "reactive-fsm": FlowArrow,
+  model: ScanLine,
+  "reactive-fsm": GitBranch,
   policy: ShieldCheck,
-  parser: BracketsCurly,
-  PROS: Scales,
+  parser: Braces,
+  PostgreSQL: Database,
+  PROS: Scale,
   "exactly-once": Repeat,
-  Serilog: Pulse,
-  report: ChartBar,
-};
+  zod: CircleCheck,
+  Serilog: Activity,
+  report: ChartColumn,
+  sistema: Workflow,
+} as const;
 
 const BOX = {
   width: 20,
@@ -46,35 +44,12 @@ const BOX = {
   flex: "none",
 } as const;
 
-export function BrandLogo({ name, size = 16 }: { name: string; size?: number }) {
-  const file = FILES[name];
-  if (!file) return null;
-
-  return (
-    <img
-      src={`/logos/${file}`}
-      width={size}
-      height={size}
-      alt=""
-      aria-hidden="true"
-      style={{ objectFit: "contain", flex: "none" }}
-    />
-  );
-}
-
 export function SystemMark({ system }: { system: string }) {
-  if (FILES[system]) {
-    return (
-      <span style={BOX}>
-        <BrandLogo name={system} size={18} />
-      </span>
-    );
-  }
+  const Icon = ICONS[system as keyof typeof ICONS] ?? Workflow;
 
-  const Icon = ICONS[system as keyof typeof ICONS] ?? FlowArrow;
   return (
     <span style={BOX}>
-      <Icon size={17} weight="fill" aria-hidden="true" />
+      <Icon size={17} strokeWidth={1.75} aria-hidden="true" />
     </span>
   );
 }

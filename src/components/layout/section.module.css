@@ -1,0 +1,12 @@
+.section {
+  padding-block: var(--section-gap);
+}
+
+.section[data-tone="paper"] {
+  background: var(--color-paper);
+}
+
+.section[data-tone="night"] {
+  background: var(--color-night);
+  color: var(--color-night-ink);
+}

@@ -5,19 +5,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();
 
   const baseUrl = "https://roddcode.com";
+  const now = new Date();
+  const languages = { es: baseUrl, en: `${baseUrl}/en` };
 
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
+      alternates: { languages },
+    },
+    {
+      url: `${baseUrl}/en`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/writing`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/privacidad`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/seguridad`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
   ];
 

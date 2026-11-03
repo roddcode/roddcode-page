@@ -1,7 +1,7 @@
 ---
 title: "Network Asymmetry: Why Your App Needs a Resilience Layer"
 date: "2026-05-18"
-summary: "External APIs fail. A deep dive into exponential backoff, circuit breakers, and graceful degradation in production environments."
+summary: "External APIs fail. Exponential backoff, circuit breakers, and fallback behavior for a clinic's booking system."
 slug: "network-asymmetry"
 themes: [architecture, resilience, production, apis]
 ---
@@ -64,5 +64,3 @@ If you can't answer all four for every external call, your system isn't resilien
 These four answers codified into a single 15-line wrapper. Not because it's complex to write — it's not. But writing it correctly every time, under deadline pressure, is where the errors happen. The primitive is simple. The discipline of applying it consistently is not.
 
 When a patient in Lima tries to book an appointment at 11 PM and the Calendar API is degraded, the system doesn't fail. It degrades. The patient doesn't know. The clinic gets notified. The appointment is confirmed the next morning.
-
-That's the goal. Not uptime. Controlled failure.

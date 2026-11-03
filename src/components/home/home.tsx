@@ -1,17 +1,34 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { CASES, type Case } from "./cases";
-import { SystemMark } from "./system-mark";
-import { SystemsStacked } from "./systems-stacked";
+import { ContourField } from "@/components/home/contour-field/contour-field";
+import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { CaseContent, HomeContent, Locale } from "@/content/home";
+import { SITE } from "@/lib/constants";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import s from "./home.module.css";
+import { LanguageSelector } from "./language-selector";
+import { SystemMark } from "./system-mark";
 
 const STEP_MS = 460;
 
 function Check() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" className={s.ic}>
-      <path d="M3.5 8.4l2.8 2.8 6.2-6.2" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M3.5 8.4l2.8 2.8 6.2-6.2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
     </svg>
   );
 }
@@ -56,30 +73,78 @@ function TabIcon({ id }: { id: string }) {
   if (id === "booking")
     return (
       <svg viewBox="0 0 16 16" aria-hidden="true" className={s.ic}>
-        <rect x="2.5" y="3.5" width="11" height="10" rx="1" fill="none" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <rect
+          x="2.5"
+          y="3.5"
+          width="11"
+          height="10"
+          rx="1"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+        />
+        <path
+          d="M2.5 6.5h11M5.5 2v3M10.5 2v3"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+        />
       </svg>
     );
   if (id === "flight")
     return (
       <svg viewBox="0 0 16 16" aria-hidden="true" className={s.ic}>
-        <path d="M2 9.5l12-5-3.2 8-3.1-2.2L2 9.5z" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <path
+          d="M2 9.5l12-5-3.2 8-3.1-2.2L2 9.5z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+        />
       </svg>
     );
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" className={s.ic}>
-      <ellipse cx="8" cy="4" rx="5.2" ry="2" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M2.8 4v8c0 1.1 2.3 2 5.2 2s5.2-.9 5.2-2V4" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      <ellipse
+        cx="8"
+        cy="4"
+        rx="5.2"
+        ry="2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+      <path
+        d="M2.8 4v8c0 1.1 2.3 2 5.2 2s5.2-.9 5.2-2V4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
     </svg>
   );
 }
 
-export function Home() {
+export function Home({
+  locale,
+  content: t,
+  systems,
+  openSource,
+  experience,
+}: {
+  locale: Locale;
+  content: Pick<
+    HomeContent,
+    "nav" | "hero" | "panel" | "cases" | "contact" | "footer"
+  >;
+  systems: ReactNode;
+  openSource: ReactNode;
+  experience: ReactNode;
+}) {
+  const CASES = t.cases;
+
   const [index, setIndex] = useState(0);
   const [tick, setTick] = useState(0);
   const [copied, setCopied] = useState(false);
   const [navDark, setNavDark] = useState(false);
-  const gridRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const blocks = Array.from(document.querySelectorAll("[data-dark]"));
@@ -99,42 +164,16 @@ export function Home() {
       rootMargin: "-32px 0px -100% 0px",
       threshold: [0, 0.01, 1],
     });
-    blocks.forEach((el) => io.observe(el));
+    for (const el of blocks) {
+      io.observe(el);
+    }
     check();
     return () => io.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = gridRef.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let raf = 0;
-    const move = (e: PointerEvent) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        el.style.setProperty("--my", `${e.clientY - r.top}px`);
-        el.dataset.on = "true";
-      });
-    };
-    const leave = () => {
-      el.dataset.on = "false";
-    };
-
-    window.addEventListener("pointermove", move, { passive: true });
-    document.documentElement.addEventListener("pointerleave", leave);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", move);
-      document.documentElement.removeEventListener("pointerleave", leave);
-    };
-  }, []);
-
   async function copyEmail() {
     try {
-      await navigator.clipboard.writeText("roddcode.dev@gmail.com");
+      await navigator.clipboard.writeText(SITE.email);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1400);
     } catch {
@@ -142,15 +181,19 @@ export function Home() {
     }
   }
   const reduce = useRef(false);
-  const current: Case = CASES[index] ?? CASES[0]!;
+  // biome-ignore lint/style/noNonNullAssertion: el diccionario siempre trae los tres casos
+  const current: CaseContent = CASES[index] ?? CASES[0]!;
   const total = current.steps.length;
   const finished = tick > total;
   const active = tick < total ? tick : -1;
 
   useEffect(() => {
-    reduce.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduce.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: index reinicia la animación al cambiar de caso, aunque el cuerpo no lo lea
   useEffect(() => {
     setTick(0);
     if (reduce.current) {
@@ -158,332 +201,491 @@ export function Home() {
       return;
     }
     const id = window.setInterval(() => {
-      setTick((t) => {
-        if (t > total) {
+      setTick((v) => {
+        if (v > total) {
           window.clearInterval(id);
-          return t;
+          return v;
         }
-        return t + 1;
+        return v + 1;
       });
     }, STEP_MS);
     return () => window.clearInterval(id);
   }, [index, total]);
 
   const pill = useMemo(() => {
-    if (!finished) return { text: "Running", cls: s.pillRun };
+    if (!finished) return { text: t.panel.pill.running, cls: s.pillRun };
     return current.result === "blocked"
-      ? { text: "Blocked", cls: s.pillBlocked }
-      : { text: "Committed", cls: s.pillOk };
-  }, [finished, current.result]);
+      ? { text: t.panel.pill.blocked, cls: s.pillBlocked }
+      : { text: t.panel.pill.committed, cls: s.pillOk };
+  }, [finished, current.result, t.panel.pill]);
 
   return (
-    <section className={s.hero} id="main-content">
-      <div ref={gridRef} className={s.gridFx} aria-hidden="true" />
-
+    <div className={s.page}>
       <header className={`${s.nav} ${navDark ? s.navDark : ""}`}>
-        <div className={s.navInner}>
-          <a className={s.navBrand} href="#">
+        <Container className={s.navRow}>
+          <a className={s.navBrand} href="/">
             roddcode<span className={s.navDot}>.</span>
           </a>
 
           <nav className={s.navLinks} aria-label="Main">
-            <a href="#systems">Systems</a>
-            <a href="#method">Method</a>
-            <a href="/about">About</a>
-            <a href="/writing">Writing</a>
+            <a className={s.navSection} href="#gate-panel">
+              {t.nav.demo}
+            </a>
+            <a className={s.navSection} href="#systems">
+              {t.nav.systems}
+            </a>
+            <a className={s.navSection} href="#experience">
+              {t.nav.trajectory}
+            </a>
+
+            <LanguageSelector locale={locale} labels={t.nav} />
           </nav>
 
-          <a
-            className={s.navCv}
-            href="/cv-alejandro-alvarado.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CV
+          <a className={s.navCta} href={`mailto:${SITE.email}`}>
+            {t.nav.email}
           </a>
 
-          <a className={s.navCta} href="mailto:roddcode.dev@gmail.com">
-            Email
-          </a>
-        </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className={s.navMenuButton}
+                aria-label={t.nav.menu}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className={`${s.navMenuPanel} ${navDark ? s.navMenuPanelDark : ""}`}
+            >
+              <DropdownMenuItem asChild>
+                <a href="#gate-panel">{t.nav.demo}</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#systems">{t.nav.systems}</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#experience">{t.nav.trajectory}</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a
+                  href="/cv-alejandro-alvarado-roddcode.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t.nav.cv}
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel className="sr-only">
+                {t.nav.language}
+              </DropdownMenuLabel>
+              <DropdownMenuItem asChild>
+                <a
+                  href={`/api/locale?to=${locale === "es" ? "en" : "es"}`}
+                  hrefLang={locale === "es" ? "en" : "es"}
+                >
+                  {locale === "es" ? t.nav.english : t.nav.spanish}
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Container>
       </header>
 
-      <div className={s.inner}>
-        <p className={s.byline}>
-          <span className={s.bylineName}>Alejandro Alvarado</span>
-          <span className={s.bylineRole}>AI &amp; Software Engineer</span>
-        </p>
+      <main id="main-content">
+        <Section tone="paper" className={s.heroSection}>
+          <ContourField
+            palette="paper"
+            maxDpr={1.5}
+            className={s.heroContour}
+          />
+          <Container className={s.heroInner}>
+            <p className={s.byline}>
+              <img
+                className={s.bylineAvatar}
+                src="/alejandro.webp"
+                alt=""
+                width={40}
+                height={40}
+              />
+              <span className={s.bylineName}>Alejandro Alvarado</span>
+              <span className={s.bylineRole}>{t.hero.role}</span>
+            </p>
 
-        <h1 className={s.title}>
-          <span className={s.titleSoft}>The model proposes.</span>
-          <br />
-          The database decides<span className={s.titleDot}>.</span>
-        </h1>
-
-        <p className={s.sub}>
-          I build the deterministic control layer between LLMs and transactional
-          systems: bookings, payments, customer state. TypeScript, C#/.NET,
-          PostgreSQL.
-        </p>
-
-        <div className={s.ctas}>
-          <a className={s.btnPrimary} href="#systems">
-            See the systems
-          </a>
-          <a className={s.btnGhost} href="mailto:roddcode.dev@gmail.com">
-            Email me
-          </a>
-          <p className={s.avail}>
-            <i className={s.availDot} />
-            Open to full-time &amp; contract · Remote · UTC-5
-          </p>
-        </div>
-
-        <div className={s.panel} role="group" aria-label={`Example: ${current.crumb}`}>
-          <div className={s.top}>
-            <span className={s.brand}>gate</span>
-            <span className={s.crumb}>
-              <span className={s.sep}>/</span>
-              <b>{current.id}</b>
-            </span>
-            <span className={`${s.pill} ${pill.cls}`} aria-live="polite">
-              <i className={s.dot} />
-              {pill.text}
-            </span>
-          </div>
-
-          <div className={s.body}>
-            <div className={s.left}>
-              <div className={s.who}>
-                <span className={s.avatar} aria-hidden="true">
-                  <img
-                    className={s.avatarImg}
-                    src={current.avatar}
-                    alt=""
-                    width={38}
-                    height={38}
-                  />
+            <h1 className={s.title}>
+              <span className={s.titleLine}>
+                <span className={`${s.titleLineInner} ${s.titleSoft}`}>
+                  {t.hero.h1a}
                 </span>
-                <span className={s.ident}>
-                  <b>{current.who}</b>
-                  <span>{current.meta}</span>
-                </span>
-              </div>
+              </span>
+              <span className={s.titleLine}>
+                <span className={s.titleLineInner}>{t.hero.h1b}.</span>
+              </span>
+            </h1>
 
-              <div key={current.id} className={s.bubble}>
-                <p>{current.message}</p>
-              </div>
+            <p className={s.sub}>{t.hero.sub}</p>
 
-              {!finished && (
-                <div className={s.typing}>
-                  <span className={s.spinnerSm} />
-                  {current.typing}
-                </div>
-              )}
-
-              <div className={`${s.reply} ${finished ? s.replyOn : ""}`}>
-                <span className={s.by}>
-                  <span className={s.avatarAi} aria-hidden="true">
-                    <svg viewBox="0 0 24 24" className={s.markAi}>
-                      <path
-                        d="M12 1.5 A13 13 0 0 0 22.5 12 A13 13 0 0 0 12 22.5 A13 13 0 0 0 1.5 12 A13 13 0 0 0 12 1.5 Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </span>
-                  system
-                  <span className={s.badge}>gate</span>
-                </span>
-                <div className={s.bubbleAi}>
-                  <p>{current.reply}</p>
-                  <span
-                    className={`${s.chip} ${
-                      current.chipState === "blocked" ? s.chipBlocked : s.chipOk
-                    }`}
-                  >
-                    {current.chipState === "blocked" ? <Cross /> : <Check />}
-                    {current.chip}
-                  </span>
-                </div>
-              </div>
+            <div className={s.ctas}>
+              <a className={s.btnPrimary} href={`mailto:${SITE.email}`}>
+                {t.hero.ctaEmail}
+              </a>
+              <a className={s.btnGhost} href="#systems">
+                {t.hero.ctaSystems}
+              </a>
+              <p className={s.avail}>
+                <i className={s.availDot} />
+                {t.hero.avail}
+              </p>
             </div>
 
-            <div className={s.steps}>
-              <div className={s.stepsHead}>
-                <b>{current.id === "crm" ? "Batch run" : "Action"}</b>
-              </div>
-
-              <ol className={s.list}>
-                {current.steps.map((step, i) => {
-                  const state =
-                    i < tick
-                      ? step.state
-                      : i === active
-                        ? "running"
-                        : "pending";
-                  return (
-                    <li key={step.label} className={`${s.step} ${s[state]}`}>
-                      <span className={s.mark}>
-                        {state === "running" ? (
-                          <span className={s.spinner} />
-                        ) : state === "blocked" ? (
-                          <Cross />
-                        ) : state === "done" ? (
-                          <Check />
-                        ) : (
-                          <span className={s.hollow} />
-                        )}
-                      </span>
-                      <span className={s.label}>{step.label}</span>
-                      <span className={s.system}>
-                        <SystemMark system={step.system} />
-                        {step.system}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ol>
-
-              <div className={`${s.foot} ${finished ? s.footOn : ""}`}>
-                <b>
-                  <i
-                    className={`${s.dot} ${
-                      current.result === "blocked" ? s.dotBlocked : s.dotOk
-                    }`}
-                  />
-                  {current.foot}
-                </b>
-                <span>{current.footSub}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={s.tabs} role="group" aria-label="Try another case">
-          <span className={s.tabsCap}>Try another case</span>
-          {CASES.map((c, i) => (
-            <button
-              key={c.id}
-              type="button"
-              className={`${s.tab} ${i === index ? s.tabOn : ""}`}
-              aria-pressed={i === index}
-              onClick={() => setIndex(i)}
+            <div
+              className={s.panel}
+              id="gate-panel"
+              role="tabpanel"
+              aria-labelledby={`gate-tab-${current.id}`}
             >
-              <TabIcon id={c.id} />
-              {c.tab}
-            </button>
-          ))}
-        </div>
-      </div>
+              <div className={s.top}>
+                <span className={s.brand}>{t.panel.brand}</span>
+                <span className={s.crumb}>
+                  <svg className={s.sep} viewBox="0 0 12 12" aria-hidden="true">
+                    <path
+                      d="M4.5 2.5L8 6l-3.5 3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <b>{current.id}</b>
+                </span>
+                <span className={`${s.pill} ${pill.cls}`} aria-live="polite">
+                  <i className={s.dot} />
+                  {pill.text}
+                </span>
+              </div>
 
-      <section className={s.systems} id="systems" data-dark>
-        <div className={s.systemsInner}>
-          <h2 className={s.systemsTitle}>
-            Three systems where a failure cost money.
-          </h2>
+              <div className={s.body}>
+                <div className={s.left}>
+                  <div className={s.who}>
+                    <span className={s.avatar} aria-hidden="true">
+                      <img
+                        className={s.avatarImg}
+                        src={current.avatar}
+                        alt=""
+                        width={38}
+                        height={38}
+                      />
+                    </span>
+                    <span className={s.ident}>
+                      <b>{current.who}</b>
+                      <span>{current.meta}</span>
+                    </span>
+                  </div>
 
-          
+                  <div key={current.id} className={s.bubble}>
+                    <p>{current.message}</p>
+                  </div>
 
-          <SystemsStacked />
-        </div>
-      </section>
+                  {!finished && (
+                    <div className={s.typing}>
+                      <span className={s.spinnerSm} />
+                      {current.typing}
+                    </div>
+                  )}
 
-      <div className={s.aboutWrap}>
-        <section className={s.about} id="about">
-          <div className={s.aboutRail}>
-            <span className={s.sectionIndex}>05</span>
-            <span className={s.sectionLabel}>About</span>
-          </div>
+                  <div className={`${s.reply} ${finished ? s.replyOn : ""}`}>
+                    <span className={s.by}>
+                      <span className={s.avatarAi} aria-hidden="true">
+                        <svg
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          className={s.markAi}
+                        >
+                          <path
+                            d="M12 1.5 A13 13 0 0 0 22.5 12 A13 13 0 0 0 12 22.5 A13 13 0 0 0 1.5 12 A13 13 0 0 0 12 1.5 Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      {t.panel.system}
+                      <span className={s.badge}>{t.panel.brand}</span>
+                    </span>
+                    <div className={s.bubbleAi}>
+                      <p>{current.reply}</p>
+                      <span
+                        className={`${s.chip} ${
+                          current.chipState === "blocked"
+                            ? s.chipBlocked
+                            : s.chipOk
+                        }`}
+                      >
+                        {current.chipState === "blocked" ? (
+                          <Cross />
+                        ) : (
+                          <Check />
+                        )}
+                        {current.chip}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-          <div className={s.aboutBody}>
-            <p className={s.aboutLede}>
-              I studied physics before I wrote software. What kept me here is
-              what pulled me in: a result doesn&rsquo;t negotiate.
-            </p>
-            <p>
-              A model can be wrong in interesting ways. A booking can&rsquo;t. So
-              I build the line where the model stops and the database decides,
-              and I make that line dull enough to trust.
-            </p>
-            <p>
-              I&rsquo;m Alejandro. I write the layer that lets the clever layer
-              be wrong safely.
-            </p>
-            <a className={s.aboutLink} href="/about">
-              Read the full version <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        </section>
-      </div>
+                <div className={s.steps}>
+                  <div className={s.stepsHead}>
+                    <b>
+                      {current.id === "crm" ? t.panel.batchRun : t.panel.action}
+                    </b>
+                  </div>
+
+                  <ol className={s.list}>
+                    {current.steps.map((step, i) => {
+                      const state =
+                        i < tick
+                          ? step.state
+                          : i === active
+                            ? "running"
+                            : "pending";
+                      return (
+                        <li
+                          key={step.label}
+                          className={`${s.step} ${s[state]}`}
+                        >
+                          <span className={s.mark}>
+                            {state === "running" ? (
+                              <span className={s.spinner} />
+                            ) : state === "blocked" ? (
+                              <Cross />
+                            ) : state === "done" ? (
+                              <Check />
+                            ) : (
+                              <span className={s.hollow} />
+                            )}
+                          </span>
+                          <span className={s.label}>{step.label}</span>
+                          <span className={s.system}>
+                            <SystemMark system={step.system} />
+                            {step.system}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ol>
+
+                  <div className={`${s.foot} ${finished ? s.footOn : ""}`}>
+                    <b>
+                      <i
+                        className={`${s.dot} ${
+                          current.result === "blocked" ? s.dotBlocked : s.dotOk
+                        }`}
+                      />
+                      {current.foot}
+                    </b>
+                    <span>{current.footSub}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={s.tabs}>
+              <span className={s.tabsCap} aria-hidden="true">
+                {t.panel.tryAnother}
+              </span>
+              <div
+                className={s.tabList}
+                role="tablist"
+                aria-label={t.panel.tryAnother}
+              >
+                {CASES.map((c, i) => (
+                  <button
+                    key={c.id}
+                    id={`gate-tab-${c.id}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === index}
+                    aria-controls="gate-panel"
+                    tabIndex={i === index ? 0 : -1}
+                    className={`${s.tab} ${i === index ? s.tabOn : ""}`}
+                    onClick={() => setIndex(i)}
+                    onKeyDown={(event) => {
+                      const next = {
+                        ArrowRight: (i + 1) % CASES.length,
+                        ArrowLeft: (i - 1 + CASES.length) % CASES.length,
+                        Home: 0,
+                        End: CASES.length - 1,
+                      }[event.key];
+                      if (next === undefined) return;
+                      event.preventDefault();
+                      setIndex(next);
+                      const tabs =
+                        event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
+                          '[role="tab"]',
+                        );
+                      tabs?.[next]?.focus();
+                    }}
+                  >
+                    <TabIcon id={c.id} />
+                    {c.tab}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </Section>
+
+        {systems}
+        {openSource}
+        {experience}
+
+        <Section
+          id="contact"
+          tone="night"
+          dark
+          ariaLabel={t.footer.connect}
+          className={s.contact}
+        >
+          <ContourField
+            palette="night"
+            mask="ellipse"
+            maxDpr={1.5}
+            className={s.contactField}
+          />
+          <Container className={s.contactInner}>
+            <h2 className={s.contactTitle}>{t.contact.title}</h2>
+            <p className={s.contactBody}>{t.contact.body}</p>
+
+            <div className={s.contactActions}>
+              <a
+                className={`${s.btnPrimary} ${s.contactBtn}`}
+                href={`mailto:${SITE.email}?subject=${encodeURIComponent(t.contact.mailSubject)}`}
+              >
+                {t.contact.email}
+              </a>
+              <a
+                className={`${s.btnGhost} ${s.contactGhost}`}
+                href={SITE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.contact.linkedin}
+                <svg
+                  viewBox="0 0 12 12"
+                  aria-hidden="true"
+                  className={s.contactGhostIcon}
+                >
+                  <path
+                    d="M3.5 8.5L8.5 3.5M8.5 3.5H4.7M8.5 3.5V7.3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+            </div>
+          </Container>
+        </Section>
+      </main>
 
       <footer className={s.footer} data-dark>
-        <div className={s.footerInner}>
+        <Container className={s.footerGrid}>
           <div className={s.footerBrand}>
             <span className={s.footerLogo}>roddcode.</span>
-            <p className={s.footerCopy}>
-              © 2026 roddcode. All rights reserved.
+            <p className={s.footerTagline}>
+              {t.hero.h1a} {t.hero.h1b}.
             </p>
             <button
               type="button"
               className={`${s.footerMail} ${copied ? s.footerMailCopied : ""}`}
               onClick={copyEmail}
+              aria-label={t.footer.copyEmail}
+              title={t.footer.copyEmail}
             >
-              {copied ? "copied ✓" : "roddcode.dev@gmail.com"}
+              {SITE.email}
+              <span className={s.copyIcon} aria-hidden="true">
+                {copied ? <Check /> : <CopyIcon />}
+              </span>
             </button>
           </div>
 
           <nav className={s.footerCols} aria-label="Footer">
             <div className={s.col}>
-              <h4>Work</h4>
+              <h2>{t.footer.work}</h2>
               <ul>
-                <li><a href="#systems">Systems</a></li>
-                <li><a href="#method">Method</a></li>
-                <li><a href="/writing">Writing</a></li>
+                <li>
+                  <a href="#systems">{t.footer.systems}</a>
+                </li>
+                <li>
+                  <a href="#open-source">{t.footer.openSource}</a>
+                </li>
               </ul>
             </div>
             <div className={s.col}>
-              <h4>Profile</h4>
+              <h2>{t.footer.profile}</h2>
               <ul>
-                <li><a href="/about">About</a></li>
-                <li><a href="/cv-alejandro-alvarado.pdf" target="_blank" rel="noopener noreferrer">CV</a></li>
-                <li><a href="/consulting">Consulting</a></li>
+                <li>
+                  <a
+                    href="/cv-alejandro-alvarado-roddcode.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t.footer.cv}
+                  </a>
+                </li>
+                <li>
+                  <a href="/writing">{t.footer.writing}</a>
+                </li>
               </ul>
             </div>
             <div className={s.col}>
-              <h4>Connect</h4>
+              <h2>{t.footer.connect}</h2>
               <ul>
-                <li><a href="https://github.com/roddcode" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-                <li><a href="https://www.linkedin.com/in/alejandro-alvarado-roddcode/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li>
+                  <a
+                    href="https://github.com/roddcode"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/alejandro-alvarado-roddcode/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
                 <li>
                   <a
                     href="https://www.npmjs.com/~roddcode"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >NPM</a>
+                  >
+                    NPM
+                  </a>
                 </li>
-                <li><a href="mailto:roddcode.dev@gmail.com">Email</a></li>
-                <li><a href="/feed.xml">RSS</a></li>
               </ul>
             </div>
           </nav>
-        </div>
+        </Container>
 
-        <div className={s.footerBar}>
-          <p className={s.signature}>
-            State is physics. <span>Prompts are weather.</span>
-          </p>
+        <Container className={s.footerBar}>
+          <p className={s.footerCopy}>{t.footer.copy}</p>
           <div className={s.footerMeta}>
-            <a href="/privacidad">Privacy</a>
-            <a href="/.well-known/security.txt">Security</a>
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              Back to top <span className={s.arrow}>↑</span>
-            </button>
+            <a href="/privacidad">{t.footer.privacy}</a>
+            <a href="/seguridad">{t.footer.security}</a>
           </div>
-        </div>
+        </Container>
       </footer>
-    </section>
+    </div>
   );
 }

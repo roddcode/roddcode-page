@@ -1,49 +1,7 @@
+import { getContent } from "@/content/home";
 import { SITE } from "@/lib/constants";
 
 type FaqEntry = { question: string; answer: string };
-
-const person = {
-  "@type": "Person",
-  "@id": `${SITE.url}/#person`,
-  name: SITE.author,
-  url: SITE.url,
-  jobTitle: "Ingeniero de software",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Lima",
-    addressCountry: "PE",
-  },
-  sameAs: [SITE.github, SITE.linkedin],
-  knowsAbout: [
-    "Sistemas de IA deterministas",
-    "TypeScript",
-    "React",
-    "Next.js",
-    ".NET",
-    "SQL Server",
-    "Integraciones ERP y CRM",
-  ],
-};
-
-const website = {
-  "@type": "WebSite",
-  "@id": `${SITE.url}/#website`,
-  name: "roddcode",
-  url: SITE.url,
-  inLanguage: "es",
-  publisher: { "@id": `${SITE.url}/#person` },
-};
-
-const service = {
-  "@type": "ProfessionalService",
-  "@id": `${SITE.url}/#service`,
-  name: "roddcode",
-  url: SITE.url,
-  description: SITE.description,
-  founder: { "@id": `${SITE.url}/#person` },
-  areaServed: ["Perú", "España", "Latinoamérica"],
-  sameAs: [SITE.github, SITE.linkedin],
-};
 
 function JsonLdScript({ data }: { data: unknown }) {
   return (
@@ -55,7 +13,65 @@ function JsonLdScript({ data }: { data: unknown }) {
   );
 }
 
-export function JsonLd() {
+export function JsonLd({ locale }: { locale: string }) {
+  const t = getContent(locale);
+  const isEs = locale === "es";
+
+  const person = {
+    "@type": "Person",
+    "@id": `${SITE.url}/#person`,
+    name: SITE.author,
+    url: SITE.url,
+    jobTitle: t.hero.role,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Lima",
+      addressCountry: "PE",
+    },
+    sameAs: [SITE.github, SITE.linkedin],
+    knowsAbout: isEs
+      ? [
+          "Sistemas de IA deterministas",
+          "TypeScript",
+          "React",
+          "Next.js",
+          ".NET",
+          "SQL Server",
+          "Integraciones ERP y CRM",
+        ]
+      : [
+          "Deterministic AI systems",
+          "TypeScript",
+          "React",
+          "Next.js",
+          ".NET",
+          "SQL Server",
+          "ERP and CRM integrations",
+        ],
+  };
+
+  const website = {
+    "@type": "WebSite",
+    "@id": `${SITE.url}/#website`,
+    name: "roddcode",
+    url: isEs ? SITE.url : `${SITE.url}/en`,
+    inLanguage: locale,
+    publisher: { "@id": `${SITE.url}/#person` },
+  };
+
+  const service = {
+    "@type": "ProfessionalService",
+    "@id": `${SITE.url}/#service`,
+    name: "roddcode",
+    url: isEs ? SITE.url : `${SITE.url}/en`,
+    description: t.hero.sub,
+    founder: { "@id": `${SITE.url}/#person` },
+    areaServed: isEs
+      ? ["Perú", "España", "Latinoamérica"]
+      : ["Peru", "Spain", "Latin America"],
+    sameAs: [SITE.github, SITE.linkedin],
+  };
+
   return (
     <JsonLdScript
       data={{

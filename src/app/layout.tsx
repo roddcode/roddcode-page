@@ -1,9 +1,12 @@
+import { OG_ALT } from "@/app/og/alt";
 import { JsonLd } from "@/components/json-ld";
+import { getContent } from "@/content/home";
 import { SITE } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
-import { EB_Garamond, Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { getLocale } from "next-intl/server";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,47 +21,75 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const ebGaramond = EB_Garamond({
-  subsets: ["latin"],
-  variable: "--font-eb-garamond",
-  display: "optional",
-  preload: false,
-  weight: ["400", "500", "600"],
-});
-
-export const metadata: Metadata = {
-  title: SITE.title,
-  description: SITE.description,
-  metadataBase: new URL(SITE.url),
-  openGraph: {
-    type: "website",
-    locale: "es_ES",
-    siteName: "RoddCode",
-    title: SITE.title,
-    description: SITE.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE.title,
-    description: SITE.description,
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F7F5F0" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1411" },
+  ],
 };
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getContent(locale);
+  const title = `Alejandro Alvarado · ${t.hero.role}`;
+  const description = t.hero.sub;
+
+  return {
+    title,
+    description,
+    metadataBase: new URL(SITE.url),
+    alternates: {
+      canonical: locale === "es" ? "/" : "/en",
+      languages: { es: "/", en: "/en" },
+    },
+    openGraph: {
+      type: "website",
+      locale: locale === "es" ? "es_ES" : "en_US",
+      siteName: "RoddCode",
+      title,
+      description,
+      images: [
+        {
+          url: locale === "es" ? "/og/es" : "/og/en",
+          width: 1200,
+          height: 630,
+          alt: OG_ALT[locale === "es" ? "es" : "en"],
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [
+        {
+          url: locale === "es" ? "/og/es" : "/og/en",
+          alt: OG_ALT[locale === "es" ? "es" : "en"],
+        },
+      ],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
   return (
     <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} dark`}
+      lang={locale}
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased relative">
+      <body className="relative min-h-screen bg-paper font-sans text-ink antialiased">
         <noscript>
           <style
             // biome-ignore lint/security/noDangerouslySetInnerHtml: rescate estático para navegación sin JS
@@ -68,13 +99,7 @@ export default function RootLayout({
             }}
           />
         </noscript>
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:rounded-sm"
-        >
-          Saltar al contenido
-        </a>
-        <JsonLd />
+        <JsonLd locale={locale} />
         <SpeedInsights />
         <Analytics />
         {children}

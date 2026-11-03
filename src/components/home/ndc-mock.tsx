@@ -1,11 +1,12 @@
+import type { NdcContent } from "@/content/home/types";
 import s from "./home.module.css";
 
-export function NdcMock() {
+export function NdcMock({ t }: { t: NdcContent }) {
   return (
     <div className={s.ndc}>
       <div className={s.ndcBlock}>
-        <span className={s.ndcLabel}>Search</span>
-        <p className={s.ndcTitle}>An agency looks for a flight</p>
+        <span className={s.ndcLabel}>{t.search}</span>
+        <p className={s.ndcTitle}>{t.searchTitle}</p>
       </div>
 
       <div className={s.ndcArrow} aria-hidden="true">
@@ -13,8 +14,8 @@ export function NdcMock() {
       </div>
 
       <div className={s.ndcBlock}>
-        <span className={s.ndcLabel}>Engine</span>
-        <p className={s.ndcTitle}>12 providers in parallel</p>
+        <span className={s.ndcLabel}>{t.engine}</span>
+        <p className={s.ndcTitle}>{t.engineTitle}</p>
         <div className={s.ndcChips}>
           <span>XML</span>
           <span>SOAP</span>
@@ -27,15 +28,8 @@ export function NdcMock() {
       </div>
 
       <div className={`${s.ndcBlock} ${s.ndcBlockOn}`}>
-        <span className={s.ndcLabelOn}>Air Europa · NDC 21.3</span>
-        <p className={s.ndcTitle}>
-          Seven operations, without breaking production
-        </p>
-        <p className={s.ndcOps}>
-          AirShopping · OfferPrice · OrderCreate · OrderRetrieve ·
-          OrderChange · OrderCancel · UpSell — against PROS.
-        </p>
-        <p className={s.ndcOk}>✓ in production, with real agencies</p>
+        <span className={s.ndcLabelOn}>{t.opsLabel}</span>
+        <p className={s.ndcOps}>{t.ops}</p>
       </div>
     </div>
   );
