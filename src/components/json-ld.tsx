@@ -1,4 +1,4 @@
-import { getContent } from "@/content/home";
+import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
 
 type FaqEntry = { question: string; answer: string };
@@ -14,7 +14,7 @@ function JsonLdScript({ data }: { data: unknown }) {
 }
 
 export function JsonLd({ locale }: { locale: string }) {
-  const t = getContent(locale);
+  const { identity } = getPortfolio(locale);
   const isEs = locale === "es";
 
   const person = {
@@ -22,7 +22,7 @@ export function JsonLd({ locale }: { locale: string }) {
     "@id": `${SITE.url}/#person`,
     name: SITE.author,
     url: SITE.url,
-    jobTitle: t.hero.role,
+    jobTitle: identity.role,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Lima",
@@ -59,24 +59,11 @@ export function JsonLd({ locale }: { locale: string }) {
     publisher: { "@id": `${SITE.url}/#person` },
   };
 
-  const service = {
-    "@type": "ProfessionalService",
-    "@id": `${SITE.url}/#service`,
-    name: "roddcode",
-    url: isEs ? SITE.url : `${SITE.url}/en`,
-    description: t.hero.sub,
-    founder: { "@id": `${SITE.url}/#person` },
-    areaServed: isEs
-      ? ["Perú", "España", "Latinoamérica"]
-      : ["Peru", "Spain", "Latin America"],
-    sameAs: [SITE.github, SITE.linkedin],
-  };
-
   return (
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
-        "@graph": [person, website, service],
+        "@graph": [person, website],
       }}
     />
   );

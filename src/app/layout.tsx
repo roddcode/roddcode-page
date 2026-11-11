@@ -1,6 +1,6 @@
 import { OG_ALT } from "@/app/og/alt";
 import { JsonLd } from "@/components/json-ld";
-import { getContent } from "@/content/home";
+import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -33,9 +33,9 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
-  const t = getContent(locale);
-  const title = `Alejandro Alvarado · ${t.hero.role}`;
-  const description = t.hero.sub;
+  const { identity } = getPortfolio(locale);
+  const title = `${identity.name} · ${identity.role}`;
+  const description = identity.intro;
 
   return {
     title,
@@ -100,8 +100,8 @@ export default async function RootLayout({
           />
         </noscript>
         <JsonLd locale={locale} />
-        <SpeedInsights />
-        <Analytics />
+        {process.env.VERCEL === "1" && <SpeedInsights />}
+        {process.env.VERCEL === "1" && <Analytics />}
         {children}
       </body>
     </html>

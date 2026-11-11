@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { getPortfolio } from "@/content/portfolio";
 import { ImageResponse } from "next/og";
 
 /**
@@ -17,15 +18,6 @@ const NIGHT_MUTED = "#adb4ae";
 const ACCENT_NIGHT = "#5b9bff";
 
 type Lang = "es" | "en";
-
-const COPY: Record<Lang, { thesis: string }> = {
-  es: {
-    thesis: "Sistemas con IA que no fallan cuando hay dinero en juego.",
-  },
-  en: {
-    thesis: "AI systems that don’t fail when money is at stake.",
-  },
-};
 
 type Assets = {
   fonts: Awaited<ReturnType<typeof loadAssets>>["fonts"];
@@ -70,7 +62,7 @@ async function loadAssets() {
 }
 
 export async function ogImage(lang: Lang) {
-  const t = COPY[lang];
+  const { identity } = getPortfolio(lang);
   assets ??= loadAssets();
   const { fonts, contour } = await assets;
 
@@ -135,7 +127,7 @@ export async function ogImage(lang: Lang) {
             color: NIGHT_MUTED,
           }}
         >
-          {t.thesis}
+          {`${identity.name} · ${identity.role}. ${identity.intro}`}
         </span>
       </div>
     </div>,

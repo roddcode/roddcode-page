@@ -1,5 +1,7 @@
+import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
 import { getAllPosts } from "@/lib/mdx";
+import { pathFor } from "@/lib/paths";
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -50,5 +52,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...postPages];
+  const portfolioPages: MetadataRoute.Sitemap = (["es", "en"] as const).flatMap(
+    (locale) =>
+      [
+        "/work",
+        "/open-source",
+        "/about",
+        ...getPortfolio(locale).projects.map(
+          (project) => `/work/${project.slug}`,
+        ),
+      ].map((path) => ({
+        url: new URL(pathFor(locale, path), baseUrl).href,
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+        alternates: {
+          languages: {
+            es: new URL(pathFor("es", path), baseUrl).href,
+            en: new URL(pathFor("en", path), baseUrl).href,
+          },
+        },
+      })),
+  );
+  return [...staticPages, ...portfolioPages, ...postPages];
 }

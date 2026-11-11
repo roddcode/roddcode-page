@@ -1,7 +1,7 @@
 export const SITE = {
-  title: "Sistemas con IA que no fallan cuando hay dinero en juego | roddcode",
+  title: "Alejandro Alvarado · Backend & AI Engineer",
   description:
-    "Auditoría e ingeniería de sistemas con IA para negocios transaccionales en LATAM y España. El modelo propone, la base de datos decide.",
+    "Agentes de IA, APIs e integraciones para procesos empresariales.",
   url: "https://www.roddcode.com",
   author: "Alejandro Alvarado",
   location: "Lima, PE",

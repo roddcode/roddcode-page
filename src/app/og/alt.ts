@@ -5,8 +5,8 @@
  * la lectura de fuentes ni el motor de imagen al árbol del servidor.
  */
 export const OG_ALT = {
-  es: "roddcode — El modelo propone. La base de datos decide.",
-  en: "roddcode — The model proposes. The database decides.",
+  es: "Alejandro Alvarado · Backend & AI Engineer. Agentes de IA, APIs e integraciones.",
+  en: "Alejandro Alvarado · Backend & AI Engineer. AI agents, APIs and integrations.",
 } as const;
 
 export type OgLang = keyof typeof OG_ALT;
