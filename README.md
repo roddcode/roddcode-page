@@ -1,6 +1,6 @@
 # roddcode.com
 
-Personal site of Alejandro Alvarado, AI and software engineer. Spanish is canonical, English is a mirror at `/en`.
+Personal site of Alejandro Alvarado. A professional portfolio refactor is in progress; its positioning is Backend & AI Engineer. Spanish is canonical, English is a mirror at `/en`. Existing essays remain in English at `/writing`.
 
 ## Stack
 
@@ -48,4 +48,17 @@ public/logos/companies/  employer logos
 tests/                   layout contract
 ```
 
-Design decisions live in `DESIGN.md`. Copy rules, metrics and the visual system are documented there; if the code and that file disagree, the code is right.
+## Project documentation
+
+| Document | Responsibility |
+|---|---|
+| [AGENTS.md](AGENTS.md) | Agent entry point, limits and reading map |
+| [PROJECT_SPEC.md](PROJECT_SPEC.md) | Accepted product scope and open visual direction |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Current implementation and the proposed transition |
+| [DESIGN.md](DESIGN.md) | Visual system; historical layout descriptions are being reconciled with the refactor |
+| [DECISIONS.md](DECISIONS.md) | Decisions and their acceptance state |
+| [ROADMAP.md](ROADMAP.md) | Selected outcomes and sequence |
+| [BACKLOG.md](BACKLOG.md) | Missing case details and evidence |
+| [EVALS.md](EVALS.md) | Verification contract and observed baseline |
+
+The user’s current instructions take precedence over historical documentation. Code describes what exists; it does not automatically override the intended product or accepted design.
