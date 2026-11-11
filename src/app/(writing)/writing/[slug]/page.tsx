@@ -227,9 +227,7 @@ export default async function PostPage(props: {
             <p className="m-0 text-[14px] font-semibold text-ink">
               Alejandro Alvarado
             </p>
-            <p className="m-0 text-[13px] text-ink-3">
-              The model proposes. The database decides.
-            </p>
+            <p className="m-0 text-[13px] text-ink-3">Backend & AI Engineer.</p>
           </div>
         </footer>
       </article>

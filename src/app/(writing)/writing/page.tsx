@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Writing | roddcode",
   description:
-    "Long-form notes on deterministic AI systems: state, contracts, and the parts of production software that cannot fail.",
+    "Notes on AI systems, backend architecture, contracts and production failures.",
   alternates: { canonical: "/writing" },
 };
 
@@ -25,8 +25,8 @@ export default function WritingIndex() {
         Writing
       </h1>
       <p className="mt-5 mb-14 max-w-[58ch] text-[17px] leading-[1.6] text-ink-2">
-        Long-form notes on deterministic AI systems: state, contracts, and the
-        parts of production software that cannot fail.
+        Notes on AI systems, backend architecture, contracts and production
+        failures.
       </p>
 
       <ul className="m-0 flex list-none flex-col p-0">
