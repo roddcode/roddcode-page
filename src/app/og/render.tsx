@@ -127,7 +127,7 @@ export async function ogImage(lang: Lang) {
             color: NIGHT_MUTED,
           }}
         >
-          {`${identity.name} · ${identity.role}. ${identity.intro}`}
+          {`${identity.name} · ${identity.role}. ${identity.headline}`}
         </span>
       </div>
     </div>,

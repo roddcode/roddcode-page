@@ -1,0 +1,25 @@
+## WhatsApp support and bookings
+
+I built SoffIA as a CoreOS product for handling enquiries and bookings in clinics. It was used at an aesthetic clinic in 2026. The work connected WhatsApp conversations to a booking calendar and a multi-tenant operations panel.
+
+## What I built
+
+I implemented the application in TypeScript, Next.js and PostgreSQL. The orchestration enables tools according to the conversation state: checking availability, proposing a time and creating a booking each have different conditions.
+
+The backend validates scheduling rules before saving an appointment. Conflicts over the same slot and retries require database-level control, with conditional writes and locks depending on the operation. A state machine helps order the dialogue; authorization and persistence remain server responsibilities.
+
+I used reactive-fsm to control tool availability. The reviewed product code pins version 1.4.0. My exactly-once library addresses retries and commits, but it is not part of SoffIA's verified package usage.
+
+## An overly strict validator
+
+The worker rejected a historical tenant identifier because its UUID validation was too strict. I corrected the validation to preserve the identifier and accept its canonical representation, then added regression checks for the formats involved.
+
+## Results at one clinic
+
+The clinic's internal record reports response time dropping from 47 minutes to under 10 seconds and no-shows from 25% to 12%. The results apply to that clinic’s operation during that period.
+
+## Try booking control
+
+This illustration runs in the browser with test data. You can try an available or occupied slot and repeat a request to see the same receipt. It does not connect to WhatsApp or the product, and does not establish real concurrency or persistence guarantees.
+
+<BookingDemo />

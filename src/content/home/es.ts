@@ -271,7 +271,7 @@ export const es: HomeContent = {
         "OCR de comprobantes con reglas antifraude",
       ],
       stack: ["TypeScript", "PostgreSQL", "Docker", "Vercel AI SDK"],
-      image: "/captura-crm-soffia.webp",
+      image: "/work/soffia-panel-redacted.webp",
     },
     {
       id: "ndc",
@@ -301,7 +301,7 @@ export const es: HomeContent = {
         "$1.000/mes en licencias eliminadas, retorno en menos de dos meses",
       ],
       stack: ["C#/.NET", "Vue.js", "SQL Server"],
-      image: "/meteor-crm-dark.webp",
+      image: "/work/meteor-crm-redacted.webp",
     },
   ],
 };

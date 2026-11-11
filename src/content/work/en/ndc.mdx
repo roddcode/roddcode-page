@@ -1,0 +1,23 @@
+## Adding a provider to an existing engine
+
+In 2026 I was responsible for the Air Europa NDC integration within a multi-provider flight engine. I worked as a Software Engineer for a B2B travel platform. Air Europa was the integrated provider.
+
+The engine already existed and was shared with the team. My work had two separate parts: implementing the provider integration, and leading the .NET migration as the sole engineer responsible for four critical engine repositories.
+
+## Seven operations
+
+I implemented AirShopping, OfferPrice, OrderCreate, OrderRetrieve, OrderChange, OrderCancel and UpSell against PROS, over SOAP/XML with manual builders and parsers.
+
+The integration required mapping the provider contract to the engine's domain: baggage, fare types, age codes and multi-segment journeys. I also worked on HTTP handling, tracing with Serilog, Grafana and Loki, payload storage in Azure Blob and multi-repository releases in Azure DevOps.
+
+## Resolving error 490
+
+A 490 error response was resolved by fixing the DataLists wrapper. The change was in the structure of the message sent to the service. This kind of failure required examining the actual XML and its correspondence with the provider contract.
+
+## Engine migration
+
+The migration covered four critical engine repositories, described by responsibility: the flight engine, the engine backend, expenses and ticketing. I delivered them validated in production. To verify it, I checked byte-for-byte A/B parity across the evaluated case set and the write cycle. That set allowed a comparison between the migrated behaviour and the previous engine; it does not cover every possible path.
+
+## Delivery
+
+The internal work record reports successful offer retrieval and all seven operations in production with real agencies. Client code, payloads and traces are private.

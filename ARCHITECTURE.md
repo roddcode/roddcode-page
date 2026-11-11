@@ -1,36 +1,32 @@
 # Arquitectura de roddcode-page
 
-Refactor en curso. Las rutas y vistas multipágina están implementadas; el contenido ES/EN se prepara y revisa en un worktree aislado. La home anterior sigue activa hasta la elección visual, con dos heroes corregidos disponibles en `/design-preview`.
+Portafolio Next.js App Router con contenido local tipado y MDX. La home y los interiores comparten navegación, identidad y metadatos. El sitio describe productos; no contiene sus backends.
 
-## Sistema actual
-
-| Área | Implementación y responsabilidad |
+| Área | Fuente y responsabilidad |
 |---|---|
-| Aplicación | Next.js App Router, React, TypeScript; scripts y versiones en `package.json` |
-| Idiomas | `src/proxy.ts` y `src/i18n/`; español sin prefijo e inglés en `/en`; cookie mediante `/api/locale` |
-| Home | `src/app/[locale]/page.tsx` compone `Home`, `SystemsStacked`, `OpenSource` y `Experience` |
-| Interacción anterior | `src/components/home/home.tsx` aún monta en la home anterior; se retirará al integrar la nueva |
-| Portafolio | `src/components/portfolio/` separa chrome, hero, ilustraciones, vistas de casos y demo de reservas |
-| Rutas nuevas | `[locale]/work`, `work/[slug]`, `open-source` y `about`; Writing conserva su ruta canónica y añade alias con prefijo |
-| Contenido nuevo | `src/content/portfolio/`, contrato tipado para identidad, proyectos, componentes y About; dataset completo en preparación |
-| Escritura | MDX en `src/content/writing/`; índice y artículos bajo `(writing)` con rutas `/writing` |
-| Páginas legales | `(content)` usa `PageShell`; rutas `/privacidad` y `/seguridad` |
-| Sistema visual | `DESIGN.md`, tokens en `globals.css`, `Container`/`Section`, CSS Modules y Tailwind |
-| Distribución | Sitemap, robots, RSS, imágenes OG y redirects de CV/URLs históricas |
+| Identidad | `src/content/portfolio/identity.ts`; hero, footer, metadatos, JSON-LD y OG |
+| Proyectos | `src/content/portfolio/projects.ts`; hechos comunes, traducciones ES/EN, publicación, destacados y relaciones |
+| Narrativas | `src/content/work/{es,en}/*.mdx`; secciones propias de cada caso |
+| Render de casos | `src/lib/work.tsx`; valida contra el registro publicado, lee MDX local y genera anchors e índice a partir de h2 |
+| Librerías y persona | `src/content/portfolio/packages.ts` y `about.ts` |
+| Vistas | `src/components/portfolio/`; shell, home, casos, open source, About y demo |
+| Imágenes de proyectos | `ProjectArt` comparte capturas anonimizadas de `public/work` y el mockup estático `NdcPreview`; los originales se conservan fuera de public |
+| Rutas | `[locale]`, `work`, `work/[slug]`, `open-source`, `about`; generadas desde el registro |
+| Writing | MDX y URLs originales preservados; relación con casos mediante `relatedPosts`; `kind` opcional sin filtros vacíos |
+| Idioma | Proxy y next-intl; ES sin prefijo, EN en `/en`; `/api/locale` conserva un retorno local validado |
+| Lectura y legales | `PageShell` comparte header/footer; `/writing`, `/privacidad`, `/seguridad` |
+| Distribución | Sitemap incluye únicamente casos publicados; OG, RSS y redirects de CV existentes |
 
-La nueva demostración de Soffia usa datos sintéticos y estado local para aceptación, rechazo y replay. Su leyenda delimita la simulación: no hay modelo, API, concurrencia, persistencia ni transacción real. El sitio no contiene el backend de los productos descritos.
+## Extensión
 
-## Transición y límites de integración
+Añadir un registro ES/EN y sus dos narrativas. `draft` impide rutas públicas y entradas en índices/sitemap. `featured` selecciona la home. `availability` describe el producto o encargo. Highlights y relaciones son opcionales; `ProjectHighlights` permite reutilizar el extracto del registro en MDX sin duplicar su cifra. Las ilustraciones conocidas tienen fallback genérico para futuros casos.
 
-- Las rutas aceptadas en [PROJECT_SPEC.md](PROJECT_SPEC.md) comparten `PortfolioShell`; Writing y legales reutilizan Header/Footer mediante `PageShell`.
-- `api/locale` acepta un retorno local y verifica origen para mantener el caso al cambiar idioma. `lib/paths.ts` es compartible con cliente; `lib/portfolio.ts` concentra metadatos y validación de locale en servidor.
-- El mockup solo monta en Soffia. Los escenarios anteriores de vuelo/CRM no se trasladan como evidencia de consumidores de librerías.
-- Home, índice y detalle leerán el mismo registro de cada proyecto. La home nueva está preparada como `PortfolioHome`; su integración espera elección del hero.
-- Metadatos, JSON-LD y OG usan la identidad del contenido nuevo. Sitemap incorpora las rutas y sus alternativas; la preview queda noindex.
-- Conservar MDX, primitivas de layout, CV y enlaces públicos útiles. No añadir un CMS, una base de datos o un framework de animación por este refactor.
+El loader compila exclusivamente archivos del repositorio, nunca MDX suministrado por visitantes. Solo expone componentes de contenido controlados. El header cliente importa identidad y paths sin arrastrar el acceso al sistema de archivos.
 
-## Límites y fuentes
+## Interacción y transición
 
-El vault aporta historia; el repo y los canales reales acreditan estado actual. Las fuentes privadas no se copian al bundle público. Assets existentes con nombres, teléfonos o documentos visibles no se montan sin saneamiento.
+La demo solo se monta en SoffIA: aceptación, conflicto, replay y reset con estado sintético local. `LegacyLinks` mantiene los anchors históricos de la home. Los escritos mantienen su contenido y reciben enlaces contextuales a casos, además del rol compartido del autor.
 
-`DESIGN.md` define las decisiones visuales aceptadas; el código muestra lo implementado. Una discrepancia se registra y corrige, sin convertir automáticamente el código anterior en requisito.
+El contenido anterior de `src/content/home` y sus componentes se conserva como material de transición, pero ya no alimenta la home pública. `/design-preview` conserva trabajo previo no aprobado y está excluido de indexación. No se añaden CMS, base de datos ni dependencias para esta estructura.
+
+El sistema visual sigue documentado en [DESIGN.md](DESIGN.md), sujeto a la referencia pendiente del usuario. Los assets con información de terceros no se montan sin saneamiento.

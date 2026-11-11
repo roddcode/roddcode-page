@@ -1,6 +1,7 @@
 import { CaseStudy, PortfolioShell } from "@/components/portfolio/views";
 import { getPortfolio } from "@/content/portfolio";
 import { portfolioMetadata, resolveLocale } from "@/lib/portfolio";
+import { getWorkBody } from "@/lib/work";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -34,9 +35,12 @@ export default async function WorkCase({ params }: Props) {
     (item) => item.slug === slug,
   );
   if (!project) notFound();
+  const { content, toc } = await getWorkBody(locale, project.slug);
   return (
     <PortfolioShell locale={locale} path={`/work/${project.slug}`}>
-      <CaseStudy locale={locale} project={project} />
+      <CaseStudy locale={locale} project={project} toc={toc}>
+        {content}
+      </CaseStudy>
     </PortfolioShell>
   );
 }

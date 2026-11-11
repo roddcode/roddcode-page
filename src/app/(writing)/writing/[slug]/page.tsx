@@ -1,6 +1,7 @@
 import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { ReadingProgress } from "@/components/reading-progress";
+import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -79,6 +80,10 @@ export default async function PostPage(props: {
   }
 
   if (!post) notFound();
+  const { identity, projects } = getPortfolio("en");
+  const relatedWork = projects.filter((project) =>
+    project.relatedPosts?.includes(params.slug),
+  );
 
   const relatedSlugs = getRelatedPosts(params.slug, allPosts, 2).map(
     (p) => p.slug,
@@ -165,6 +170,19 @@ export default async function PostPage(props: {
           />
         </div>
 
+        {relatedWork.length > 0 && (
+          <aside className="mt-16 border-t border-line pt-8">
+            <h2 className="text-lg font-semibold">Related work</h2>
+            <ul className="mt-4 list-none space-y-3 p-0">
+              {relatedWork.map((project) => (
+                <li key={project.slug}>
+                  <Link href={`/en/work/${project.slug}`}>{project.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
         {relatedSlugs.length > 0 && (
           <aside className="mt-16 border-t border-line pt-8">
             <p className="m-0 mb-5 font-mono text-[11px] tracking-[0.08em] text-ink-4 uppercase">
@@ -227,7 +245,7 @@ export default async function PostPage(props: {
             <p className="m-0 text-[14px] font-semibold text-ink">
               Alejandro Alvarado
             </p>
-            <p className="m-0 text-[13px] text-ink-3">Backend & AI Engineer.</p>
+            <p className="m-0 text-[13px] text-ink-3">{identity.role}</p>
           </div>
         </footer>
       </article>

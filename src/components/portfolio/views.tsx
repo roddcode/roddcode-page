@@ -6,10 +6,10 @@ import { getAllPosts } from "@/lib/mdx";
 import { CV, pathFor } from "@/lib/paths";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
-import { BookingDemo } from "./booking-demo";
 import { Footer, Header } from "./chrome";
 import s from "./portfolio.module.css";
 import { ProjectArt } from "./project-art";
+import { ProjectHighlights } from "./project-highlights";
 
 export function PortfolioShell({
   locale,
@@ -77,6 +77,7 @@ function ProjectRow({ locale, project }: { locale: Locale; project: Project }) {
         </h3>
         <p>{project.summary}</p>
         <p className={s.projectRole}>{project.role}</p>
+        <ProjectHighlights project={project} />
         <a
           className={s.textLink}
           href={pathFor(locale, `/work/${project.slug}`)}
@@ -102,9 +103,15 @@ export function SelectedWork({
           <p>{index ? t.workIntro : t.selectedIntro}</p>
         </div>
         <div className={s.projectRows}>
-          {getPortfolio(locale).projects.map((project) => (
-            <ProjectRow key={project.slug} locale={locale} project={project} />
-          ))}
+          {getPortfolio(locale)
+            .projects.filter((project) => index || project.featured)
+            .map((project) => (
+              <ProjectRow
+                key={project.slug}
+                locale={locale}
+                project={project}
+              />
+            ))}
         </div>
       </Container>
     </section>
@@ -185,37 +192,23 @@ export function HomeReading({ locale }: { locale: Locale }) {
   );
 }
 
-function ProseSection({
-  id,
-  title,
-  children,
-}: { id: string; title: string; children: ReactNode }) {
-  return (
-    <section className={s.proseSection} id={id}>
-      <h2>{title}</h2>
-      {children}
-    </section>
-  );
-}
-
 export function CaseStudy({
   locale,
   project,
-}: { locale: Locale; project: Project }) {
+  toc,
+  children,
+}: {
+  locale: Locale;
+  project: Project;
+  toc: { id: string; title: string }[];
+  children: ReactNode;
+}) {
   const t = getCopy(locale);
-  const sections = [
-    ["context", t.context],
-    ["contribution", t.contribution],
-    ["decisions", t.decisions],
-    ["architecture", t.architecture],
-    ...(project.slug === "soffia" ? [["gate-panel", t.demoTitle]] : []),
-    ["incident", t.incident],
-    ["results", t.results],
-    ["evidence", t.evidence],
-    ["learning", t.learning],
-  ];
   const next = getPortfolio(locale).projects.filter(
     (p) => p.slug !== project.slug,
+  );
+  const posts = getAllPosts().filter(
+    (post) => post.slug && project.relatedPosts?.includes(post.slug),
   );
   return (
     <>
@@ -230,14 +223,14 @@ export function CaseStudy({
               <h1>{project.title}</h1>
               <p className={s.caseSummary}>{project.summary}</p>
             </div>
-            <ProjectArt slug={project.slug} locale={locale} />
+            <ProjectArt slug={project.slug} locale={locale} detail />
           </div>
           <dl className={s.caseMeta}>
             {[
               [t.period, project.period],
               [t.role, project.role],
               [t.scope, project.scope],
-              [t.status, project.status],
+              [t.status, project.availability],
             ].map(([label, value]) => (
               <div key={label}>
                 <dt>{label}</dt>
@@ -245,6 +238,11 @@ export function CaseStudy({
               </div>
             ))}
           </dl>
+          <div className={s.stack}>
+            {project.stack.map((tech) => (
+              <span key={tech}>{tech}</span>
+            ))}
+          </div>
         </Container>
       </section>
       <Container className={s.caseLayout}>
@@ -254,109 +252,51 @@ export function CaseStudy({
               locale === "es" ? "Contenido del caso" : "Case contents"
             }
           >
-            {sections.map(([id, label]) => (
+            {toc.map(({ id, title }) => (
               <a key={id} href={`#${id}`}>
-                {label}
+                {title}
               </a>
             ))}
+            {project.slug === "soffia" && (
+              <a href="#gate-panel">{t.demoTitle}</a>
+            )}
           </nav>
         </aside>
-        <article className={s.caseArticle}>
-          <ProseSection id="context" title={t.context}>
-            {project.context.map((text) => (
-              <p key={text}>{text}</p>
-            ))}
-          </ProseSection>
-          <ProseSection id="contribution" title={t.contribution}>
-            <ul>
-              {project.contribution.map((text) => (
-                <li key={text}>{text}</li>
-              ))}
-            </ul>
-            <h3>{t.constraints}</h3>
-            <ul>
-              {project.constraints.map((text) => (
-                <li key={text}>{text}</li>
-              ))}
-            </ul>
-          </ProseSection>
-          <ProseSection id="decisions" title={t.decisions}>
-            {project.decisions.map((item) => (
-              <div className={s.decision} key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.choice}</p>
-                <p className={s.tradeoff}>
-                  <strong>{t.tradeoff}: </strong>
-                  {item.tradeoff}
-                </p>
-              </div>
-            ))}
-          </ProseSection>
-          <ProseSection id="architecture" title={t.architecture}>
-            <ol className={s.flow}>
-              {project.flow.map((step) => (
-                <li key={step.title}>
-                  <h3>{step.title}</h3>
-                  <p>{step.detail}</p>
-                </li>
-              ))}
-            </ol>
-            <p className={s.note}>
-              {locale === "es"
-                ? "Esquema de responsabilidades, reconstruido para explicar el caso."
-                : "A responsibility map reconstructed to explain the case."}
-            </p>
-            <div className={s.stack}>
-              {project.stack.map((tech) => (
-                <span key={tech}>{tech}</span>
-              ))}
-            </div>
-          </ProseSection>
-          {project.slug === "soffia" && <BookingDemo locale={locale} />}
-          <ProseSection id="incident" title={t.incident}>
-            <h3>{project.incident.title}</h3>
-            <p>{project.incident.detail}</p>
-            <p>
-              <strong>{t.handling}: </strong>
-              {project.incident.handling}
-            </p>
-            <p className={s.note}>{project.incident.limitation}</p>
-          </ProseSection>
-          <ProseSection id="results" title={t.results}>
-            <div className={s.resultPanel}>
-              <h3>{project.results.title}</h3>
-              <p>{project.results.detail}</p>
-              <p>
-                <strong>{t.provenance}: </strong>
-                {project.results.provenance}
-              </p>
-              <p className={s.note}>{project.results.limitation}</p>
-            </div>
-          </ProseSection>
-          <ProseSection id="evidence" title={t.evidence}>
-            <div className={s.evidenceList}>
-              {project.evidence.map((item) => (
-                <div key={item.label}>
-                  <h3>
-                    {item.href ? (
-                      <a href={item.href}>
-                        {item.label}
-                        <ArrowUpRight size={16} aria-hidden="true" />
-                      </a>
-                    ) : (
-                      item.label
-                    )}
-                  </h3>
-                  <p>{item.detail}</p>
-                </div>
-              ))}
-            </div>
-          </ProseSection>
-          <ProseSection id="learning" title={t.learning}>
-            {project.learning.map((text) => (
-              <p key={text}>{text}</p>
-            ))}
-          </ProseSection>
+        <article className={`${s.caseArticle} ${s.caseBody}`}>
+          {children}
+          {(posts.length > 0 || Boolean(project.relatedPackages?.length)) && (
+            <section className={s.caseRelated}>
+              <h2>
+                {locale === "es"
+                  ? "Código y escritos relacionados"
+                  : "Related code and writing"}
+              </h2>
+              <ul>
+                {project.relatedPackages?.map((pkg) => (
+                  <li key={pkg.name}>
+                    <a href={`${pathFor(locale, "/open-source")}#${pkg.name}`}>
+                      {pkg.name}
+                    </a>
+                    {" · "}
+                    {pkg.relationship === "used"
+                      ? locale === "es"
+                        ? "Usado en el código del proyecto"
+                        : "Used in the project code"
+                      : locale === "es"
+                        ? "Relacionado por el problema que aborda"
+                        : "Related through the problem it addresses"}
+                  </li>
+                ))}
+                {posts.map((post) => (
+                  <li key={post.slug}>
+                    <a href={`/writing/${post.slug}`} lang="en">
+                      {post.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </article>
       </Container>
       <section className={`${s.section} ${s.nextCases}`}>

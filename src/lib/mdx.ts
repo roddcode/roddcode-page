@@ -12,6 +12,7 @@ const PostMetadataSchema = z.object({
   slug: z.string().optional(),
   themes: z.array(z.string()).optional().default([]),
   series: z.string().optional(),
+  kind: z.enum(["essay", "technical-note", "research-note"]).optional(),
   readingTime: z.number().optional(),
 });
 

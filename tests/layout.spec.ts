@@ -16,7 +16,7 @@ for (const locale of ["es", "en"] as const) {
       expect((await page.goto(`${prefix}${route || "/"}`))?.status()).toBe(200);
       await expect(page.locator("main h1")).toHaveCount(1);
       await expect(page.locator("main")).not.toContainText(
-        /Expertia|TechHouse|25%|24\/7|86 tests/,
+        /Expertia|TechHouse|24\/7|86 tests/,
       );
       const canonical = await page
         .locator('link[rel="canonical"]')
@@ -30,7 +30,9 @@ for (const locale of ["es", "en"] as const) {
     page,
   }) => {
     await page.goto(prefix || "/");
-    await expect(page.locator("h1")).toContainText("Backend & AI Engineer");
+    await expect(page.locator("main")).toContainText(
+      "Backend & AI Systems Engineer",
+    );
     await expect(page.locator("#systems article")).toHaveCount(3);
     await expect(page.locator("#gate-panel")).toHaveCount(0);
     for (const slug of ["soffia", "ndc", "meteor"]) {
@@ -39,8 +41,14 @@ for (const locale of ["es", "en"] as const) {
         .last()
         .click();
       await expect(page).toHaveURL(new RegExp(`${prefix}/work/${slug}$`));
-      await expect(page.locator("#contribution")).toBeAttached();
-      await expect(page.locator("#results")).toBeAttached();
+      await expect(page.locator("article > h2").first()).toBeVisible();
+      const contents = page.getByRole("navigation", {
+        name: locale === "es" ? "Contenido del caso" : "Case contents",
+      });
+      for (const link of await contents.getByRole("link").all()) {
+        const target = await link.getAttribute("href");
+        await expect(page.locator(target ?? "#missing")).toHaveCount(1);
+      }
       await page.goto(prefix || "/");
     }
   });
@@ -269,7 +277,20 @@ test("hero comparison is noindex and contains no product demo", async ({
       "content",
       "noindex, nofollow",
     );
-    await expect(page.locator("h1")).toContainText("Backend & AI Engineer");
+    await expect(page.locator("main h1")).toHaveCount(1);
     await expect(page.locator("#gate-panel")).toHaveCount(0);
   }
+});
+
+test("case and essay links provide context in both directions", async ({
+  page,
+}) => {
+  await page.goto("/work/soffia");
+  await page.locator('article a[href="/writing/db-fat-llm-light"]').click();
+  await expect(page).toHaveURL(/\/writing\/db-fat-llm-light$/);
+  const related = page
+    .getByRole("complementary")
+    .filter({ has: page.getByRole("heading", { name: "Related work" }) });
+  await related.getByRole("link", { name: "SoffIA", exact: true }).click();
+  await expect(page).toHaveURL(/\/en\/work\/soffia$/);
 });

@@ -9,14 +9,11 @@ import {
   SelectedWork,
 } from "./views";
 
-export function PortfolioHome({
-  locale,
-  variant,
-}: { locale: Locale; variant: "a" | "b" }) {
+export function PortfolioHome({ locale }: { locale: Locale }) {
   return (
     <PortfolioShell locale={locale} path="/">
       <LegacyLinks locale={locale} />
-      <Hero locale={locale} variant={variant} />
+      <Hero locale={locale} />
       <SelectedWork locale={locale} />
       <ComponentTeaser locale={locale} />
       <HomeReading locale={locale} />

@@ -1,11 +1,11 @@
 const es = {
   home: "Inicio",
   work: "Proyectos",
-  components: "Componentes",
-  writing: "Writing",
+  components: "Open source",
+  writing: "Escritos",
   about: "Sobre mí",
   contact: "Contacto",
-  cv: "Abrir CV",
+  cv: "Ver CV",
   menu: "Menú",
   navigation: "Navegación principal",
   language: "Idioma",
@@ -16,22 +16,22 @@ const es = {
   selected: "Trabajo seleccionado",
   selectedIntro:
     "Agentes de IA, contratos entre sistemas y software para las personas que lo usan cada día.",
-  componentsTitle: "Las piezas que puedo compartir.",
+  componentsTitle: "Open source",
   componentsIntro:
-    "Dos librerías pequeñas, con un contrato concreto y límites explícitos. Código para leer, probar y discutir.",
+    "Mantengo exactly-once y reactive-fsm, dos librerías TypeScript con licencia MIT para controlar acciones y herramientas de agentes.",
   readContract: "Ver contratos y ejemplos",
   source: "Código fuente",
   package: "Paquete",
-  personTitle: "Detrás de los sistemas, una persona curiosa.",
+  personTitle: "Sobre mí",
   personIntro:
     "Llegué al código desde la física. Me interesan las reglas, pero también lo que ocurre cuando una herramienta se encuentra con el trabajo de las personas.",
   meet: "Conocer mi trayectoria",
-  writingTitle: "Ideas que pongo por escrito.",
+  writingTitle: "Escritos",
   writingIntro:
     "Notas sobre arquitectura, decisiones y los límites de los sistemas con IA. Los ensayos están en inglés.",
   readWriting: "Ver todos los escritos",
   reading: "min de lectura · en inglés",
-  contactTitle: "Hablemos de lo que estás construyendo.",
+  contactTitle: "Contacto",
   contactBody:
     "Busco un equipo donde aportar en backend, IA aplicada e integraciones. Remoto desde Perú, UTC-5.",
   email: "Escríbeme",
@@ -56,7 +56,7 @@ const es = {
   provenance: "Origen",
   next: "Otro caso para explorar",
   workIntro:
-    "Tres contextos distintos. En cada caso, el problema, mi aporte y las decisiones que se pueden explicar con evidencia.",
+    "Integraciones, un CRM y un agente de reservas: el contexto, mi contribución y lo que entregué en cada proyecto.",
   aboutIntro: "Backend e IA, con experiencia de punta a punta.",
   trajectory: "Trayectoria",
   method: "Cómo trabajo con IA",
@@ -120,22 +120,22 @@ const en: Copy = {
   selected: "Selected work",
   selectedIntro:
     "AI agents, contracts between systems, and software for the people who use it every day.",
-  componentsTitle: "The pieces I can share.",
+  componentsTitle: "Open source",
   componentsIntro:
-    "Two small libraries with specific contracts and explicit limits. Code to read, test and discuss.",
+    "I maintain exactly-once and reactive-fsm, two MIT-licensed TypeScript libraries for controlling agent actions and tools.",
   readContract: "Explore contracts and examples",
   source: "Source code",
   package: "Package",
-  personTitle: "Behind the systems, a curious person.",
+  personTitle: "About me",
   personIntro:
     "I came to programming through physics. I care about rules, and about what happens when a tool meets the way people work.",
   meet: "Explore my background",
-  writingTitle: "Ideas I put into words.",
+  writingTitle: "Writing",
   writingIntro:
     "Notes on architecture, decisions and the limits of AI systems. Essays are in English.",
   readWriting: "All writing",
   reading: "min read · in English",
-  contactTitle: "Let's talk about what you're building.",
+  contactTitle: "Contact",
   contactBody:
     "Looking for a team where I can contribute to backend, applied AI and integrations. Remote from Peru, UTC-5.",
   email: "Email me",
@@ -160,7 +160,7 @@ const en: Copy = {
   provenance: "Source",
   next: "Another case to explore",
   workIntro:
-    "Three different contexts. Each case explains the problem, my contribution and the decisions supported by available evidence.",
+    "An integration, a CRM and a booking agent: the context, my contribution and what I delivered in each project.",
   aboutIntro: "Backend and AI, with end-to-end experience.",
   trajectory: "Experience",
   method: "How I work with AI",

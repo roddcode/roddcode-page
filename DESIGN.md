@@ -1,13 +1,13 @@
 # roddcode — criterio visual del portafolio
 
-La web presenta a Alejandro Alvarado y permite examinar su trabajo. El contrato de producto está en [PROJECT_SPEC.md](PROJECT_SPEC.md). La composición final del hero espera elección entre las variantes corregidas; el resto comparte el sistema descrito aquí. El diseño anterior se conserva localmente en `_old/DESIGN-before-portfolio-refactor.md`.
+La web presenta a Alejandro Alvarado y permite examinar su trabajo. El contrato de producto está en [PROJECT_SPEC.md](PROJECT_SPEC.md). La dirección visual queda diferida hasta que el usuario facilite una referencia. Las previews anteriores no están aprobadas; este archivo describe recursos existentes, no una elección pendiente entre A/B. El diseño anterior se conserva localmente en `_old/DESIGN-before-portfolio-refactor.md`.
 
 ## Qué conservar y qué cambiar
 
 | Procedencia | Decisión |
 |---|---|
 | Identidad propia | Conservar Geist, el papel cálido, azul, superficies oscuras puntuales, retrato real y tipografía de lectura clara |
-| Topografía existente | Conservar en los assets OG; la ilustración del hero usa conexiones alrededor del retrato |
+| Topografía existente | Conservar en los assets OG; su uso futuro en el hero queda por evaluar |
 | Brainfish | Adaptar jerarquía, aire entre secciones, contraste de superficies y cercanía entre explicación y evidencia |
 | Estructura anterior | Llevar profundidad a los casos y trayectoria a About; retirar la demo del hero/home |
 | Recursos descartados | Métricas decorativas, testimonios inventados, dashboards ficticios presentados como capturas, robots de stock y afirmaciones absolutas de fiabilidad |
@@ -41,9 +41,9 @@ La definición ejecutable vive en `src/app/globals.css`. No añadir colores por 
 
 ## Composiciones y responsabilidades
 
-- **Hero A:** presentación a la izquierda y retrato con conexiones a la derecha. En móvil, texto y después ilustración.
-- **Hero B:** presentación centrada y retrato debajo. Contenido idéntico a A.
-- **Trabajos:** tres piezas con ilustraciones conceptuales propias, resumen de contribución y enlace al caso. Sin grandes cifras pendientes de validar.
+- **Hero actual:** identidad y titular acordados, texto, proyectos y CV. Reutiliza estilos existentes sin incorporar retrato grande ni mockup.
+- **Previews anteriores:** experimentos conservados, rechazados como dirección; no extenderlos al sitio.
+- **Trabajos:** capturas anonimizadas de SoffIA y METEOR, y mockup ilustrativo de NDC autorizado por el usuario. Cada recurso se reutiliza en home, índice y caso; la leyenda distingue demo, imagen editada y reconstrucción. El diseño general y el hero siguen pendientes de referencia.
 - **Casos:** cabecera, alcance y rol, índice de lectura, columna de contenido y evidencia. Arquitectura como reconstrucción explicativa, sin afirmar que es una captura del producto.
 - **Soffia:** demostración explícitamente sintética, ejecutada solo en navegador; reserva válida, rechazo y replay. Su leyenda delimita lo que no prueba.
 - **Componentes:** contratos, ejemplos desplazables, límites, pruebas documentadas y consumidores comprobados.
@@ -59,4 +59,4 @@ Las ilustraciones son estáticas. Motion solo responde a acciones y dura aproxim
 
 ## Revisión visual
 
-Comparar estados equivalentes tras cargar fuentes a 1440×1000 y 390×844. Comprobar también 320 y 1024 px, teclado, foco, overflow y lectura. Los checks y capturas observados se registran en [EVALS.md](EVALS.md); no se declara aceptación final de una variante sin la elección del usuario.
+Comparar estados equivalentes tras cargar fuentes a 1440×1000 y 390×844. Comprobar también 320 y 1024 px, teclado, foco, overflow y lectura. Los checks y capturas observados se registran en [EVALS.md](EVALS.md); la comprobación de lectura y funcionamiento no acredita aprobación estética del diseño.

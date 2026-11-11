@@ -1,5 +1,4 @@
 export const SITE = {
-  title: "Alejandro Alvarado · Backend & AI Engineer",
   description:
     "Agentes de IA, APIs e integraciones para procesos empresariales.",
   url: "https://www.roddcode.com",

@@ -11,7 +11,9 @@ const ContentSecurityPolicy = `
   img-src 'self' blob: data:;
   connect-src 'self';
   frame-ancestors 'none';
-`.replace(/\s{2,}/g, " ").trim();
+`
+  .replace(/\s{2,}/g, " ")
+  .trim();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -23,6 +25,16 @@ const nextConfig: NextConfig = {
     // Rutas del diseño anterior que hoy están publicadas en `main`. Sin esto,
     // el merge las convierte en 404 y se pierde lo que ya estaba indexado.
     return [
+      {
+        source: "/captura-crm-soffia.webp",
+        destination: "/work/soffia-panel-redacted.webp",
+        permanent: true,
+      },
+      {
+        source: "/meteor-crm-dark.webp",
+        destination: "/work/meteor-crm-redacted.webp",
+        permanent: true,
+      },
       { source: "/services/:path*", destination: "/", permanent: true },
       { source: "/dossier/:path*", destination: "/", permanent: true },
       ...[
@@ -45,7 +57,10 @@ const nextConfig: NextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
           { key: "X-DNS-Prefetch-Control", value: "on" },
         ],
       },

@@ -1,5 +1,5 @@
 export type Locale = "es" | "en";
-export type ProjectSlug = "soffia" | "ndc" | "meteor";
+export type ProjectSlug = string;
 
 export type Evidence = { label: string; detail: string; href?: string };
 export type Project = {
@@ -10,27 +10,13 @@ export type Project = {
   period: string;
   role: string;
   scope: string;
-  status: string;
+  status: "draft" | "published";
+  availability: string;
+  featured: boolean;
   stack: string[];
-  context: string[];
-  contribution: string[];
-  constraints: string[];
-  decisions: { title: string; choice: string; tradeoff: string }[];
-  flow: { title: string; detail: string }[];
-  incident: {
-    title: string;
-    detail: string;
-    handling: string;
-    limitation: string;
-  };
-  results: {
-    title: string;
-    detail: string;
-    provenance: string;
-    limitation: string;
-  };
-  evidence: Evidence[];
-  learning: string[];
+  highlights?: { label: string; value: string; context?: string }[];
+  relatedPosts?: string[];
+  relatedPackages?: { name: string; relationship: "used" | "related" }[];
 };
 
 export type Package = {
@@ -49,7 +35,13 @@ export type Package = {
 };
 
 export type PortfolioContent = {
-  identity: { name: string; role: string; intro: string; location: string };
+  identity: {
+    name: string;
+    role: string;
+    headline: string;
+    intro: string;
+    location: string;
+  };
   projects: Project[];
   packages: Package[];
   about: {

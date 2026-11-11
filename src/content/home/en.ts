@@ -258,7 +258,7 @@ export const en: HomeContent = {
         "Receipt OCR with anti-fraud rules",
       ],
       stack: ["TypeScript", "PostgreSQL", "Docker", "Vercel AI SDK"],
-      image: "/captura-crm-soffia.webp",
+      image: "/work/soffia-panel-redacted.webp",
     },
     {
       id: "ndc",
@@ -286,7 +286,7 @@ export const en: HomeContent = {
         "For Movistar, I redesigned the sales process with the sales teams.",
       bullets: ["$1,000/mo in removed licences, paid back in under two months"],
       stack: ["C#/.NET", "Vue.js", "SQL Server"],
-      image: "/meteor-crm-dark.webp",
+      image: "/work/meteor-crm-redacted.webp",
     },
   ],
 };
