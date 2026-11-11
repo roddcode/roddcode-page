@@ -6,6 +6,7 @@ const baseURL = production ? "http://localhost:3200" : "http://localhost:3000";
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
+  workers: 2,
   reporter: "list",
   use: {
     baseURL,
