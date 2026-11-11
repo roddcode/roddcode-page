@@ -17,7 +17,26 @@ export function GET(request: NextRequest) {
   const locale =
     routing.locales.find((l) => l === asked) ?? routing.defaultLocale;
 
-  const target = locale === routing.defaultLocale ? "/" : `/${locale}`;
+  const requestedPath = request.nextUrl.searchParams.get("next") ?? "/";
+  let safePath = "/";
+  if (
+    requestedPath.startsWith("/") &&
+    !requestedPath.startsWith("//") &&
+    !requestedPath.includes("\\")
+  ) {
+    try {
+      const candidate = new URL(requestedPath, request.url);
+      if (candidate.origin === request.nextUrl.origin) {
+        safePath = `${candidate.pathname}${candidate.search}`;
+      }
+    } catch {
+      // A malformed return path falls back to the locale home.
+    }
+  }
+  const target =
+    locale === routing.defaultLocale
+      ? safePath
+      : `/${locale}${safePath === "/" ? "" : safePath}`;
   const response = NextResponse.redirect(new URL(target, request.url), 307);
 
   response.cookies.set("NEXT_LOCALE", locale, {

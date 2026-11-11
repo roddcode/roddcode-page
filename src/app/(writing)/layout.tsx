@@ -6,5 +6,9 @@ import type { ReactNode } from "react";
  * chrome de contenido que /privacidad y /seguridad, en papel y con Geist.
  */
 export default function WritingLayout({ children }: { children: ReactNode }) {
-  return <PageShell locale="en">{children}</PageShell>;
+  return (
+    <PageShell locale="en" path="/writing">
+      {children}
+    </PageShell>
+  );
 }
