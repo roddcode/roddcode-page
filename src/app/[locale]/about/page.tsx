@@ -1,4 +1,5 @@
-import { AboutPage, PortfolioShell } from "@/components/portfolio/views";
+import { AboutPage } from "@/components/portfolio/about-page";
+import { PortfolioShell } from "@/components/portfolio/shell";
 import { getCopy } from "@/content/portfolio/copy";
 import { portfolioMetadata, resolveLocale } from "@/lib/portfolio";
 import type { Metadata } from "next";
