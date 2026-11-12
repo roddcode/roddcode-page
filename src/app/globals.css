@@ -1,41 +1,47 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
+  [data-slot="button"],
+  [data-slot="button"] svg {
+    transition-duration: 0s !important;
+    translate: none !important;
+  }
+
+  [data-slot="button"] svg {
+    transform: none !important;
+    rotate: none !important;
+    scale: none !important;
+  }
 }
 
-/* Raw tokens — dark (default) */
+/* Armed only by PageReveal after enhancement is available. SSR/no-JS stays visible. */
+[data-reveal-state="pending"] {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal-state="pending"] {
+    opacity: 1;
+  }
+}
+
+/* shadcn-compatible aliases resolve to the portfolio's single token system. */
 :root {
-  --background: oklch(0.145 0.004 260);
-  --foreground: oklch(0.96 0.002 260);
-  --muted: oklch(0.2 0.005 260);
-  --muted-foreground: oklch(0.62 0.01 260);
-  --secondary-foreground: oklch(0.78 0.008 260);
-  --tertiary: oklch(0.52 0.01 260);
-  --primary: oklch(0.8 0.1 200);
-  --success: oklch(0.8 0.14 155);
-  --danger: oklch(0.7 0.17 25);
-  --border: oklch(0.24 0.006 260);
-  --ink: oklch(1 0 0);
-}
-
-/* Light — /lab experiment only */
-.light {
-  color-scheme: light;
-  --background: oklch(0.975 0.002 260);
-  --foreground: oklch(0.22 0.006 260);
-  --muted: oklch(0.94 0.003 260);
-  --muted-foreground: oklch(0.5 0.012 260);
-  --secondary-foreground: oklch(0.38 0.008 260);
-  --tertiary: oklch(0.62 0.01 260);
-  --primary: oklch(0.55 0.11 200);
-  --success: oklch(0.55 0.13 155);
-  --danger: oklch(0.55 0.17 25);
-  --border: oklch(0.88 0.004 260);
-  --ink: oklch(0.22 0.006 260);
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --muted: var(--color-line-soft);
+  --muted-foreground: var(--color-meta);
+  --secondary-foreground: var(--color-ink-3);
+  --tertiary: var(--color-meta);
+  --primary: var(--color-accent);
+  --success: var(--color-pass);
+  --danger: var(--color-fail);
+  --border: var(--color-line);
 }
 
 @theme static {
@@ -49,7 +55,6 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
   --color-border: var(--border);
-  --color-white: var(--ink);
   --color-ring: var(--primary);
 
   /* Fuentes */
@@ -67,10 +72,12 @@
   --color-ink-2: #24262a;
   --color-ink-3: #4e5157;
   --color-ink-4: #6b6e74;
+  --color-meta: #60646b;
   --color-ink-5: #8b8e94;
   --color-line: #e4e0d6;
   --color-line-soft: #efebe2;
   --color-accent: #1f4e8c;
+  --color-accent-foreground: #fdfbf6;
   --color-accent-hover: color-mix(in srgb, var(--color-accent) 82%, black);
   --color-accent-night: #5b9bff;
   --color-accent-wash: color-mix(
@@ -85,12 +92,12 @@
   --color-fail: #b4433a;
   --color-fail-ink: #9c3227;
   --color-fail-bg: #fbeeec;
-  --color-night: #0f1411;
-  --color-night-raised: #17201b;
-  --color-night-line: #222b26;
-  --color-night-ink: #e8eae5;
-  --color-night-ink-strong: #f1f3ef;
-  --color-night-muted: #adb4ae;
+  --color-night: #12161c;
+  --color-night-raised: #1b212a;
+  --color-night-line: #303946;
+  --color-night-ink: #e8eaf0;
+  --color-night-ink-strong: #f1f3f7;
+  --color-night-muted: #b1b8c2;
   /* Tercer nivel retirado: no sobrevive APCA (Lc45 sobre noche). La jerarquía
      en noche se resuelve con tamaño y peso, no con un gris más apagado. */
 
@@ -108,6 +115,14 @@
   --container-page: 1240px;
   --gutter: clamp(18px, 4vw, 24px);
   --section-gap: clamp(56px, 8vw, 112px);
+
+  /* Una sola familia de interacción para controles y enlaces. */
+  --duration-interaction: 160ms;
+  --ease-interaction: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Superficies semánticas: base y banda. */
+  --surface-0: #f7f5f0;
+  --surface-1: #fdfbf6;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -150,8 +165,8 @@
 
   /* La Firma: Selection Cian Instrumento */
   ::selection {
-    background-color: oklch(0.8 0.1 200 / 0.25);
-    color: var(--color-foreground);
+    background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+    color: var(--color-ink);
   }
 
   /* Scrollbar — visible, no gritona */
@@ -354,10 +369,8 @@
   color: var(--shiki-light);
 }
 
-@media (prefers-color-scheme: dark) {
-  .prose pre code span {
-    color: var(--shiki-dark);
-  }
+.dark .prose pre code span {
+  color: var(--shiki-dark);
 }
 
 .prose [data-line] {
@@ -434,30 +447,66 @@
   color: var(--color-ink-4);
 }
 
-/* =============================================
-   SUPERFICIE DE LECTURA — respeta prefers-color-scheme
-   Aplica a privacidad, seguridad y writing: son páginas de texto y quien las
-   lee suele vivir en oscuro. El portafolio no entra acá porque es una pieza
-   compuesta con su propio tono.
-   Pares medidos sobre #0f1411: ink 15.36 · ink-2 13.25 · ink-3 8.79 ·
-   ink-4 5.77 · accent 9.10 · pass 11.62. Superficie elevada y hairline suben
-   a #1b2520 / #34413a para que el código y las divisorias existan.
-   ============================================= */
+/* Global semantic theme. next-themes owns the root class; a system fallback
+   also keeps reading usable when JavaScript is disabled. */
+:root.dark {
+  color-scheme: dark;
+  --surface-0: #12161c;
+  --surface-1: #19212b;
+  --color-paper: #12161c;
+  --color-paper-raised: #1d2530;
+  --color-ink: #e8eaf0;
+  --color-ink-2: #d6dbe3;
+  --color-ink-3: #b1b8c2;
+  --color-ink-4: #929ba7;
+  --color-meta: #a0a9b5;
+  --color-ink-5: #717b89;
+  --color-line: #3b4656;
+  --color-line-soft: #2b3543;
+  --color-accent: #5b9bff;
+  --color-accent-foreground: #12161c;
+  --color-accent-hover: #7aadff;
+  --color-pass: #8adf9b;
+  --color-fail: #e08a80;
+  --color-pass-ink: var(--color-pass-night);
+  --color-pass-bg: color-mix(
+    in srgb,
+    var(--color-pass-night) 12%,
+    var(--color-night)
+  );
+  --color-fail-ink: #e08a80;
+  --color-fail-bg: color-mix(in srgb, #e08a80 12%, var(--color-night));
+}
 @media (prefers-color-scheme: dark) {
-  [data-reading-surface] {
+  :root:not(.light):not(.dark) {
     color-scheme: dark;
-    --color-paper: #0f1411;
-    --color-paper-raised: #1b2520;
-    --color-ink: #e8eae5;
-    --color-ink-2: #d6dbd5;
-    --color-ink-3: #adb4ae;
-    --color-ink-4: #8a918c;
-    --color-ink-5: #6f7671;
-    --color-line: #34413a;
-    --color-line-soft: #2a352f;
+    --surface-0: #12161c;
+    --surface-1: #19212b;
+    --color-paper: #12161c;
+    --color-paper-raised: #1d2530;
+    --color-ink: #e8eaf0;
+    --color-ink-2: #d6dbe3;
+    --color-ink-3: #b1b8c2;
+    --color-ink-4: #929ba7;
+    --color-meta: #a0a9b5;
+    --color-ink-5: #717b89;
+    --color-line: #3b4656;
+    --color-line-soft: #2b3543;
     --color-accent: #5b9bff;
+    --color-accent-foreground: #12161c;
     --color-accent-hover: #7aadff;
     --color-pass: #8adf9b;
     --color-fail: #e08a80;
+    --color-pass-ink: var(--color-pass-night);
+    --color-pass-bg: color-mix(
+      in srgb,
+      var(--color-pass-night) 12%,
+      var(--color-night)
+    );
+    --color-fail-ink: #e08a80;
+    --color-fail-bg: color-mix(in srgb, #e08a80 12%, var(--color-night));
+  }
+  :root:not(.light) .prose pre code span {
+    color: var(--shiki-dark);
   }
 }

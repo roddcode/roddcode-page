@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { ComponentProps } from "react";
 import s from "./container.module.css";
 
 /**
@@ -9,12 +9,10 @@ import s from "./container.module.css";
 export function Container({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+  ...props
+}: ComponentProps<"div">) {
   return (
-    <div data-container="" className={clsx(s.container, className)}>
+    <div {...props} data-container="" className={clsx(s.container, className)}>
       {children}
     </div>
   );
