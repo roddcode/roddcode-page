@@ -1,7 +1,11 @@
 export type Locale = "es" | "en";
 export type ProjectSlug = string;
 
-export type Evidence = { label: string; detail: string; href?: string };
+export type ProjectDelivery = {
+  ndcOperations: number;
+  migratedRepositories: number;
+};
+
 export type Project = {
   slug: ProjectSlug;
   title: string;
@@ -14,6 +18,7 @@ export type Project = {
   availability: string;
   featured: boolean;
   stack: string[];
+  delivery?: ProjectDelivery;
   highlights?: { label: string; value: string; context?: string }[];
   relatedPosts?: string[];
   relatedPackages?: { name: string; relationship: "used" | "related" }[];
@@ -23,15 +28,8 @@ export type Package = {
   name: "reactive-fsm" | "exactly-once";
   version: string;
   summary: string;
-  problem: string;
-  contract: string;
-  example: string;
-  limits: string[];
-  tests: string;
-  consumers: string;
   repo: string;
   npm: string;
-  evidence: Evidence[];
 };
 
 export type PortfolioContent = {

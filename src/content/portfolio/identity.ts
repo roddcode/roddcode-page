@@ -4,7 +4,11 @@ import type { Locale } from "./types";
 export function getIdentity(locale: Locale) {
   return {
     name: SITE.author,
-    role: "Backend & AI Systems Engineer",
+    role: "Backend & AI Engineer",
+    motto:
+      locale === "es"
+        ? "El modelo propone. La base de datos decide."
+        : "The model proposes. The database decides.",
     headline:
       locale === "es"
         ? "Tres sistemas donde un error podía costar dinero."

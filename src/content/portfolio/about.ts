@@ -23,22 +23,22 @@ export function getAbout(locale: Locale): About {
       : "Software Development at SENATI, in its dual education programme. METEOR was part of my thesis project.",
     method: es
       ? [
-          "Uso IA para trabajar en tareas acotadas: primero defino el resultado, el contexto necesario y cómo comprobar el cambio. Reviso el código y la evidencia de ejecución antes de darlo por resuelto.",
+          "Divido el trabajo en tareas concretas y uso IA para avanzar sobre ellas. Antes de empezar defino qué necesito y cómo voy a comprobarlo; después reviso el código y ejecuto las pruebas.",
           "Extraigo librerías cuando un problema se repite y puedo definir un contrato pequeño. En cada proyecto reviso qué resuelve el paquete y qué debe seguir validando la aplicación.",
-          "Documentar las decisiones y mantener ejemplos y pruebas forma parte de la entrega. Los escritos de este sitio recogen problemas y cambios de criterio que he encontrado al construir estos sistemas.",
+          "Mantengo ejemplos, pruebas y notas sobre las decisiones del proyecto. En Writing cuento algunos de los problemas que encontré y cómo cambió mi forma de resolverlos.",
         ]
       : [
-          "I use AI for bounded tasks: first I define the outcome, the context needed and how to check the change. I review the code and execution evidence before calling it complete.",
+          "I split the work into concrete tasks and use AI to help with them. Before starting, I define what I need and how I will check it; then I review the code and run the tests.",
           "I extract libraries when a problem recurs and I can define a small contract. For each project I review what the package handles and what the application must still validate.",
-          "Documenting decisions and maintaining examples and tests are part of delivery. My writing records problems and changes of judgement I have encountered while building these systems.",
+          "I maintain examples, tests and notes on project decisions. In Writing, I describe some of the problems I encountered and how my approach changed.",
         ],
     timeline: [
       {
         period: "2026",
         role: "Software Engineer",
         organization: es
-          ? "Plataforma B2B de viajes · Cliente confidencial"
-          : "B2B travel platform · Confidential client",
+          ? "Tech-House · Cliente: Expertia Travel"
+          : "Tech-House · Client: Expertia Travel",
         detail: es
           ? "Integración NDC de Air Europa, contratos XML y trazabilidad. Como único ingeniero a cargo de la migración, entregué cuatro repositorios críticos del motor validados en producción."
           : "Air Europa NDC integration, XML contracts and traceability. As the sole engineer responsible for the migration, I delivered four critical engine repositories validated in production.",

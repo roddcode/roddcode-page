@@ -5,7 +5,7 @@ const es = {
   writing: "Escritos",
   about: "Sobre mí",
   contact: "Contacto",
-  cv: "Ver CV",
+  cv: "CV",
   menu: "Menú",
   navigation: "Navegación principal",
   language: "Idioma",
@@ -14,12 +14,10 @@ const es = {
   viewAll: "Todos los proyectos",
   back: "Volver a proyectos",
   selected: "Trabajo seleccionado",
-  selectedIntro:
-    "Agentes de IA, contratos entre sistemas y software para las personas que lo usan cada día.",
   componentsTitle: "Open source",
   componentsIntro:
-    "Mantengo exactly-once y reactive-fsm, dos librerías TypeScript con licencia MIT para controlar acciones y herramientas de agentes.",
-  readContract: "Ver contratos y ejemplos",
+    "reactive-fsm controla qué herramientas puede usar un agente según su estado. exactly-once valida acciones y confirma operaciones idempotentes en PostgreSQL.",
+  viewCode: "Ver código",
   source: "Código fuente",
   package: "Paquete",
   personTitle: "Sobre mí",
@@ -28,12 +26,12 @@ const es = {
   meet: "Conocer mi trayectoria",
   writingTitle: "Escritos",
   writingIntro:
-    "Notas sobre arquitectura, decisiones y los límites de los sistemas con IA. Los ensayos están en inglés.",
+    "Escribo sobre problemas que encuentro al desarrollar software y las decisiones que tomo para resolverlos. Los artículos están en inglés.",
   readWriting: "Ver todos los escritos",
   reading: "min de lectura · en inglés",
   contactTitle: "Contacto",
   contactBody:
-    "Busco un equipo donde aportar en backend, IA aplicada e integraciones. Remoto desde Perú, UTC-5.",
+    "Busco oportunidades como ingeniero backend o de IA aplicada, trabajando en integraciones y software empresarial. Remoto desde Perú (UTC-5).",
   email: "Escríbeme",
   privacy: "Privacidad",
   security: "Seguridad",
@@ -67,8 +65,7 @@ const es = {
   example: "Ejemplo de uso",
   limits: "Hasta dónde llega",
   tests: "Pruebas disponibles",
-  consumers: "Uso comprobado",
-  examined: "Versión examinada",
+  consumers: "Uso y relación",
   preview: "Elegir composición del hero",
   previewNote:
     "Mismo contenido. Dos formas de presentarlo, sin demo de producto.",
@@ -82,7 +79,7 @@ const es = {
     "Retrato de Alejandro Alvarado acompañado de conexiones que representan backend, agentes de IA e integraciones.",
   demoTitle: "Una reserva, dos desenlaces.",
   demoIntro:
-    "Reconstrucción ilustrativa del control de una reserva. Se ejecuta en tu navegador con datos sintéticos; no llama a WhatsApp, modelos ni bases de datos.",
+    "Reconstrucción ilustrativa con datos ficticios. Se ejecuta en tu navegador.",
   demoAvailable: "Horario disponible",
   demoTaken: "Horario ocupado",
   demoRun: "Probar reserva",
@@ -97,8 +94,7 @@ const es = {
   demoPolicy: "Regla de agenda",
   demoCommit: "Resultado",
   demoReceipt: "Recibo ilustrativo",
-  demoLimit:
-    "Ilustra el comportamiento deseado. No prueba concurrencia, persistencia ni atomicidad de un sistema real.",
+  demoLimit: "El estado es temporal y se pierde al recargar la página.",
   demoStep: "Estado del flujo",
 } as const;
 type Copy = { [K in keyof typeof es]: string };
@@ -109,7 +105,7 @@ const en: Copy = {
   writing: "Writing",
   about: "About",
   contact: "Contact",
-  cv: "Open CV",
+  cv: "CV",
   menu: "Menu",
   navigation: "Main navigation",
   language: "Language",
@@ -118,12 +114,10 @@ const en: Copy = {
   viewAll: "All projects",
   back: "Back to work",
   selected: "Selected work",
-  selectedIntro:
-    "AI agents, contracts between systems, and software for the people who use it every day.",
   componentsTitle: "Open source",
   componentsIntro:
-    "I maintain exactly-once and reactive-fsm, two MIT-licensed TypeScript libraries for controlling agent actions and tools.",
-  readContract: "Explore contracts and examples",
+    "reactive-fsm controls which tools an agent can use in each state. exactly-once validates actions and commits idempotent operations in PostgreSQL.",
+  viewCode: "View code",
   source: "Source code",
   package: "Package",
   personTitle: "About me",
@@ -132,12 +126,12 @@ const en: Copy = {
   meet: "Explore my background",
   writingTitle: "Writing",
   writingIntro:
-    "Notes on architecture, decisions and the limits of AI systems. Essays are in English.",
+    "I write about problems I encounter while building software and the decisions I make to solve them. The articles are in English.",
   readWriting: "All writing",
   reading: "min read · in English",
   contactTitle: "Contact",
   contactBody:
-    "Looking for a team where I can contribute to backend, applied AI and integrations. Remote from Peru, UTC-5.",
+    "I’m looking for backend or applied AI engineering roles, working on integrations and enterprise software. Remote from Peru (UTC-5).",
   email: "Email me",
   privacy: "Privacy",
   security: "Security",
@@ -171,8 +165,7 @@ const en: Copy = {
   example: "Usage example",
   limits: "Where it stops",
   tests: "Available tests",
-  consumers: "Verified usage",
-  examined: "Examined version",
+  consumers: "Usage and relationship",
   preview: "Choose the hero composition",
   previewNote: "The same content, presented two ways. No product demo.",
   optionA: "A · Portrait and connections",
@@ -185,7 +178,7 @@ const en: Copy = {
     "Portrait of Alejandro Alvarado with connections representing backend, AI agents and integrations.",
   demoTitle: "One booking, two outcomes.",
   demoIntro:
-    "An illustrative reconstruction of booking control. Runs in your browser with synthetic data; no WhatsApp, model or database calls.",
+    "An illustrative reconstruction with fictional data. Runs in your browser.",
   demoAvailable: "Available slot",
   demoTaken: "Taken slot",
   demoRun: "Try booking",
@@ -200,8 +193,7 @@ const en: Copy = {
   demoPolicy: "Calendar rule",
   demoCommit: "Result",
   demoReceipt: "Illustrative receipt",
-  demoLimit:
-    "Illustrates intended behaviour. It does not test concurrency, persistence or atomicity in a real system.",
+  demoLimit: "State is temporary and resets when you reload the page.",
   demoStep: "Flow state",
 };
 export const getCopy = (locale: string): Copy => (locale === "en" ? en : es);
