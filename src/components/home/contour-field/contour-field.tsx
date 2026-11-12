@@ -72,7 +72,7 @@ export const PALETTES = {
   },
   /** Noche. Intensidad calibrada para el CTA: el campo tiene que verse. */
   night: {
-    ink: "#e8eae5",
+    ink: "#e8eaf0",
     accent: "#93b7f0",
     opacity: [0.085, 0.17],
     levels: 6.5,
@@ -122,6 +122,8 @@ uniform vec2  uOpacity;
 uniform float uLevels;
 uniform float uBreathe;
 uniform float uSeed;
+uniform vec4  uPing;
+uniform vec3  uLight;
 
 out vec4 o;
 
@@ -152,6 +154,14 @@ float snoise(vec2 v){
   return 130.0 * dot(m, g);
 }
 
+float pingRing(vec2 fc, vec4 p) {
+  if (p.w <= 0.0) return 0.0;
+  float unit = uScale * uDpr;
+  vec2 dp = (fc - p.xy) / unit;
+  float dd = length(dp) - p.z * 1.8;
+  return exp(-dd * dd * 9.0) * p.w * exp(-p.z * 0.6);
+}
+
 void main(){
   vec2  fc = gl_FragCoord.xy;
   float u  = uScale * uDpr;
@@ -175,6 +185,10 @@ void main(){
   vec2 dp = (fc - uPointer.xy) / u;
   h -= uPointer.z * 0.34 * exp(-dot(dp, dp) * 2.2);
 
+  // el ping también levanta ligeramente las curvas
+  float ring = pingRing(fc, uPing);
+  h += ring * 0.14;
+
   // isolíneas
   float v  = h * uLevels;
   float fw = max(fwidth(v), 1e-4);
@@ -187,8 +201,10 @@ void main(){
   float line = 1.0 - smoothstep(hw - 0.35 * uDpr, hw + 0.8 * uDpr, px);
   line *= 1.0 - smoothstep(0.32, 0.7, fw);
 
+  float hi = clamp(ring * 2.4, 0.0, 1.0);
   float a = min(1.0, line * mix(uOpacity.x, uOpacity.y, major));
-  vec3  col = mix(uInk, uAccent, major);
+  a = min(1.0, a + line * hi * 0.6);
+  vec3 col = mix(mix(uInk, uAccent, major), uLight, hi);
   o = vec4(col * a, a);
 }`;
 
@@ -204,6 +220,8 @@ const UNIFORMS = [
   "uLevels",
   "uBreathe",
   "uSeed",
+  "uPing",
+  "uLight",
 ] as const;
 
 /* ------------------------------------------------------------------- clase */
@@ -232,6 +250,7 @@ class Field {
   slow = 0;
   still: boolean;
   ptr = { x: 0, y: 0, tx: 0, ty: 0, a: 0, ta: 0 };
+  private ping = { x: 0, y: 0, t0: -1e9, amp: 0 };
   u = {} as Record<(typeof UNIFORMS)[number], WebGLUniformLocation | null>;
   private gl!: WebGL2RenderingContext;
   private pr!: WebGLProgram;
@@ -243,6 +262,8 @@ class Field {
     private canvas: HTMLCanvasElement,
     private palette: ContourPalette,
     private maxDpr = 1.5,
+    private interactive = false,
+    private lightColor = "#1f4e8c",
   ) {
     this.still =
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -359,6 +380,21 @@ class Field {
     if (!this.running) this.draw(performance.now());
   }
 
+  firePing(cssX: number, cssY: number, now = performance.now()) {
+    if (!this.interactive || this.still || !this.visible) return;
+    this.ping = {
+      x: cssX * this.dpr,
+      y: (this.canvas.clientHeight - cssY) * this.dpr,
+      t0: now,
+      amp: 1,
+    };
+    if (!this.running) this.start();
+  }
+
+  release() {
+    this.ptr.ta = 0;
+  }
+
   start() {
     if (!this.ok || this.running) return;
     if (this.still) {
@@ -376,6 +412,7 @@ class Field {
       if (this.slow > 60) {
         this.still = true;
         this.running = false;
+        this.ping.amp = 0;
         this.draw(ts);
         return;
       }
@@ -393,6 +430,8 @@ class Field {
   draw(ts: number) {
     const { gl, u } = this;
     const time = this.still ? 26 : (ts - this.t0) / 1000;
+    const pingElapsed = (ts - this.ping.t0) / 1000;
+    const pingAmp = pingElapsed >= 0 && pingElapsed < 4.5 ? this.ping.amp : 0;
     const p = this.ptr;
     p.x += (p.tx - p.x) * 0.075;
     p.y += (p.ty - p.y) * 0.075;
@@ -419,11 +458,22 @@ class Field {
     gl.uniform1f(u.uBreathe, this.palette.breathe);
     gl.uniform1f(u.uSeed, this.palette.seed);
 
+    gl.uniform4f(u.uPing, this.ping.x, this.ping.y, pingElapsed, pingAmp);
+    const [lightR, lightG, lightB] = hexToRgb01(this.lightColor);
+    gl.uniform3f(u.uLight, lightR, lightG, lightB);
+
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  setPalette(palette: ContourPalette, lightColor: string) {
+    this.palette = palette;
+    this.lightColor = lightColor;
+    if (this.ok && this.visible) this.draw(performance.now());
   }
 
   dispose() {
     this.stop();
+    this.ping.amp = 0;
     this.ro?.disconnect();
     this.io?.disconnect();
     document.removeEventListener("visibilitychange", this.onVisibility);
@@ -443,6 +493,7 @@ export type ContourFieldProps = {
   maxDpr?: number;
   className?: string;
   style?: React.CSSProperties;
+  interactive?: boolean;
 };
 
 export function ContourField({
@@ -451,15 +502,30 @@ export function ContourField({
   maxDpr = 1.5,
   className,
   style,
+  interactive = false,
 }: ContourFieldProps) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const fieldRef = useRef<Field | null>(null);
+  const paletteRef = useRef(palette);
+
+  useEffect(() => {
+    paletteRef.current = palette;
+    const settings = typeof palette === "string" ? PALETTES[palette] : palette;
+    const lightColor =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-accent")
+        .trim() || "#1f4e8c";
+    fieldRef.current?.setPalette(settings, lightColor);
+  }, [palette]);
 
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
 
-    const settings: ContourPalette =
-      typeof palette === "string" ? PALETTES[palette] : palette;
+    const lightColor =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-accent")
+        .trim() || "#1f4e8c";
 
     let field: Field | null = null;
     let idleId: number | undefined;
@@ -484,7 +550,21 @@ export function ContourField({
         const create = () => {
           idleId = undefined;
           timerId = undefined;
-          field = new Field(canvas, settings, maxDpr);
+          const selected = paletteRef.current;
+          const settings =
+            typeof selected === "string" ? PALETTES[selected] : selected;
+          const currentLight =
+            getComputedStyle(document.documentElement)
+              .getPropertyValue("--color-accent")
+              .trim() || lightColor;
+          field = new Field(
+            canvas,
+            settings,
+            maxDpr,
+            interactive,
+            currentLight,
+          );
+          fieldRef.current = field;
           observer.disconnect();
         };
         if (typeof window.requestIdleCallback === "function") {
@@ -497,12 +577,42 @@ export function ContourField({
     );
     observer.observe(canvas);
 
+    const host = canvas.parentElement;
+    const onClick = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      field?.firePing(event.clientX - rect.left, event.clientY - rect.top);
+    };
+    const onPointerLeave = () => field?.release();
+    const primary = host?.querySelector("a[href^='mailto:']");
+    const pingPrimary = () => {
+      if (!primary) return;
+      const target = primary.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
+      field?.firePing(
+        target.left + target.width / 2 - rect.left,
+        target.top + target.height / 2 - rect.top,
+      );
+    };
+    if (interactive && host) {
+      host.addEventListener("click", onClick);
+      host.addEventListener("pointerleave", onPointerLeave);
+      primary?.addEventListener("mouseenter", pingPrimary);
+      primary?.addEventListener("focus", pingPrimary);
+    }
+
     return () => {
+      if (interactive && host) {
+        host.removeEventListener("click", onClick);
+        host.removeEventListener("pointerleave", onPointerLeave);
+        primary?.removeEventListener("mouseenter", pingPrimary);
+        primary?.removeEventListener("focus", pingPrimary);
+      }
       observer.disconnect();
       cancelPending();
       field?.dispose();
+      fieldRef.current = null;
     };
-  }, [palette, maxDpr]);
+  }, [maxDpr, interactive]);
 
   const maskImage =
     mask === false ? undefined : (MASKS[mask as ContourMaskName] ?? mask);

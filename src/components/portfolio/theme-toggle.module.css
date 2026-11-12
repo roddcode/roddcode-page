@@ -1,0 +1,44 @@
+.icons {
+  display: grid;
+  place-items: center;
+}
+
+.icon {
+  grid-area: 1 / 1;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.moon {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.75);
+}
+
+:global(html.dark) .sun {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.75);
+}
+
+:global(html.dark) .moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(html:not(.light):not(.dark)) .sun {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.75);
+  }
+
+  :global(html:not(.light):not(.dark)) .moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}

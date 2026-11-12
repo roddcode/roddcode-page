@@ -1,5 +1,6 @@
 import { OG_ALT } from "@/app/og/alt";
 import { JsonLd } from "@/components/json-ld";
+import { ThemeProvider } from "@/components/theme-provider";
 import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/react";
@@ -27,7 +28,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#F7F5F0" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f1411" },
+    { media: "(prefers-color-scheme: dark)", color: "#12161c" },
   ],
 };
 
@@ -86,6 +87,7 @@ export default async function RootLayout({
   const locale = await getLocale();
   return (
     <html
+      suppressHydrationWarning
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
@@ -102,7 +104,7 @@ export default async function RootLayout({
         <JsonLd locale={locale} />
         {process.env.VERCEL === "1" && <SpeedInsights />}
         {process.env.VERCEL === "1" && <Analytics />}
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
