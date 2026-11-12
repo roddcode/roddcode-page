@@ -1,4 +1,4 @@
-import { LegalBlock, LegalList } from "@/components/page-shell";
+import { LegalBlock, LegalList, PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 
@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   title: "Seguridad | roddcode",
   description:
     "Cómo reportar una vulnerabilidad en roddcode.com: qué está en alcance, qué incluir en el reporte y qué esperar.",
-  alternates: { canonical: "/seguridad" },
+  alternates: {
+    canonical: "/seguridad",
+    languages: { es: "/seguridad", en: "/en/security" },
+  },
 };
 
 const Mail = () => (
@@ -20,7 +23,11 @@ const Mail = () => (
 
 export default function SeguridadPage() {
   return (
-    <>
+    <PageShell
+      locale="es"
+      path="/seguridad"
+      languagePaths={{ es: "/seguridad", en: "/security" }}
+    >
       <h1 className="m-0 font-sans text-[clamp(32px,5vw,44px)] leading-[1.05] font-semibold tracking-[-0.03em] text-ink">
         Seguridad
       </h1>
@@ -99,6 +106,6 @@ export default function SeguridadPage() {
       <p className="mt-4 border-t border-line pt-6 font-mono text-xs text-ink-4">
         Última actualización: 27 de octubre de 2026
       </p>
-    </>
+    </PageShell>
   );
 }

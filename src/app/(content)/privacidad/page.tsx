@@ -1,4 +1,4 @@
-import { LegalBlock, LegalList } from "@/components/page-shell";
+import { LegalBlock, LegalList, PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 
@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   title: "Privacidad | roddcode",
   description:
     "Qué datos trato en roddcode.com, para qué, con quién se comparten y cómo ejercer tus derechos.",
-  alternates: { canonical: "/privacidad" },
+  alternates: {
+    canonical: "/privacidad",
+    languages: { es: "/privacidad", en: "/en/privacy" },
+  },
 };
 
 const Mail = () => (
@@ -20,7 +23,11 @@ const Mail = () => (
 
 export default function PrivacidadPage() {
   return (
-    <>
+    <PageShell
+      locale="es"
+      path="/privacidad"
+      languagePaths={{ es: "/privacidad", en: "/privacy" }}
+    >
       <h1 className="m-0 font-sans text-[clamp(32px,5vw,44px)] leading-[1.05] font-semibold tracking-[-0.03em] text-ink">
         Privacidad
       </h1>
@@ -123,6 +130,6 @@ export default function PrivacidadPage() {
       <p className="mt-4 border-t border-line pt-6 font-mono text-xs text-ink-4">
         Última actualización: 2 de noviembre de 2026
       </p>
-    </>
+    </PageShell>
   );
 }
