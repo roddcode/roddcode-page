@@ -1,11 +1,12 @@
 # Trabajar en roddcode-page
 
-Portafolio profesional ES/EN. Lee `PROJECT_SPEC.md` para alcance, `ARCHITECTURE.md` para implementación y `DESIGN.md` para el sistema visual. `DECISIONS.md` distingue decisiones aceptadas de hipótesis. El orden de trabajo está en `ROADMAP.md`; las preguntas editoriales en `BACKLOG.md`; los gates en `EVALS.md`. Comandos en `README.md`.
+Portafolio profesional ES/EN. Lee `ARCHITECTURE.md` para la implementación y `DESIGN.md` para el sistema visual. Comandos en `README.md`.
 
 - Usa pnpm. Preserva escritos, CV, idiomas y cambios ajenos.
 - Hero ilustrativo de portafolio; el mockup de reservas va en el caso de Soffia. Las primeras previews con demo en el hero fueron rechazadas. No extender su dirección visual como si estuviera aprobada.
-- No inventar métricas, incidentes, equipo, consumidores ni disponibilidad actual. No publicar datos de terceros o nombres B2B restringidos. Registrar faltantes en `BACKLOG.md` y avanzar con contenido defendible.
+- No inventar métricas, incidentes, equipo, consumidores ni disponibilidad actual. No publicar datos de terceros ni nombres B2B restringidos. Si falta evidencia, describir solo lo defendible; no trasladar preguntas abiertas como afirmaciones al sitio.
 - Conservar una fuente de contenido compartido; no duplicar hechos entre home, índices y detalles.
+- Reutilizar `components/ui/Button` y `Tooltip` para controles y acciones. Variantes, foco y motion viven en esa base; los CSS Modules organizan las vistas. Conservar enlaces nativos mediante `asChild` y no introducir otra familia de controles por componente.
 - Revisar el sitio en navegador, escritorio/móvil, teclado y reduced motion. Tests y build no acreditan por sí solos calidad visual.
 - No hacer push/deploy ni aplicar cambios a perfiles externos sin la autorización correspondiente del usuario. No contactar terceros.
 - La instrucción actual del usuario prevalece sobre descripciones históricas de layout y defaults de skills.

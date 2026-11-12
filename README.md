@@ -1,29 +1,32 @@
 # roddcode.com
 
-Personal site of Alejandro Alvarado. Its positioning is Backend & AI Systems Engineer. Spanish is canonical, English is a mirror at `/en`. Existing essays remain in English at `/writing`.
+Alejandro Alvarado's personal portfolio: backend, integrations and applied AI.
 
-## Stack
+The site connects selected projects, professional experience, open-source code and essays. Spanish pages use unprefixed URLs; English pages use /en. Essays stay in English at /writing.
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · next-intl · Geist + Geist Mono.
+## Run locally
 
-## Run
+Use Node.js 24 and pnpm 9.5.0.
 
-```bash
-pnpm install
-pnpm dev          # http://localhost:3000
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-## Verify before shipping
+Open http://localhost:3000. No API keys or database are required. The booking demonstration uses fictional browser state.
 
-```bash
-pnpm typecheck    # tsc --noEmit
-pnpm lint         # biome
-pnpm test         # layout, keyboard, locale, CV redirects and article metadata
+## Verify
+
+```sh
+pnpm lint
+pnpm validate:content
+pnpm test:content
 pnpm build
-pnpm og:contour   # recaptures the OG background (needs pnpm dev)
+pnpm typecheck
+pnpm exec playwright install chromium firefox webkit
 ```
 
-Run the same tests against the production build in PowerShell:
+Run browser tests against the production build:
 
 ```powershell
 $env:PLAYWRIGHT_PRODUCTION = '1'
@@ -31,42 +34,67 @@ pnpm test
 Remove-Item Env:PLAYWRIGHT_PRODUCTION
 ```
 
-The typography selector parser is overridden within v6 until the upstream plugin removes its vulnerable pin.
+The suite runs the main regression tests in Chromium and focused layout/control checks in Firefox and WebKit. CI performs the same checks on pull requests and pushes to main. Visual inspection is still required for changes to layout or media.
+
+Development mode includes compilation and debugging overhead. To evaluate interactions without that overhead, run pnpm build followed by pnpm start.
 
 ## Structure
 
+```text
+src/app/                    routes, metadata, RSS and sitemap
+src/components/portfolio/   portfolio views and shared navigation
+src/components/writing/     article lists, metadata and article footer
+src/components/ui/          shared shadcn/Radix controls
+src/content/portfolio/      shared facts and bilingual copy
+src/content/work/{es,en}/   case narratives
+src/content/writing/        English essays
+src/lib/                    content loading and rendering
+scripts/validate-content.mjs content integrity checks
+tests/                      content and browser tests
 ```
-src/app/[locale]/        home, work, open-source and about (ES/EN)
-src/app/(content)/       privacidad, seguridad
-src/app/(writing)/       preserved writing index and essays
-src/app/api/locale/      explicit language switch with a local return path
-src/components/portfolio/ shared shell, views and SoffIA illustration
-src/content/portfolio/   typed metadata and bilingual shared copy
-src/content/work/        independent ES/EN case narratives in MDX
-src/content/writing/     existing published essays
-src/lib/work.tsx         trusted local MDX compilation and heading index
-tests/                   navigation, interaction and layout checks
+
+Next.js App Router, React, TypeScript, Tailwind CSS, CSS Modules, next-intl and next-themes. Content is local; there is no CMS or application backend in this repository.
+
+## Add a case study
+
+1. Add an entry to src/content/portfolio/projects.ts with shared facts and ES/EN copy. Start with status: "draft"; change it to "published" when ready. featured independently controls inclusion on the home.
+2. Add src/content/work/es/<slug>.mdx and its English counterpart. Use your own h2 section titles; the loader builds section anchors and the contents navigation.
+3. Optionally register an image or diagram in src/components/portfolio/project-media.ts. Cases without a registered resource get a generic fallback.
+4. Set relatedPosts and relatedPackages only when relevant. Package relationships distinguish actual use from a related problem.
+5. Run pnpm validate:content and the verification commands above. Inspect both locales and themes on desktop and mobile.
+
+Do not duplicate project facts between home, list and case headers. Shared metadata belongs in the registry; the MDX explains decisions and outcomes.
+
+## Add an essay
+
+Create src/content/writing/<slug>.mdx with a lowercase, hyphenated filename:
+
+```mdx
+---
+title: "A concrete title"
+date: "2026-11-12"
+summary: "What the reader will learn."
+themes: [backend]
+draft: true
+---
+
+Your article.
+
+## A section
 ```
 
-## Project documentation
+Set draft: false (or remove it) to publish. Published articles appear in Writing, RSS and the sitemap. Drafts cannot be opened through the public article route. Use an underscore-prefixed filename or the ignored _drafts directory for incomplete local notes; these are never published. Do not commit private draft material.
 
-| Document | Responsibility |
-|---|---|
-| [AGENTS.md](AGENTS.md) | Agent entry point, limits and reading map |
-| [PROJECT_SPEC.md](PROJECT_SPEC.md) | Accepted product scope and open visual direction |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Current implementation and the proposed transition |
-| [DESIGN.md](DESIGN.md) | Visual system; historical layout descriptions are being reconciled with the refactor |
-| [DECISIONS.md](DECISIONS.md) | Decisions and their acceptance state |
-| [ROADMAP.md](ROADMAP.md) | Selected outcomes and sequence |
-| [BACKLOG.md](BACKLOG.md) | Missing case details and evidence |
-| [EVALS.md](EVALS.md) | Verification contract and observed baseline |
+Dates must be real YYYY-MM-DD calendar dates. If you include slug in frontmatter, it must match the filename. Invalid public-facing content fails validation rather than disappearing silently. Reading time is calculated; kind and series are optional metadata.
 
-The user’s current instructions take precedence over historical documentation. Code describes what exists; it does not automatically override the intended product or accepted design.
+## Design and maintenance
 
-## Add a project
+- [DESIGN.md](DESIGN.md): tokens, typography, surfaces, spacing and motion.
+- [ARCHITECTURE.md](ARCHITECTURE.md): component and content boundaries.
+- [AGENTS.md](AGENTS.md): contributor instructions for coding agents.
 
-Add a typed record in `src/content/portfolio/projects.ts`, then its narrative at `src/content/work/{es,en}/<slug>.mdx`. Use `status: "draft"` while preparing it; drafts do not enter public routes, indexes or the sitemap. `featured` controls its home placement separately from publication. `availability` describes the product or engagement, independently of publication status. Highlights and related essays/packages are optional.
+Theme choice persists in local storage; language choice uses a functional cookie. Existing open-source page URLs redirect to the home section. Publication and external profile edits are separate from local verification.
 
-Cases have their own headings rather than a fixed incident/results template. Heading links are generated during MDX compilation. `<ProjectHighlights />` reuses the optional registry excerpt inside a case. Only SoffIA includes `<BookingDemo />`; it uses synthetic browser state. Writing supports an optional `kind` (`essay`, `technical-note`, `research-note`) without requiring categories or changing existing articles.
+## License
 
-The editorial structure is implemented. The visual direction remains deferred until the user supplies a reference; `/design-preview` is an unapproved, noindex experiment.
+Implementation code is available under the [MIT license](LICENSE). Portfolio copy, essays, documentation, CV, photographs, screenshots, logos and other media are reserved to their respective owners and are excluded from that license.
