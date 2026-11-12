@@ -1,5 +1,6 @@
 import { SITE } from "@/lib/constants";
 import { getAllPosts } from "@/lib/mdx";
+import { escapeXml } from "@/lib/xml";
 
 export async function GET() {
   const posts = getAllPosts();
@@ -9,7 +10,7 @@ export async function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>roddcode — Architecture Essays</title>
-    <description>High-signal, low-noise architecture essays.</description>
+    <description>Notes on building software: backend, integrations and applied AI.</description>
     <link>${baseUrl}</link>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
@@ -18,8 +19,8 @@ export async function GET() {
       .map(
         (post) => `
     <item>
-      <title>${post.title}</title>
-      <description>${post.summary}</description>
+      <title>${escapeXml(post.title)}</title>
+      <description>${escapeXml(post.summary)}</description>
       <link>${baseUrl}/writing/${post.slug}</link>
       <guid>${baseUrl}/writing/${post.slug}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>

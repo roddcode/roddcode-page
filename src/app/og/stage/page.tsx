@@ -27,7 +27,7 @@ export default function OgStage() {
         inset: 0,
         width: 1200,
         height: 630,
-        backgroundColor: "#0f1411",
+        backgroundColor: "#12161c",
       }}
     >
       <div

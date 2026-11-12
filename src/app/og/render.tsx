@@ -13,8 +13,8 @@ import { ImageResponse } from "next/og";
  * declaran acá con los valores de `globals.css`.
  */
 
-const NIGHT_INK = "#e8eae5";
-const NIGHT_MUTED = "#adb4ae";
+const NIGHT_INK = "#e8eaf0";
+const NIGHT_MUTED = "#b1b8c2";
 const ACCENT_NIGHT = "#5b9bff";
 
 type Lang = "es" | "en";
@@ -73,7 +73,7 @@ export async function ogImage(lang: Lang) {
         height: "100%",
         display: "flex",
         position: "relative",
-        backgroundColor: "#0f1411",
+        backgroundColor: "#12161c",
         fontFamily: "Geist",
       }}
     >

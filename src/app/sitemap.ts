@@ -36,12 +36,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/privacidad`,
+          en: `${baseUrl}/en/privacy`,
+        },
+      },
     },
     {
       url: `${baseUrl}/seguridad`,
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.3,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/seguridad`,
+          en: `${baseUrl}/en/security`,
+        },
+      },
+    },
+    {
+      url: `${baseUrl}/en/privacy`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/privacidad`,
+          en: `${baseUrl}/en/privacy`,
+        },
+      },
+    },
+    {
+      url: `${baseUrl}/en/security`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/seguridad`,
+          en: `${baseUrl}/en/security`,
+        },
+      },
     },
   ];
 
@@ -56,7 +92,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (locale) =>
       [
         "/work",
-        "/open-source",
         "/about",
         ...getPortfolio(locale).projects.map(
           (project) => `/work/${project.slug}`,
