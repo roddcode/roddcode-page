@@ -1,17 +1,23 @@
 import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { ReadingProgress } from "@/components/reading-progress";
+import { Button } from "@/components/ui/button";
+import { ArticleFooter } from "@/components/writing/article-footer";
+import { PostMeta } from "@/components/writing/post-list";
+import s from "@/components/writing/writing.module.css";
 import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
+import { ArrowLeft } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { ComponentProps } from "react";
 import rehypePrettyCode from "rehype-pretty-code";
 
 const mdxComponents = {
   AuthSequenceDiagram,
   pre: CodeBlock,
+  h2: (props: ComponentProps<"h2">) => <h2 {...props} data-reveal />,
 };
 
 export async function generateMetadata({
@@ -57,13 +63,6 @@ export async function generateStaticParams() {
     slug: post.slug,
   }));
 }
-
-const fecha = (iso: string) =>
-  new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
 export default async function PostPage(props: {
   params: Promise<{ slug: string }>;
@@ -117,37 +116,20 @@ export default async function PostPage(props: {
       />
       <ReadingProgress />
 
-      <article>
-        <Link
-          href="/writing"
-          className="font-mono text-[11px] tracking-[0.06em] text-ink-4 uppercase no-underline transition-colors hover:text-accent"
-        >
-          ← Writing
-        </Link>
-
-        <header className="mt-8 mb-10">
-          <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tracking-[0.06em] text-ink-4 uppercase">
-            <time className="tabular-nums">{fecha(post.meta.date)}</time>
-            <span aria-hidden="true">·</span>
-            <span>{post.readingTime} min read</span>
-            {post.meta.series ? (
-              <>
-                <span aria-hidden="true">·</span>
-                <span className="text-accent">{post.meta.series}</span>
-              </>
-            ) : null}
-          </div>
-
-          <h1 className="m-0 font-sans text-[clamp(30px,4.2vw,42px)] leading-[1.1] font-semibold tracking-[-0.03em] text-ink">
-            {post.meta.title}
-          </h1>
-
-          <p className="mt-5 mb-0 max-w-[58ch] text-[17px] leading-[1.6] text-ink-2">
-            {post.meta.summary}
-          </p>
+      <article className={s.article} data-writing-article>
+        <div data-reveal>
+          <Button asChild variant="link" size="link">
+            <a href="/writing">
+              <ArrowLeft size={17} aria-hidden="true" /> Back to writing
+            </a>
+          </Button>
+        </div>
+        <header className={s.articleHeading} data-reveal>
+          <PostMeta post={post.meta} />
+          <h1>{post.meta.title}</h1>
+          <p>{post.meta.summary}</p>
         </header>
-
-        <div className="prose">
+        <div className={`prose ${s.body}`}>
           <MDXRemote
             source={post.content}
             components={mdxComponents}
@@ -170,84 +152,15 @@ export default async function PostPage(props: {
           />
         </div>
 
-        {relatedWork.length > 0 && (
-          <aside className="mt-16 border-t border-line pt-8">
-            <h2 className="text-lg font-semibold">Related work</h2>
-            <ul className="mt-4 list-none space-y-3 p-0">
-              {relatedWork.map((project) => (
-                <li key={project.slug}>
-                  <Link href={`/en/work/${project.slug}`}>{project.title}</Link>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        )}
-
-        {relatedSlugs.length > 0 && (
-          <aside className="mt-16 border-t border-line pt-8">
-            <p className="m-0 mb-5 font-mono text-[11px] tracking-[0.08em] text-ink-4 uppercase">
-              Read next
-            </p>
-            <ul className="m-0 flex list-none flex-col gap-5 p-0">
-              {relatedSlugs.map((s) => {
-                const related = allPosts.find((p) => p.slug === s);
-                if (!related) return null;
-                return (
-                  <li key={s}>
-                    <Link
-                      href={`/writing/${s}`}
-                      className="group flex flex-col gap-1 no-underline"
-                    >
-                      <span className="text-[15px] font-semibold text-ink transition-colors group-hover:text-accent">
-                        {related.title}
-                      </span>
-                      <span className="text-[13px] leading-[1.55] text-ink-3">
-                        {related.summary}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </aside>
-        )}
-
-        <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6">
-          <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.meta.title)}&url=${encodeURIComponent(`${SITE.url}/writing/${post.slug}`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-[11px] tracking-[0.06em] text-ink-4 uppercase no-underline transition-colors hover:text-accent"
-            aria-label="Share on X, opens in new tab"
-          >
-            Share on X ↗
-          </a>
-          <a
-            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE.url}/writing/${post.slug}`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-[11px] tracking-[0.06em] text-ink-4 uppercase no-underline transition-colors hover:text-accent"
-            aria-label="Share on LinkedIn, opens in new tab"
-          >
-            Share on LinkedIn ↗
-          </a>
-        </div>
-
-        <footer className="mt-8 flex items-center gap-4 border-t border-line pt-8">
-          <img
-            src="/alejandro.webp"
-            alt=""
-            className="size-10 flex-none"
-            width={40}
-            height={40}
-          />
-          <div>
-            <p className="m-0 text-[14px] font-semibold text-ink">
-              Alejandro Alvarado
-            </p>
-            <p className="m-0 text-[13px] text-ink-3">{identity.role}</p>
-          </div>
-        </footer>
+        <ArticleFooter
+          title={post.meta.title}
+          slug={post.slug}
+          authorRole={identity.role}
+          relatedWork={relatedWork}
+          relatedPosts={allPosts.filter((p) =>
+            relatedSlugs.includes(p.slug ?? ""),
+          )}
+        />
       </article>
     </>
   );

@@ -1,56 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
-/**
- * Barra de progreso de lectura.
- *
- * Reemplaza al tracker anterior, que sólo escribía umbrales en consola: el
- * mismo cálculo, pero visible en el borde superior de la página.
- */
+/** Scroll progress without a React render on every frame. */
 export function ReadingProgress() {
-  const [pct, setPct] = useState(0);
-
+  const bar = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const el = document.querySelector("article");
-    if (!el) return;
-
+    const article = document.querySelector("[data-writing-article]");
+    if (!article) return;
     let frame = 0;
-
     const update = () => {
-      const { top, height } = el.getBoundingClientRect();
+      const { top, height } = article.getBoundingClientRect();
       const total = height - window.innerHeight;
-      const value =
+      const progress =
         total <= 0
-          ? 0
-          : Math.min(100, Math.max(0, (Math.abs(top) / total) * 100));
-      setPct(value);
+          ? top <= 0
+            ? 1
+            : 0
+          : Math.min(1, Math.max(0, -top / total));
+      if (bar.current) bar.current.style.transform = `scaleX(${progress})`;
     };
-
-    const onScroll = () => {
+    const schedule = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(update);
     };
-
+    const observer = new ResizeObserver(schedule);
+    observer.observe(article);
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      observer.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
     };
   }, []);
-
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5"
     >
       <div
-        className="h-full bg-accent"
-        style={{ width: `${pct}%`, transition: "width 80ms linear" }}
+        ref={bar}
+        data-reading-progress
+        className="h-full origin-left scale-x-0 bg-accent"
       />
     </div>
   );

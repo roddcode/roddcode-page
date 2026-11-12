@@ -97,7 +97,7 @@ const fsm = createFSM({
 });
 ```
 
-If the slot is taken, the guard blocks the transition to CONFIRMED. If the LLM keeps calling tools without advancing, the loop shield transitions to UNAVAILABLE automatically. The FSM never confirms a booking that no longer exists, and never burns tokens in an infinite retry loop.
+If the availability check finds that the slot is taken, the guard blocks the transition to CONFIRMED. If the LLM keeps calling tools without advancing, the configured loop shield transitions to UNAVAILABLE. These controls constrain the conversation. The backend still has to prevent a concurrent request from taking the same slot when it writes the booking.
 
 ## What ships
 

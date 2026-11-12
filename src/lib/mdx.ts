@@ -4,70 +4,69 @@ import matter from "gray-matter";
 import { z } from "zod";
 
 const contentDirectory = path.join(process.cwd(), "src/content/writing");
-
+const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const PostMetadataSchema = z.object({
-  title: z.string(),
-  date: z.string(),
-  summary: z.string(),
+  title: z.string().trim().min(1),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .refine((date) => {
+      const parsed = new Date(date);
+      return (
+        Number.isFinite(parsed.getTime()) &&
+        parsed.toISOString().slice(0, 10) === date
+      );
+    }, "Use a real calendar date in YYYY-MM-DD format"),
+  summary: z.string().trim().min(1),
   slug: z.string().optional(),
+  draft: z.boolean().default(false),
   themes: z.array(z.string()).optional().default([]),
   series: z.string().optional(),
   kind: z.enum(["essay", "technical-note", "research-note"]).optional(),
   readingTime: z.number().optional(),
 });
-
 export type PostMetadata = z.infer<typeof PostMetadataSchema>;
 
-function calculateReadingTime(content: string): number {
-  const words = content.split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 200));
+export function parsePostSource(slug: string, source: string) {
+  if (!slugPattern.test(slug)) throw new Error(`Invalid article slug: ${slug}`);
+  const { data, content } = matter(source);
+  if (data.slug && data.slug !== slug)
+    throw new Error(`Article ${slug}: frontmatter slug must match filename`);
+  if (!content.trim()) throw new Error(`Article ${slug}: body is empty`);
+  const readingTime = Math.max(
+    1,
+    Math.ceil(content.split(/\s+/).filter(Boolean).length / 200),
+  );
+  const result = PostMetadataSchema.safeParse({ ...data, slug, readingTime });
+  if (!result.success)
+    throw new Error(`Article ${slug}: ${result.error.message}`);
+  return { slug, meta: result.data, content, readingTime };
+}
+
+function loadPost(slug: string) {
+  if (!slugPattern.test(slug)) throw new Error(`Post not found: ${slug}`);
+  const fullPath = path.join(contentDirectory, `${slug}.mdx`);
+  return parsePostSource(slug, fs.readFileSync(fullPath, "utf8"));
 }
 
 export function getPostBySlug(slug: string) {
-  const realSlug = slug.replace(/\.mdx$/, "");
-  const fullPath = path.join(contentDirectory, `${realSlug}.mdx`);
-
-  if (!fs.existsSync(fullPath)) {
-    throw new Error(`Post not found: ${slug}`);
-  }
-
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
-  const readingTime = calculateReadingTime(content);
-  const meta = PostMetadataSchema.parse({
-    ...data,
-    slug: realSlug,
-    readingTime,
-  });
-
-  return { slug: realSlug, meta, content, readingTime };
+  const post = loadPost(slug);
+  if (post.meta.draft) throw new Error(`Post not found: ${slug}`);
+  return post;
 }
 
-export function getAllPosts(includeDrafts = false): PostMetadata[] {
-  if (!fs.existsSync(contentDirectory)) {
-    return [];
-  }
-
-  const files = fs.readdirSync(contentDirectory);
-  const posts = files
-    .filter(
-      (file) =>
-        file.endsWith(".mdx") && (includeDrafts || !file.startsWith("_")),
-    )
-    .map((file) => {
-      try {
-        const { meta } = getPostBySlug(file);
-        return meta;
-      } catch {
-        return null;
-      }
-    })
-    .filter((p): p is PostMetadata => p !== null)
-    .sort((a, b) =>
-      new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1,
+export function getAllPosts(): PostMetadata[] {
+  if (!fs.existsSync(contentDirectory)) return [];
+  return fs
+    .readdirSync(contentDirectory)
+    .filter((file) => file.endsWith(".mdx") && !file.startsWith("_"))
+    .map((file) => loadPost(file.slice(0, -4)).meta)
+    .filter((post) => !post.draft)
+    .sort(
+      (a, b) =>
+        b.date.localeCompare(a.date) ||
+        (a.slug ?? "").localeCompare(b.slug ?? ""),
     );
-
-  return posts;
 }
 
 export function getRelatedPosts(
@@ -77,12 +76,11 @@ export function getRelatedPosts(
 ): PostMetadata[] {
   const current = posts.find((p) => p.slug === slug);
   if (!current?.themes?.length) return [];
-
   return posts
     .filter((p) => p.slug !== slug && p.themes?.length)
-    .map((p) => ({
-      post: p,
-      score: p.themes.filter((t: string) => current.themes.includes(t)).length,
+    .map((post) => ({
+      post,
+      score: post.themes.filter((t) => current.themes.includes(t)).length,
     }))
     .filter((p) => p.score > 0)
     .sort((a, b) => b.score - a.score)

@@ -1,55 +1,85 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/cn";
 import { Check, Copy } from "lucide-react";
-import { useRef, useState } from "react";
-import type { ComponentPropsWithoutRef } from "react";
+import {
+  type ComponentPropsWithoutRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export function CodeBlock({
   children,
   className,
   ...props
 }: ComponentPropsWithoutRef<"pre">) {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<"idle" | "copied" | "error">("idle");
   const preRef = useRef<HTMLPreElement>(null);
-
-  const onCopy = () => {
-    if (preRef.current) {
-      const text = preRef.current.innerText || preRef.current.textContent || "";
-      navigator.clipboard.writeText(text.trimEnd());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const onCopy = async () => {
+    clearTimeout(timer.current);
+    try {
+      await navigator.clipboard.writeText(
+        (preRef.current?.textContent ?? "").trimEnd(),
+      );
+      setStatus("copied");
+    } catch {
+      setStatus("error");
     }
+    timer.current = setTimeout(() => setStatus("idle"), 2500);
   };
-
   return (
-    <div className="group relative my-8 overflow-hidden border border-line bg-paper-raised">
-      <pre ref={preRef} className={cn("overflow-x-auto", className)} {...props}>
+    <div
+      className="my-8 overflow-hidden rounded-lg border border-line bg-paper-raised"
+      data-code-block
+    >
+      <div className="flex min-h-11 items-center justify-between gap-4 border-b border-line px-3">
+        <output className="text-xs text-meta">
+          {status === "copied"
+            ? "Code copied"
+            : status === "error"
+              ? "Could not copy. Select the code to copy it."
+              : "Code"}
+        </output>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onCopy}
+              aria-label="Copy code"
+            >
+              {status === "copied" ? (
+                <Check size={17} aria-hidden="true" />
+              ) : (
+                <Copy size={17} aria-hidden="true" />
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Copy code</TooltipContent>
+        </Tooltip>
+      </div>
+      <pre
+        {...props}
+        ref={preRef}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard scrolling for overflowed code.
+        tabIndex={0}
+        aria-label="Code example"
+        className={cn(
+          "!m-0 !border-0 overflow-x-auto !rounded-none",
+          className,
+        )}
+      >
         {children}
       </pre>
-      <button
-        type="button"
-        onClick={onCopy}
-        className="absolute top-2 right-2 flex size-8 items-center justify-center border border-line bg-paper-raised text-ink-4 opacity-0 transition-opacity group-hover:opacity-100 hover:text-accent focus-visible:opacity-100"
-        aria-label="Copy code"
-      >
-        <span
-          className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity duration-200",
-            copied ? "opacity-100" : "opacity-0",
-          )}
-        >
-          <Check size={14} strokeWidth={1.6} className="text-pass" />
-        </span>
-        <span
-          className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity duration-200",
-            copied ? "opacity-0" : "opacity-100",
-          )}
-        >
-          <Copy size={14} strokeWidth={1.6} />
-        </span>
-      </button>
     </div>
   );
 }
