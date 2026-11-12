@@ -5,6 +5,23 @@ const baseURL = production ? "http://localhost:3200" : "http://localhost:3000";
 
 export default defineConfig({
   testDir: "./tests",
+  projects: [
+    {
+      name: "chromium",
+      use: { browserName: "chromium" },
+      testMatch: /layout\.spec\.ts/,
+    },
+    {
+      name: "firefox",
+      use: { browserName: "firefox" },
+      testMatch: /browser\.spec\.ts/,
+    },
+    {
+      name: "webkit",
+      use: { browserName: "webkit" },
+      testMatch: /browser\.spec\.ts/,
+    },
+  ],
   fullyParallel: true,
   workers: 2,
   reporter: "list",

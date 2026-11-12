@@ -6,7 +6,6 @@ const routes = [
   "/work/soffia",
   "/work/ndc",
   "/work/meteor",
-  "/open-source",
   "/about",
 ];
 for (const locale of ["es", "en"] as const) {
@@ -16,7 +15,7 @@ for (const locale of ["es", "en"] as const) {
       expect((await page.goto(`${prefix}${route || "/"}`))?.status()).toBe(200);
       await expect(page.locator("main h1")).toHaveCount(1);
       await expect(page.locator("main")).not.toContainText(
-        /Expertia|TechHouse|24\/7|86 tests/,
+        /Confidential client|Cliente confidencial|24\/7|86 tests/,
       );
       const canonical = await page
         .locator('link[rel="canonical"]')
@@ -26,13 +25,34 @@ for (const locale of ["es", "en"] as const) {
       );
     }
   });
+  test(`${locale}: full experience is reachable from home`, async ({
+    page,
+  }) => {
+    await page.goto(prefix || "/");
+    await expect(page.locator("#experience")).toContainText("Expertia Travel");
+    await page
+      .getByRole("link", {
+        name:
+          locale === "es"
+            ? "Ver 4 experiencias más"
+            : "View 4 more experiences",
+      })
+      .click();
+    await expect(page).toHaveURL(`${prefix}/about#experience`);
+    await expect(page.locator("#experience > ol > li")).toHaveCount(7);
+    await expect(page.locator("#experience")).toContainText(
+      locale === "es"
+        ? "Tech-House · Cliente: Expertia Travel"
+        : "Tech-House · Client: Expertia Travel",
+    );
+    await expect(page.locator("#experience")).toContainText("ITAW Group");
+    await expect(page.locator("#experience")).toContainText("WebemprendePE");
+  });
   test(`${locale}: home links to cases and keeps the demo inside Soffia`, async ({
     page,
   }) => {
     await page.goto(prefix || "/");
-    await expect(page.locator("main")).toContainText(
-      "Backend & AI Systems Engineer",
-    );
+    await expect(page.locator("main")).toContainText("Backend & AI Engineer");
     await expect(page.locator("#systems article")).toHaveCount(3);
     await expect(page.locator("#gate-panel")).toHaveCount(0);
     for (const slug of ["soffia", "ndc", "meteor"]) {
@@ -41,7 +61,7 @@ for (const locale of ["es", "en"] as const) {
         .last()
         .click();
       await expect(page).toHaveURL(new RegExp(`${prefix}/work/${slug}$`));
-      await expect(page.locator("article > h2").first()).toBeVisible();
+      await expect(page.locator("article h2[id]").first()).toBeVisible();
       const contents = page.getByRole("navigation", {
         name: locale === "es" ? "Contenido del caso" : "Case contents",
       });
@@ -61,8 +81,11 @@ for (const width of [320, 390, 1024, 1440]) {
       "/",
       "/work/soffia",
       "/work/ndc",
-      "/open-source",
       "/about",
+      "/privacidad",
+      "/en/privacy",
+      "/seguridad",
+      "/en/security",
     ]) {
       await page.goto(route);
       expect(
@@ -89,10 +112,32 @@ test("language switching preserves the case", async ({ page }) => {
   await page.locator('header a[hreflang="es"]').click();
   await expect(page).toHaveURL(/\/work\/ndc$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
-  await expect(page.locator('header a[hreflang="es"]')).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
+  await expect(page.locator('header a[hreflang="en"]')).toHaveText("ES");
+});
+
+test("English legal pages mirror the Spanish versions", async ({ page }) => {
+  await page.goto("/en");
+  await expect(page.locator('footer a[href="/en/privacy"]')).toHaveCount(1);
+  await expect(page.locator('footer a[href="/en/security"]')).toHaveCount(1);
+  for (const [en, es] of [
+    ["/en/privacy", "/privacidad"],
+    ["/en/security", "/seguridad"],
+  ] as const) {
+    expect((await page.goto(en))?.status()).toBe(200);
+    await expect(page.locator("main h1")).toHaveCount(1);
+    const canonical = await page
+      .locator('link[rel="canonical"]')
+      .getAttribute("href");
+    expect(new URL(canonical ?? "").href).toBe(
+      new URL(en, "https://www.roddcode.com").href,
+    );
+    await page.locator('header a[hreflang="es"]').click();
+    await expect(page).toHaveURL(new RegExp(`${es}$`));
+    await expect(page.locator("html")).toHaveAttribute("lang", "es");
+    await page.locator('header a[hreflang="en"]').click();
+    await expect(page).toHaveURL(new RegExp(`${en}$`));
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  }
 });
 
 test("locale return paths cannot redirect to another origin", async ({
@@ -129,11 +174,7 @@ test("mobile navigation supports keyboard, escape and touch", async ({
   await page.keyboard.press("Escape");
   await expect(details).not.toHaveAttribute("open");
   await expect(trigger).toBeFocused();
-  for (const selector of [
-    'header a[hreflang="es"]',
-    'header a[hreflang="en"]',
-    "header summary",
-  ]) {
+  for (const selector of ['header a[hreflang="en"]', "header summary"]) {
     const box = await page.locator(selector).boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(44);
     expect(box?.height).toBeGreaterThanOrEqual(44);
@@ -177,25 +218,42 @@ test("booking illustration distinguishes conflict, commit, replay and reset", as
   );
 });
 
-test("component contracts expose limits and verified usage", async ({
-  page,
-}) => {
-  await page.goto("/open-source");
-  await expect(page.locator("#reactive-fsm")).toContainText("1.4.1");
-  await expect(page.locator("#exactly-once")).toContainText("0.2.0");
-  for (const name of ["reactive-fsm", "exactly-once"]) {
-    const component = page.locator(`#${name}`);
+for (const locale of ["es", "en"] as const) {
+  test(`${locale}: open source links directly to code and preserves old URLs`, async ({
+    page,
+    request,
+  }) => {
+    const home = locale === "es" ? "/" : "/en";
+    const legacy = locale === "es" ? "/open-source" : "/en/open-source";
+    const response = await request.get(legacy, { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toBe(`${home}#open-source`);
+    await page.goto(`${legacy}#reactive-fsm`);
+    await expect(page).toHaveURL(`${home}#open-source`);
+    await expect(page.locator("#open-source")).toBeInViewport();
     await expect(
-      component.getByRole("heading", { name: "Hasta dónde llega" }),
-    ).toBeVisible();
-    await expect(
-      component.getByRole("heading", { name: "Uso comprobado" }),
-    ).toBeAttached();
-    await expect(
-      component.getByRole("link", { name: "Código fuente" }),
-    ).toHaveAttribute("href", `https://github.com/roddcode/${name}`);
-  }
-});
+      page
+        .locator("header, footer")
+        .getByRole("link", { name: "Open source", exact: true }),
+    ).toHaveCount(0);
+    for (const name of ["reactive-fsm", "exactly-once"]) {
+      await expect(
+        page.locator(`#${name}`).getByRole("link", {
+          name: locale === "es" ? "Ver código" : "View code",
+        }),
+      ).toHaveAttribute("href", `https://github.com/roddcode/${name}`);
+    }
+    await page.goto(`${locale === "es" ? "" : "/en"}/work/soffia`);
+    for (const name of ["reactive-fsm", "exactly-once"]) {
+      await expect(
+        page.locator("main").getByRole("link", { name: new RegExp(name) }),
+      ).toHaveAttribute("href", `https://github.com/roddcode/${name}`);
+    }
+    expect(await (await request.get("/sitemap.xml")).text()).not.toContain(
+      "/open-source",
+    );
+  });
+}
 
 test("CV and historical redirects resolve to the preserved PDF", async ({
   page,
@@ -268,17 +326,16 @@ test("unknown cases have a localized 404", async ({ page }) => {
   );
 });
 
-test("hero comparison is noindex and contains no product demo", async ({
+test("retired previews and draft article URLs are unavailable", async ({
   page,
 }) => {
-  for (const variant of ["a", "b"]) {
-    await page.goto(`/design-preview?variant=${variant}`);
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-      "content",
-      "noindex, nofollow",
-    );
-    await expect(page.locator("main h1")).toHaveCount(1);
-    await expect(page.locator("#gate-panel")).toHaveCount(0);
+  for (const route of [
+    "/design-preview",
+    "/en/design-preview",
+    "/writing/_on-taste",
+    "/writing/on-taste",
+  ]) {
+    expect((await page.goto(route))?.status()).toBe(404);
   }
 });
 
@@ -293,4 +350,260 @@ test("case and essay links provide context in both directions", async ({
     .filter({ has: page.getByRole("heading", { name: "Related work" }) });
   await related.getByRole("link", { name: "SoffIA", exact: true }).click();
   await expect(page).toHaveURL(/\/en\/work\/soffia$/);
+});
+
+test("theme follows the system until a manual choice, then persists across routes, reloads and locales", async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  const toggle = page.getByRole("button", {
+    name: "Activar modo claro",
+    exact: true,
+  });
+  await expect(toggle).toBeVisible();
+  await toggle.click();
+  await expect(page.locator("html")).toHaveClass(/light/);
+  await page.goto("/writing/db-fat-llm-light");
+  await expect(page.locator("html")).toHaveClass(/light/);
+  await page.reload();
+  await expect(page.locator("html")).toHaveClass(/light/);
+  await page.goto("/en");
+  await expect(page.locator("html")).toHaveClass(/light/);
+  const enToggle = page.getByRole("button", {
+    name: "Switch to dark mode",
+    exact: true,
+  });
+  await enToggle.click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.goto("/en/work/soffia");
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.reload();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  expect(errors).toEqual([]);
+});
+
+test("mobile theme toggle is keyboard operable with a full touch target", async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/");
+  const toggle = page.getByRole("button", {
+    name: "Activar modo oscuro",
+    exact: true,
+  });
+  await expect(toggle).toBeVisible();
+  const box = await toggle.boundingBox();
+  expect(box?.width).toBeGreaterThanOrEqual(44);
+  expect(box?.height).toBeGreaterThanOrEqual(44);
+  await expect(toggle).toHaveCSS("transition-duration", "0s");
+  await toggle.focus();
+  await expect(toggle).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await expect(
+    page.getByRole("button", { name: "Activar modo claro", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(page.locator("html")).toHaveClass(/light/);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});
+
+test("shared controls preserve link semantics, keyboard tooltips and real email copying", async ({
+  page,
+  context,
+}) => {
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await page.goto("/");
+  const primary = page.getByRole("link", {
+    name: "Ver proyectos",
+    exact: true,
+  });
+  await expect(primary).toHaveAttribute("href", "/work");
+  await expect(primary).toHaveAttribute("data-slot", "button");
+  await expect(
+    page.locator("a a, button button, button a, a button"),
+  ).toHaveCount(0);
+  const theme = page.getByRole("button", {
+    name: "Activar modo oscuro",
+    exact: true,
+  });
+  await theme.focus();
+  await expect(page.getByRole("tooltip")).toHaveText("Activar modo oscuro");
+  await expect(theme).toHaveCSS("transition-duration", "0s");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+
+  await context.grantPermissions(["clipboard-read", "clipboard-write"], {
+    origin: new URL(page.url()).origin,
+  });
+  const copy = page.getByRole("button", { name: "Copiar correo", exact: true });
+  await copy.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("footer output")).toHaveText("Correo copiado");
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    "roddcode.dev@gmail.com",
+  );
+});
+
+test("case content stays readable without JavaScript and with reduced motion", async ({
+  browser,
+  page,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    locale: "es-PE",
+  });
+  try {
+    const plain = await context.newPage();
+    await plain.goto(new URL("/work/soffia", baseURL).href);
+    await expect(plain.locator("main h1")).toHaveText("SoffIA");
+    await expect(plain.locator("article")).toContainText("PostgreSQL");
+    await expect(plain.locator("[data-reveal-state='pending']")).toHaveCount(0);
+    await expect(plain.locator("article")).toHaveCSS("opacity", "1");
+  } finally {
+    await context.close();
+  }
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/work/ndc");
+  await expect(page.locator("article h2[id]").first()).toBeVisible();
+  await expect(page.locator("[data-reveal-state='pending']")).toHaveCount(0);
+});
+
+test("case contents stay visible while reading and collapse on mobile", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/work/soffia");
+  const contents = page.getByRole("navigation", {
+    name: "Contenido del caso",
+    exact: true,
+  });
+  const last = contents.getByRole("link").last();
+  const target = await last.getAttribute("href");
+  await last.click();
+  await expect(contents).toBeInViewport();
+  await expect(
+    contents.locator('a[aria-current="location"]:visible'),
+  ).toHaveAttribute("href", target ?? "");
+  const box = await contents.boundingBox();
+  expect(box?.y).toBeGreaterThanOrEqual(80);
+  expect(box?.y).toBeLessThan(180);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const summary = page.locator("main details summary");
+  await expect(summary).toHaveCount(1);
+  await summary.click();
+  await contents.getByRole("link").first().click();
+  await expect(page.locator("article h2[id]").first()).toBeInViewport();
+});
+
+test("writing keeps readable layouts, accessible code copying and client navigation", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/writing/server-centric-state");
+  const block = page.locator("[data-code-block]").first();
+  const expected = (await block.locator("pre").textContent())?.trimEnd();
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async (text: string) => {
+          document.documentElement.dataset.testCopy = text;
+        },
+      },
+    });
+  });
+  const copy = block.getByRole("button", { name: "Copy code" });
+  await expect(copy).toHaveAttribute("data-slot", "button");
+  await copy.focus();
+  await page.keyboard.press("Enter");
+  await expect(block.locator("output")).toHaveText("Code copied");
+  expect(
+    await page.evaluate(() => document.documentElement.dataset.testCopy),
+  ).toBe(expected);
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async () => {
+          throw new Error("denied");
+        },
+      },
+    });
+  });
+  await copy.click();
+  await expect(block.locator("output")).toContainText("Could not copy");
+  await block.locator("pre").focus();
+  await expect(block.locator("pre")).toBeFocused();
+  const next = page
+    .getByRole("complementary")
+    .filter({
+      has: page.getByRole("heading", { name: "Read next", exact: true }),
+    })
+    .getByRole("link")
+    .first();
+  const href = await next.getAttribute("href");
+  await next.click();
+  await expect(page).toHaveURL(href ?? "");
+  await expect(page.locator("main h1")).toBeVisible();
+  await expect(page.locator("[data-writing-article]")).toHaveCount(1);
+});
+
+test("writing remains readable without JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    viewport: { width: 320, height: 900 },
+  });
+  const page = await context.newPage();
+  await page.goto("/writing/server-centric-state");
+  await expect(page.locator("main h1")).toBeVisible();
+  await expect(page.locator("[data-code-block] pre")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await context.close();
+});
+
+test("theme changes reuse the visible topographic renderer", async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    localStorage.setItem("roddcode-theme", "light");
+    if (typeof WebGL2RenderingContext === "undefined") return;
+    const createProgram = WebGL2RenderingContext.prototype.createProgram;
+    WebGL2RenderingContext.prototype.createProgram = function () {
+      const root = document.documentElement;
+      root.dataset.testPrograms = String(
+        Number(root.dataset.testPrograms ?? 0) + 1,
+      );
+      return createProgram.call(this);
+    };
+  });
+  await page.goto("/");
+  await page.waitForTimeout(1800);
+  const before = Number(
+    (await page.locator("html").getAttribute("data-test-programs")) ?? 0,
+  );
+  test.skip(before === 0, "WebGL unavailable in this browser environment");
+  await page.getByRole("button", { name: "Activar modo oscuro" }).click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.waitForTimeout(1800);
+  expect(
+    Number(await page.locator("html").getAttribute("data-test-programs")),
+  ).toBe(before);
 });
