@@ -1,0 +1,141 @@
+.actions {
+  composes: actions from "./shared.module.css";
+}
+.demo h2 {
+  margin: 0 0 24px;
+  font-size: 29px;
+  line-height: 1.2;
+  font-weight: 550;
+  letter-spacing: -.035em;
+}
+.demo {
+  border: 1px solid var(--color-line);
+  background: var(--color-paper-raised);
+  padding: 28px;
+  margin-block: 50px 60px;
+  scroll-margin-top: 110px;
+}
+.demo > p {
+  color: var(--color-ink-3);
+  line-height: 1.75;
+  font-size: 15px;
+}
+.demoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  border-top: 1px solid var(--color-line);
+  padding-top: 24px;
+  margin-top: 22px;
+}
+.demoControls {
+  min-width: 0;
+}
+.demoControls fieldset {
+  border: 0;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.demoControls legend {
+  font-size: 14px;
+  font-weight: 550;
+  margin-bottom: 14px;
+}
+.demoControls label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-block: 8px;
+  border: 1px solid var(--color-line);
+  cursor: pointer;
+  min-height: 60px;
+}
+.demoControls input {
+  accent-color: var(--color-accent);
+  width: 18px;
+  height: 18px;
+}
+.demoControls label span {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--color-ink-3);
+}
+.demoControls label b {
+  font-size: 16px;
+  color: var(--color-ink);
+  font-weight: 500;
+}
+.demoOutput h3 {
+  font-size: 14px;
+  font-weight: 550;
+  margin-top: 0;
+}
+.demoOutput ol {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+.demoOutput li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 40px;
+  font-size: 14px;
+}
+.demoStatusIcon {
+  color: var(--color-accent);
+  display: flex;
+}
+.demoOutput output {
+  font-size: 14px;
+  line-height: 1.7;
+  display: block;
+  color: var(--color-ink-3);
+}
+.demoOutput output[data-state="accepted"],
+.demoOutput output[data-state="replayed"] {
+  color: var(--color-pass-ink);
+}
+.demoOutput output[data-state="rejected"] {
+  color: var(--color-fail-ink);
+}
+.receipt {
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.demo .demoLimit {
+  border-top: 1px solid var(--color-line);
+  padding-top: 18px;
+  margin: 24px 0 0;
+  font-size: 13px;
+}
+@media (max-width: 760px) {
+  .demo h2 {
+    font-size: 26px;
+  }
+  .demo {
+    padding: 20px;
+  }
+  .demoGrid {
+    grid-template-columns: 1fr;
+  }
+  .demoOutput {
+    border-top: 1px solid var(--color-line);
+    padding-top: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .actions > button {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 12px;
+    white-space: normal;
+  }
+}

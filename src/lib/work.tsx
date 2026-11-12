@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { BookingDemo } from "@/components/portfolio/booking-demo";
+import { NdcPreview } from "@/components/portfolio/ndc-preview";
 import { ProjectHighlights } from "@/components/portfolio/project-highlights";
 import { type Locale, getPortfolio } from "@/content/portfolio";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -52,13 +53,51 @@ export async function getWorkBody(locale: Locale, slug: string) {
       visit(tree);
     };
   }
+  // Group each top-level h2 with the content that follows it, so the case body
+  // exposes one revealable section per narrative block without touching MDX.
+  function sections() {
+    return (tree: Node) => {
+      const children = tree.children ?? [];
+      const grouped: Node[] = [];
+      let open: Node[] | null = null;
+      for (const child of children) {
+        if (child.type === "element" && child.tagName === "h2") {
+          const sectionChildren = [child];
+          grouped.push({
+            type: "element",
+            tagName: "section",
+            properties: { "data-case-section": "", "data-reveal": "" },
+            children: sectionChildren,
+          });
+          open = sectionChildren;
+        } else if (open) {
+          open.push(child);
+        } else {
+          grouped.push(child);
+        }
+      }
+      tree.children = grouped;
+    };
+  }
   const { content } = await compileMDX({
     source,
     components: {
+      NdcFlow: () => (
+        <div
+          role="img"
+          aria-label={
+            locale === "es"
+              ? "Itinerario ficticio Madrid–Lima: consulta, precio y creación de la orden NDC."
+              : "Fictional Madrid–Lima itinerary: NDC shopping, pricing and order creation."
+          }
+        >
+          <NdcPreview locale={locale} />
+        </div>
+      ),
       BookingDemo: () => <BookingDemo locale={locale} />,
       ProjectHighlights: () => <ProjectHighlights project={project} />,
     },
-    options: { mdxOptions: { rehypePlugins: [headings] } },
+    options: { mdxOptions: { rehypePlugins: [headings, sections] } },
   });
   return { content, toc };
 }

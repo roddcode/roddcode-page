@@ -1,0 +1,136 @@
+.diagram {
+  container-type: inline-size;
+  min-width: 0;
+  padding: 26px;
+  border-radius: 26px;
+  background: var(--color-night);
+  color: var(--color-night-ink);
+  border: 1px solid var(--color-night-line);
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+}
+.header > svg {
+  color: var(--color-accent-night);
+  flex: none;
+}
+.header > span {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--color-night-muted);
+}
+.flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px minmax(0, .85fr) 16px minmax(
+      0,
+      .9fr
+    );
+  gap: 8px;
+  align-items: center;
+  margin-block: 34px;
+}
+.flow > svg {
+  width: 16px;
+  color: var(--color-accent-night);
+}
+.node {
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-night-line);
+  border-radius: 8px;
+}
+.node span {
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--color-night-muted);
+}
+.node strong {
+  font-size: clamp(12px, 3cqi, 16px);
+  font-weight: 500;
+  line-height: 1.4;
+  overflow-wrap: normal;
+}
+.integration {
+  border-color: var(--color-accent-night);
+}
+.integration strong {
+  color: var(--color-accent-night);
+}
+.scope {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  border-top: 1px solid var(--color-night-line);
+  padding-top: 20px;
+}
+.scope > div {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.scope span {
+  font-size: 11px;
+  color: var(--color-night-muted);
+}
+.scope strong {
+  font-size: clamp(17px, 4.8cqi, 25px);
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+.scope p {
+  margin: 0;
+  color: var(--color-night-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+@container (max-width: 340px) {
+  .header {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .header > span {
+    font-size: 9px;
+  }
+  .flow {
+    gap: 6px;
+    grid-template-columns: minmax(0, 1fr);
+    margin-block: 20px;
+  }
+  .flow > svg {
+    width: 12px;
+    height: 12px;
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+  .node {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    min-height: 54px;
+    padding: 10px 12px;
+  }
+  .node span {
+    font-size: 11px;
+  }
+  .node strong {
+    font-size: 13px;
+    text-align: right;
+  }
+  .scope {
+    gap: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .diagram {
+    padding: 18px;
+    border-radius: 18px;
+  }
+}

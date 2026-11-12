@@ -6,9 +6,9 @@ I built SoffIA as a CoreOS product for handling enquiries and bookings in clinic
 
 I implemented the application in TypeScript, Next.js and PostgreSQL. The orchestration enables tools according to the conversation state: checking availability, proposing a time and creating a booking each have different conditions.
 
-The backend validates scheduling rules before saving an appointment. Conflicts over the same slot and retries require database-level control, with conditional writes and locks depending on the operation. A state machine helps order the dialogue; authorization and persistence remain server responsibilities.
+The backend validates scheduling rules before saving an appointment. Conflicts over the same slot and retries require database-level control, with conditional writes and locks depending on the operation. The state machine orders the dialogue; authorization and persistence are the server's responsibility.
 
-I used reactive-fsm to control tool availability. The reviewed product code pins version 1.4.0. My exactly-once library addresses retries and commits, but it is not part of SoffIA's verified package usage.
+I used reactive-fsm (version 1.4.0) to control tool availability.
 
 ## An overly strict validator
 
@@ -16,10 +16,10 @@ The worker rejected a historical tenant identifier because its UUID validation w
 
 ## Results at one clinic
 
-The clinic's internal record reports response time dropping from 47 minutes to under 10 seconds and no-shows from 25% to 12%. The results apply to that clinic’s operation during that period.
+The clinic's internal record reports response time dropping from 47 minutes to under 10 seconds and no-shows from 25% to 12%.
 
 ## Try booking control
 
-This illustration runs in the browser with test data. You can try an available or occupied slot and repeat a request to see the same receipt. It does not connect to WhatsApp or the product, and does not establish real concurrency or persistence guarantees.
+Try an available slot, an occupied one and a repeat request. The example runs in your browser with fictional data and no backend.
 
 <BookingDemo />

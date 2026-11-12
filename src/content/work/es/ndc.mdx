@@ -1,6 +1,6 @@
 ## Integrar un proveedor en un motor existente
 
-En 2026 fui responsable de la integración NDC de Air Europa dentro de un motor de vuelos multiproveedor. Trabajé como Software Engineer para una plataforma B2B de viajes. Air Europa era el proveedor integrado.
+En 2026 fui responsable de la integración NDC de Air Europa dentro de un motor de vuelos multiproveedor. Trabajé como Software Engineer para una plataforma B2B de viajes.
 
 El motor ya existía y se compartía con el equipo. Mi trabajo tuvo dos partes separadas: implementar la integración del proveedor y liderar la migración .NET como único ingeniero responsable de cuatro repositorios críticos del motor.
 
@@ -8,15 +8,21 @@ El motor ya existía y se compartía con el equipo. Mi trabajo tuvo dos partes s
 
 Implementé AirShopping, OfferPrice, OrderCreate, OrderRetrieve, OrderChange, OrderCancel y UpSell contra PROS, sobre SOAP/XML con builders y parsers manuales.
 
+De una búsqueda a una orden: el ticket ilustra, sobre un itinerario ficticio, la consulta de ofertas, la confirmación de precio y la creación de la orden.
+
+<NdcFlow />
+
+## Contratos y trazabilidad
+
 La integración exigía traducir el contrato del proveedor al dominio del motor: equipaje, tipos de tarifa, códigos de edad y trayectos con varios segmentos. También trabajé en el manejo HTTP y la trazabilidad con Serilog, Grafana y Loki, almacenamiento de payloads en Azure Blob y releases entre varios repositorios en Azure DevOps.
 
 ## Corregir un error 490
 
-Una respuesta con error 490 se resolvió corrigiendo la envoltura de DataLists. El ajuste estuvo en la estructura del mensaje enviado al servicio. Este tipo de fallo obligaba a revisar el XML concreto y su correspondencia con el contrato del proveedor.
+Una respuesta con error 490 se resolvió corrigiendo la envoltura de DataLists. El ajuste estuvo en la estructura del mensaje enviado al servicio.
 
 ## Migración del motor
 
-La migración abarcó cuatro repositorios críticos del motor, descritos por su responsabilidad: el motor de vuelos, el backend del motor, gastos y emisiones. Los entregué validados en producción. Para verificarla, comprobé paridad A/B byte a byte en el conjunto de casos evaluado y el ciclo de escritura. Ese conjunto permitió contrastar el comportamiento migrado con el anterior; no cubre todos los recorridos posibles.
+La migración llevó el motor de .NET 6 a .NET 10 y abarcó cuatro repositorios críticos, descritos por su responsabilidad: el motor de vuelos, el backend del motor, gastos y emisiones. Los entregué validados en producción. Para verificarla, comprobé paridad A/B byte a byte en el conjunto de casos evaluado y el ciclo de escritura, comparando el comportamiento migrado con el anterior.
 
 ## Entrega
 

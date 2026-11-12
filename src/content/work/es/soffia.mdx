@@ -6,9 +6,9 @@ Desarrollé SoffIA como producto de CoreOS para atender consultas y gestionar re
 
 Implementé la aplicación en TypeScript, Next.js y PostgreSQL. La orquestación habilita herramientas según el estado de la conversación: consultar disponibilidad, proponer un horario y crear una reserva tienen condiciones distintas.
 
-El backend valida las reglas de agenda antes de guardar una cita. Los conflictos por un mismo horario y los reintentos requieren control en la base de datos, con escrituras condicionales y locks según la operación. Una máquina de estados ayuda a ordenar el diálogo; la autorización y la persistencia siguen siendo responsabilidades del servidor.
+El backend valida las reglas de agenda antes de guardar una cita. Los conflictos por un mismo horario y los reintentos requieren control en la base de datos, con escrituras condicionales y locks según la operación. La máquina de estados ordena el diálogo; la autorización y la persistencia son responsabilidad del servidor.
 
-Usé reactive-fsm para controlar las herramientas disponibles. El código revisado del producto fija la versión 1.4.0. La librería exactly-once aborda el problema de los reintentos y los commits, pero no forma parte del uso comprobado de SoffIA.
+Usé reactive-fsm (versión 1.4.0) para controlar las herramientas disponibles.
 
 ## Una validación demasiado restrictiva
 
@@ -16,10 +16,10 @@ El worker rechazaba un identificador histórico de tenant porque la validación 
 
 ## Resultado en una clínica
 
-El registro interno de esa clínica recoge una reducción del tiempo de respuesta de 47 minutos a menos de 10 segundos y de las inasistencias del 25% al 12%. Los resultados corresponden a la operación de esa clínica en ese periodo.
+El registro interno de esa clínica recoge una reducción del tiempo de respuesta de 47 minutos a menos de 10 segundos y de las inasistencias del 25% al 12%.
 
 ## Probar el control de una reserva
 
-Esta ilustración usa datos de prueba y corre en el navegador. Puedes intentar reservar un horario disponible u ocupado y repetir una solicitud para observar el mismo recibo. No se conecta a WhatsApp ni al producto, y no acredita concurrencia o persistencia real.
+Prueba un horario disponible, uno ocupado y un reintento de la misma solicitud. Es un ejemplo con datos ficticios que corre en tu navegador, sin backend.
 
 <BookingDemo />

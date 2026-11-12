@@ -1,10 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { getCopy } from "@/content/portfolio/copy";
 import type { Locale } from "@/content/portfolio/types";
 import { Check, Minus, X } from "lucide-react";
 import { useId, useState } from "react";
-import s from "./portfolio.module.css";
+import s from "./booking-demo.module.css";
 
 type Result = "idle" | "accepted" | "replayed" | "rejected";
 export function BookingDemo({ locale }: { locale: Locale }) {
@@ -64,12 +65,12 @@ export function BookingDemo({ locale }: { locale: Locale }) {
             ))}
           </fieldset>
           <div className={s.actions}>
-            <button type="button" className={s.primary} onClick={run}>
+            <Button type="button" onClick={run}>
               {receipt && slot === "10:00" ? t.demoReplay : t.demoRun}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className={s.secondary}
+              variant="outline"
               onClick={() => {
                 setReceipt(null);
                 setResult("idle");
@@ -77,7 +78,7 @@ export function BookingDemo({ locale }: { locale: Locale }) {
               }}
             >
               {t.demoReset}
-            </button>
+            </Button>
           </div>
         </div>
         <div className={s.demoOutput}>

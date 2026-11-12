@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
     // Rutas del diseño anterior que hoy están publicadas en `main`. Sin esto,
     // el merge las convierte en 404 y se pierde lo que ya estaba indexado.
     return [
+      { source: "/open-source", destination: "/#open-source", permanent: true },
+      { source: "/es/open-source", destination: "/#open-source", permanent: true },
+      { source: "/en/open-source", destination: "/en#open-source", permanent: true },
       {
         source: "/captura-crm-soffia.webp",
         destination: "/work/soffia-panel-redacted.webp",

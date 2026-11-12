@@ -1,0 +1,55 @@
+.section {
+  composes: section from "./shared.module.css";
+  background: var(--surface-1);
+  padding-block: 64px 40px;
+}
+.sectionHeading {
+  composes: sectionHeading from "./shared.module.css";
+  display: block;
+  margin-bottom: 32px;
+}
+.sectionHeading p {
+  margin-top: 16px;
+  max-width: 76ch;
+}
+.packageGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.packageGrid article {
+  border-top: 1px solid var(--color-line);
+  padding-top: 22px;
+}
+.packageGrid article p {
+  max-width: 49ch;
+  line-height: 1.75;
+  font-size: 16px;
+  margin: 12px 0 4px;
+}
+.packageName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 18px;
+}
+.packageName h3 {
+  font-size: 27px;
+  letter-spacing: -.04em;
+  font-weight: 500;
+  margin: 0;
+}
+.packageName span {
+  font-size: 12px;
+  color: var(--color-meta);
+  font-family: var(--font-geist-mono), monospace;
+}
+@media (max-width: 760px) {
+  .section {
+    padding-block: 44px 32px;
+  }
+  .packageGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

@@ -1,4 +1,5 @@
-import { CaseStudy, PortfolioShell } from "@/components/portfolio/views";
+import { CaseStudy } from "@/components/portfolio/case-study";
+import { PortfolioShell } from "@/components/portfolio/shell";
 import { getPortfolio } from "@/content/portfolio";
 import { portfolioMetadata, resolveLocale } from "@/lib/portfolio";
 import { getWorkBody } from "@/lib/work";
