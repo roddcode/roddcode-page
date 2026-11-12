@@ -32,5 +32,10 @@
         "noArrayIndexKey": "warn"
       }
     }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true
+    }
   }
 }

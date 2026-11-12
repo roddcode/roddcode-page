@@ -19,21 +19,24 @@
     "format": "biome format --write src scripts tests",
     "check": "biome check --write src scripts tests",
     "typecheck": "tsc --noEmit",
-    "test": "playwright test tests/layout.spec.ts",
+    "test": "playwright test",
     "clean": "node -e \"const f=require('node:fs');for(const d of ['.next','.turbo'])f.rmSync(d,{recursive:true,force:true})\"",
-    "logos": "node scripts/optimize-logos.mjs",
-    "og:contour": "node scripts/og-contour.mjs"
+    "og:contour": "node scripts/og-contour.mjs",
+    "validate:content": "node --experimental-strip-types scripts/validate-content.mjs",
+    "test:content": "node --experimental-strip-types --test tests/content.test.mjs"
   },
   "dependencies": {
     "@tailwindcss/typography": "0.5.20",
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
+    "class-variance-authority": "0.7.1",
     "clsx": "^2.1.1",
     "gray-matter": "4.0.3",
     "lucide-react": "1.16.0",
     "next": "^16.4.4",
     "next-intl": "4.14.9",
     "next-mdx-remote": "6.0.0",
+    "next-themes": "0.4.6",
     "radix-ui": "1.8.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -57,5 +60,8 @@
     "overrides": {
       "@tailwindcss/typography>postcss-selector-parser": "^6.1.5"
     }
+  },
+  "engines": {
+    "node": ">=24 <25"
   }
 }
