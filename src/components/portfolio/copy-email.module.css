@@ -1,0 +1,16 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+.feedback {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  white-space: nowrap;
+  color: var(--color-ink);
+  background: var(--surface-0);
+  font-size: 12px;
+  line-height: 1.5;
+}

@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  */
 export default function WritingLayout({ children }: { children: ReactNode }) {
   return (
-    <PageShell locale="en" path="/writing">
+    <PageShell locale="en" path="/writing" wide>
       {children}
     </PageShell>
   );

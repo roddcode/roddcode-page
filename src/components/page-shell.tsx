@@ -1,4 +1,6 @@
+import { Container } from "@/components/layout/container";
 import { Footer, Header } from "@/components/portfolio/chrome";
+import { PageReveal } from "@/components/portfolio/page-reveal";
 import type { ReactNode } from "react";
 
 /** Shared portfolio navigation with a narrow reading column. */
@@ -6,20 +8,28 @@ export function PageShell({
   children,
   locale = "es",
   path = "/",
-}: { children: ReactNode; locale?: "es" | "en"; path?: string }) {
+  languagePaths,
+  wide = false,
+}: {
+  children: ReactNode;
+  locale?: "es" | "en";
+  path?: string;
+  languagePaths?: Partial<Record<"es" | "en", string>>;
+  wide?: boolean;
+}) {
   return (
     <div
       data-reading-surface
       lang={locale}
       className="min-h-dvh bg-paper font-sans text-ink"
     >
-      <Header locale={locale} path={path} />
-      <main
-        id="main-content"
-        className="mx-auto w-full max-w-[1240px] px-[clamp(18px,4vw,24px)] py-16 md:py-24"
-      >
-        <div className="max-w-[720px]">{children}</div>
+      <Header locale={locale} path={path} languagePaths={languagePaths} />
+      <main id="main-content" className="py-14 md:py-24">
+        <Container>
+          <div className={wide ? undefined : "max-w-[720px]"}>{children}</div>
+        </Container>
       </main>
+      <PageReveal routeKey={`${locale}:${path}`} />
       <Footer locale={locale} />
     </div>
   );
