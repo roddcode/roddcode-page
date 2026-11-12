@@ -1,13 +1,11 @@
 import type { Locale } from "@/content/portfolio";
+import { ComponentTeaser } from "./component-teaser";
+import { Contact } from "./contact";
 import { Hero } from "./hero";
+import { HomeReading } from "./home-reading";
 import { LegacyLinks } from "./legacy-links";
-import {
-  ComponentTeaser,
-  Contact,
-  HomeReading,
-  PortfolioShell,
-  SelectedWork,
-} from "./views";
+import { SelectedWork } from "./selected-work";
+import { PortfolioShell } from "./shell";
 
 export function PortfolioHome({ locale }: { locale: Locale }) {
   return (

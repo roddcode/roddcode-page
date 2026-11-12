@@ -1,0 +1,208 @@
+.section {
+  background: var(--surface-1);
+}
+.about {
+  padding-block: 40px 48px;
+}
+.writing {
+  padding-block: 40px 80px;
+}
+.personTeaser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(40px, 7vw, 96px);
+  align-items: start;
+}
+.personIntro h2,
+.experience h3 {
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 550;
+  color: var(--color-ink);
+}
+.personalStatement {
+  margin: 0 0 22px;
+  max-width: 36ch;
+  font-size: clamp(22px, 2.3vw, 29px);
+  line-height: 1.45;
+  letter-spacing: -.02em;
+  text-wrap: pretty;
+  color: var(--color-ink);
+}
+.education {
+  margin: 0 0 16px;
+  max-width: 52ch;
+  color: var(--color-ink-3);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  color: var(--color-meta);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.experience ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.experience li {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 16px;
+  padding-block: 19px;
+  border-top: 1px solid var(--color-line);
+}
+.period {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-meta);
+}
+.organization {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.role {
+  margin: 5px 0 0;
+  color: var(--color-ink-3);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.writingHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 24px;
+  margin-bottom: 28px;
+}
+.writingHeading h2 {
+  font-size: clamp(31px, 3.1vw, 45px);
+  line-height: 1.15;
+  letter-spacing: -.04em;
+  margin: 0;
+  font-weight: 550;
+}
+.writingHeading p {
+  grid-column: 1 / -1;
+  max-width: 76ch;
+  margin: 16px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-ink-3);
+}
+.articleList a {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) 20px;
+  gap: 24px;
+  align-items: center;
+  border-top: 1px solid var(--color-line);
+  padding-block: 24px;
+  text-decoration: none;
+  position: relative;
+  isolation: isolate;
+}
+.articleList a::before {
+  content: "";
+  position: absolute;
+  inset: 0 -12px;
+  z-index: -1;
+  background: var(--color-accent-wash);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-interaction) var(--ease-interaction);
+}
+.articleList a:hover::before,
+.articleList a:focus-visible::before {
+  opacity: 1;
+}
+.articleList a span {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-meta);
+}
+.articleList a h3 {
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -.02em;
+  font-weight: 500;
+  color: var(--color-ink);
+  margin: 0;
+  transition: color var(--duration-interaction) var(--ease-interaction);
+}
+.articleList a > svg {
+  color: var(--color-accent);
+  transition: transform var(--duration-interaction) var(--ease-interaction);
+}
+.articleList a:hover h3,
+.articleList a:focus-visible h3 {
+  color: var(--color-accent);
+}
+.articleList a:hover > svg,
+.articleList a:focus-visible > svg {
+  transform: translate(2px, -2px);
+}
+@media (max-width: 760px) {
+  .personTeaser {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .about {
+    padding-block: 32px;
+  }
+  .writing {
+    padding-block: 32px 56px;
+  }
+  .writingHeading {
+    column-gap: 12px;
+  }
+  .articleList a {
+    grid-template-columns: minmax(0, 1fr) 20px;
+    gap: 10px 16px;
+    padding-block: 20px;
+  }
+  .articleList a h3 {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 18px;
+  }
+  .articleList a > svg {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .experience li {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 14px;
+    padding-block: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .writingHeading > a {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 4px;
+  }
+  .writingHeading p {
+    margin-top: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .articleList a h3,
+  .articleList a > svg,
+  .articleList a::before {
+    transition: none;
+  }
+  .articleList a:hover > svg,
+  .articleList a:focus-visible > svg {
+    transform: none;
+  }
+}

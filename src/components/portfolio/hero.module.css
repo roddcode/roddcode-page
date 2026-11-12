@@ -1,0 +1,89 @@
+.location {
+  color: var(--color-ink-4);
+  font-size: 13px;
+  margin: 26px 0 0;
+}
+.location span {
+  padding-inline: 8px;
+}
+
+.heroSection {
+  cursor: crosshair;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--surface-1);
+}
+.contour {
+  opacity: 0.8;
+  mask-image: linear-gradient(to right, transparent 5%, #000 70%) !important;
+}
+.heroInner {
+  position: relative;
+  z-index: 1;
+  padding-block: 72px 56px;
+}
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 28px;
+}
+.avatar {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.bylineText {
+  min-width: 0;
+}
+.bylineName {
+  margin: 0 0 3px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.bylineRole {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--color-ink-3);
+}
+.title {
+  max-width: 18ch;
+  margin: 0 0 28px;
+  font-size: clamp(46px, 6vw, 86px);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.sub {
+  max-width: 60ch;
+  margin: 0 0 28px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--color-ink-3);
+}
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+@media (max-width: 760px) {
+  .heroInner {
+    padding-block: 44px 36px;
+  }
+  .title {
+    font-size: clamp(40px, 8vw, 60px);
+  }
+  .sub {
+    font-size: 18px;
+  }
+  .byline {
+    margin-bottom: 24px;
+  }
+}

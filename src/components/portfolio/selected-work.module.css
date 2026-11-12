@@ -1,0 +1,70 @@
+.category {
+  composes: category from "./shared.module.css";
+}
+.section {
+  composes: section from "./shared.module.css";
+  padding-top: clamp(36px, 4vw, 64px);
+  background: var(--surface-0);
+}
+.sectionHeading {
+  composes: sectionHeading from "./shared.module.css";
+}
+.projectRows {
+  display: grid;
+  gap: 54px;
+}
+.projectRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.projectRow:nth-child(even) .projectVisualLink {
+  order: 2;
+}
+.projectVisualLink {
+  text-decoration: none;
+}
+.projectText h3 {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 38px);
+  letter-spacing: -.045em;
+  font-weight: 550;
+}
+.projectText h3 a {
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color var(--duration-interaction) var(--ease-interaction);
+}
+.projectText h3 a:hover,
+.projectText h3 a:focus-visible {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .projectText h3 a {
+    transition: none;
+  }
+}
+.projectText > p:not(.category) {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--color-ink-3);
+  max-width: 48ch;
+}
+@media (max-width: 760px) {
+  .projectRow {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .projectRows {
+    gap: 52px;
+  }
+  .projectRow:nth-child(even) .projectVisualLink {
+    order: 0;
+  }
+  .projectText h3 {
+    font-size: 31px;
+  }
+}
