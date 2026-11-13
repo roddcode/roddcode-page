@@ -607,3 +607,59 @@ test("theme changes reuse the visible topographic renderer", async ({
     Number(await page.locator("html").getAttribute("data-test-programs")),
   ).toBe(before);
 });
+
+for (const locale of ["es", "en"] as const) {
+  test(`${locale}: external resources keep the portfolio open`, async ({
+    page,
+  }) => {
+    const prefix = locale === "es" ? "" : "/en";
+    await page.goto(prefix || "/");
+    const resources = page.locator("#open-source a");
+    await expect(resources).toHaveCount(4);
+    for (const link of await resources.all()) {
+      await expect(link).toHaveAttribute("target", "_blank");
+      await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      await expect(link.locator(".sr-only")).toContainText(
+        locale === "es" ? "otra pestaña" : "new tab",
+      );
+    }
+    await expect(
+      page.locator(`main a[href="${prefix}/work"]`).first(),
+    ).not.toHaveAttribute("target", "_blank");
+    await expect(page.locator('footer a[href^="mailto:"]')).not.toHaveAttribute(
+      "target",
+      "_blank",
+    );
+    await expect(
+      page.locator('footer a[href="https://github.com/roddcode"]'),
+    ).toHaveAttribute("target", "_blank");
+    // Exercise a real new-tab action without sending the browser to a third party.
+    await page.route("https://github.com/roddcode/exactly-once", (route) =>
+      route.fulfill({ body: "External resource" }),
+    );
+    const popupPromise = page.waitForEvent("popup");
+    await resources.first().click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState();
+    await expect(page).toHaveURL(prefix || "/");
+    await popup.close();
+    await page.goto(`${prefix}/work/soffia`);
+    await expect(
+      page.locator('main a[href="https://github.com/roddcode/reactive-fsm"]'),
+    ).toHaveAttribute("target", "_blank");
+  });
+}
+test("essay references distinguish external destinations from local reading", async ({
+  page,
+}) => {
+  await page.goto("/writing/fourth-time-fsm-library");
+  const external = page.locator(".prose a[href^='https://']");
+  expect(await external.count()).toBeGreaterThan(0);
+  for (const link of await external.all()) {
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  }
+  await expect(
+    page.locator('main a[href="/writing"]').first(),
+  ).not.toHaveAttribute("target", "_blank");
+});

@@ -55,3 +55,5 @@ Sitemap y RSS usan contenido publicado. Metadatos, imágenes OG y datos estructu
 Node.js 24 y pnpm 9.5.0. El workflow verify.yml ejecuta lint, validación de contenido, pruebas, build y tipos. Chromium cubre la suite principal; Firefox y WebKit cubren lectura, responsive y controles. Los resultados locales no certifican un despliegue remoto.
 
 La sección de código abierto mantiene nombre, descripción y enlaces en el registro local. PackageVersion consulta npm desde el servidor y se renderiza dentro de su propio Suspense; no añade fetch al navegador ni bloquea el contenido principal. La consulta usa revalidación de 24 horas y timeout de 1,5 segundos. Una respuesta inválida o fallida omite la versión; el espacio reservado mantiene la alineación. Los números históricos de los casos no se actualizan con npm.
+
+ExternalLink conserva un anchor nativo compatible con Button/asChild: destinos externos y CV usan target="_blank", noopener/noreferrer y aviso accesible ES/EN. ContentLink aplica esa política a referencias MDX externas; páginas propias, anchors y mailto conservan su contexto de navegación.

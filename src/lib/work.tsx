@@ -3,8 +3,10 @@ import path from "node:path";
 import { BookingDemo } from "@/components/portfolio/booking-demo";
 import { NdcPreview } from "@/components/portfolio/ndc-preview";
 import { ProjectHighlights } from "@/components/portfolio/project-highlights";
+import { ContentLink } from "@/components/ui/external-link";
 import { type Locale, getPortfolio } from "@/content/portfolio";
 import { compileMDX } from "next-mdx-remote/rsc";
+import type { ComponentProps } from "react";
 
 type Node = {
   type: string;
@@ -82,6 +84,9 @@ export async function getWorkBody(locale: Locale, slug: string) {
   const { content } = await compileMDX({
     source,
     components: {
+      a: (props: ComponentProps<"a">) => (
+        <ContentLink {...props} locale={locale} />
+      ),
       NdcFlow: () => (
         <div
           role="img"

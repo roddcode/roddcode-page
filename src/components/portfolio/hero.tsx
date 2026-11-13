@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "@/components/ui/external-link";
 import { type Locale, getPortfolio } from "@/content/portfolio";
 import { getCopy } from "@/content/portfolio/copy";
 import { CV, pathFor } from "@/lib/paths";
@@ -35,9 +36,9 @@ export function Hero({ locale }: { locale: Locale }) {
             <a href={pathFor(locale, "/work")}>{t.viewWork}</a>
           </Button>
           <Button asChild variant="outline">
-            <a href={CV} target="_blank" rel="noopener noreferrer">
+            <ExternalLink locale={locale} href={CV}>
               {t.cv}
-            </a>
+            </ExternalLink>
           </Button>
         </div>
         <p className={s.location}>

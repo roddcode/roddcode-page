@@ -2,6 +2,7 @@ import { AuthSequenceDiagram } from "@/components/mdx/auth-sequence";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { ReadingProgress } from "@/components/reading-progress";
 import { Button } from "@/components/ui/button";
+import { ContentLink } from "@/components/ui/external-link";
 import { ArticleFooter } from "@/components/writing/article-footer";
 import { PostMeta } from "@/components/writing/post-list";
 import s from "@/components/writing/writing.module.css";
@@ -15,6 +16,7 @@ import type { ComponentProps } from "react";
 import rehypePrettyCode from "rehype-pretty-code";
 
 const mdxComponents = {
+  a: (props: ComponentProps<"a">) => <ContentLink {...props} locale="en" />,
   AuthSequenceDiagram,
   pre: CodeBlock,
   h2: (props: ComponentProps<"h2">) => <h2 {...props} data-reveal />,

@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "@/components/ui/external-link";
 import type { Locale } from "@/content/portfolio";
 import { getCopy } from "@/content/portfolio/copy";
 import { SITE } from "@/lib/constants";
@@ -29,9 +30,9 @@ export function Contact({ locale }: { locale: Locale }) {
               </a>
             </Button>
             <Button asChild variant="outline">
-              <a href={CV} target="_blank" rel="noopener noreferrer">
+              <ExternalLink locale={locale} href={CV}>
                 {t.cv}
-              </a>
+              </ExternalLink>
             </Button>
           </div>
         </div>

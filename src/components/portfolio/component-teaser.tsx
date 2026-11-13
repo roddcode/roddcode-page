@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "@/components/ui/external-link";
 import { type Locale, getPortfolio } from "@/content/portfolio";
 import { getCopy } from "@/content/portfolio/copy";
 import { ArrowUpRight } from "lucide-react";
@@ -28,20 +29,24 @@ export function ComponentTeaser({ locale }: { locale: Locale }) {
               <p>{pkg.summary}</p>
               <div className={s.actions}>
                 <Button asChild variant="link" size="link">
-                  <a href={pkg.repo}>
+                  <ExternalLink locale={locale} href={pkg.repo}>
                     {t.viewCode}
                     <ArrowUpRight
                       size={17}
                       aria-hidden="true"
                       className="group-hover/button:translate-x-[2px] group-hover/button:-translate-y-[2px] group-focus-visible/button:translate-x-[2px] group-focus-visible/button:-translate-y-[2px]"
                     />
-                  </a>
+                  </ExternalLink>
                 </Button>
                 <Button asChild variant="link" size="link">
-                  <a href={pkg.npm} aria-label={`${pkg.name} on npm`}>
+                  <ExternalLink
+                    locale={locale}
+                    href={pkg.npm}
+                    aria-label={`${pkg.name} on npm`}
+                  >
                     npm
                     <ArrowUpRight size={17} aria-hidden="true" />
-                  </a>
+                  </ExternalLink>
                 </Button>
               </div>
             </article>

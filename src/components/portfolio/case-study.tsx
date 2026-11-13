@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "@/components/ui/external-link";
 import { type Locale, type Project, getPortfolio } from "@/content/portfolio";
 import { getCopy } from "@/content/portfolio/copy";
 import { getAllPosts } from "@/lib/mdx";
@@ -107,7 +108,11 @@ export function CaseStudy({
               <ul className={s.relatedList}>
                 {packages.map((pkg) => (
                   <li key={pkg.name}>
-                    <a className={s.relatedLink} href={pkg.repo}>
+                    <ExternalLink
+                      locale={locale}
+                      className={s.relatedLink}
+                      href={pkg.repo}
+                    >
                       <Package
                         size={17}
                         aria-hidden="true"
@@ -125,7 +130,7 @@ export function CaseStudy({
                               : "Related through the problem it addresses"}
                         </span>
                       </span>
-                    </a>
+                    </ExternalLink>
                   </li>
                 ))}
                 {posts.map((post) => (

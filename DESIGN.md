@@ -98,3 +98,5 @@ Apariciones: cabecera, filas, títulos de sección y recursos; nunca ocultar el 
 Los alias de shadcn resuelven a los tokens del portafolio, sin una paleta de compatibilidad separada. El cambio de tema es local; los 200 ms del icono son una transición visual. Idioma conserva la cookie y la ruta mediante redirección explícita. No se añade un enlace de saltar al contenido, por decisión del usuario.
 
 La topografía conserva su programa WebGL al alternar tema: se actualizan la paleta y el acento, sin repetir la compilación ni volver a esperar el idle inicial. La inicialización cerca del viewport y la pausa fuera de pantalla se mantienen.
+
+Los enlaces a GitHub, npm, LinkedIn y documentación externa abren otra pestaña. El CV y la ampliación de capturas mantienen esa política. La navegación interna y mailto no fuerzan pestañas. Los destinos nuevos incluyen indicación accesible localizada; la flecha externa acompaña los enlaces donde corresponde.

@@ -1,5 +1,7 @@
 "use client";
 
+import { ExternalLink } from "@/components/ui/external-link";
+
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import type { Locale } from "@/content/portfolio";
@@ -103,9 +105,9 @@ export function Header({
                   {link.label}
                 </a>
               ))}
-              <a href={CV} target="_blank" rel="noopener noreferrer">
+              <ExternalLink locale={locale} href={CV}>
                 {t.cv}
-              </a>
+              </ExternalLink>
               <a href={`mailto:${SITE.email}`}>{t.email}</a>
             </nav>
           </details>
@@ -161,16 +163,16 @@ export function Footer({ locale }: { locale: Locale }) {
             </h2>
             <ul>
               <li>
-                <a href={SITE.github}>
+                <ExternalLink locale={locale} showIcon href={SITE.github}>
                   <SocialIcon name="github" />
                   GitHub
-                </a>
+                </ExternalLink>
               </li>
               <li>
-                <a href={SITE.linkedin}>
+                <ExternalLink locale={locale} showIcon href={SITE.linkedin}>
                   <SocialIcon name="linkedin" />
                   LinkedIn
-                </a>
+                </ExternalLink>
               </li>
             </ul>
           </nav>
@@ -186,9 +188,9 @@ export function Footer({ locale }: { locale: Locale }) {
                 <CopyEmail email={SITE.email} locale={locale} />
               </li>
               <li>
-                <a href={CV} target="_blank" rel="noopener noreferrer">
+                <ExternalLink locale={locale} href={CV}>
                   {t.cv}
-                </a>
+                </ExternalLink>
               </li>
             </ul>
           </nav>

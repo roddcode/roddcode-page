@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "@/components/ui/external-link";
 import { type Locale, getPortfolio } from "@/content/portfolio";
 import { getCopy } from "@/content/portfolio/copy";
 import { SITE } from "@/lib/constants";
@@ -34,12 +35,12 @@ export function AboutPage({ locale }: { locale: Locale }) {
               <p>{about.education}</p>
               <div className={s.actions}>
                 <Button asChild>
-                  <a href={CV} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink locale={locale} href={CV}>
                     {t.cv}
-                  </a>
+                  </ExternalLink>
                 </Button>
                 <Button asChild variant="link" size="link">
-                  <a href={SITE.linkedin}>
+                  <ExternalLink locale={locale} showIcon href={SITE.linkedin}>
                     <SocialIcon name="linkedin" />
                     LinkedIn
                     <ArrowUpRight
@@ -47,7 +48,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
                       aria-hidden="true"
                       className="group-hover/button:translate-x-[2px] group-hover/button:-translate-y-[2px] group-focus-visible/button:translate-x-[2px] group-focus-visible/button:-translate-y-[2px]"
                     />
-                  </a>
+                  </ExternalLink>
                 </Button>
               </div>
             </aside>
