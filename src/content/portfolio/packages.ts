@@ -5,7 +5,6 @@ export function getPackages(locale: Locale): Package[] {
   return [
     {
       name: "exactly-once",
-      version: "0.2.0",
       repo: "https://github.com/roddcode/exactly-once",
       npm: "https://www.npmjs.com/package/exactly-once",
       summary: es
@@ -14,12 +13,11 @@ export function getPackages(locale: Locale): Package[] {
     },
     {
       name: "reactive-fsm",
-      version: "1.4.1",
       repo: "https://github.com/roddcode/reactive-fsm",
       npm: "https://www.npmjs.com/package/reactive-fsm",
       summary: es
-        ? "Herramientas disponibles por estado y control de bucles para agentes."
-        : "State-based tool availability and loop control for agents.",
+        ? "Herramientas visibles por estado y presupuestos de llamadas para agentes de IA en TypeScript."
+        : "State-based tool availability and tool-call budgets for TypeScript AI agents.",
     },
   ];
 }

@@ -42,3 +42,40 @@ test("RSS values escape XML syntax while preserving source text", () => {
     "A &amp; B &lt; C &gt; D &quot;quote&quot; &apos;apostrophe&apos;",
   );
 });
+
+test("npm versions are optional, validated and cached independently of content", async () => {
+  const { getNpmVersion } = await import("../src/lib/npm.ts");
+  let options;
+  const success = await getNpmVersion("reactive-fsm", async (url, init) => {
+    assert.equal(url, "https://registry.npmjs.org/reactive-fsm/latest");
+    options = init;
+    return Response.json({ name: "reactive-fsm", version: "2.0.1" });
+  });
+  assert.equal(success, "2.0.1");
+  assert.equal(options.next.revalidate, 86400);
+  assert(options.signal instanceof AbortSignal);
+  for (const metadata of [
+    null,
+    {},
+    { name: "other", version: "2.0.1" },
+    { name: "reactive-fsm", version: "<bad>" },
+  ]) {
+    assert.equal(
+      await getNpmVersion("reactive-fsm", async () => Response.json(metadata)),
+      null,
+    );
+  }
+  assert.equal(
+    await getNpmVersion(
+      "exactly-once",
+      async () => new Response("", { status: 503 }),
+    ),
+    null,
+  );
+  assert.equal(
+    await getNpmVersion("exactly-once", async () => {
+      throw new Error("offline");
+    }),
+    null,
+  );
+});

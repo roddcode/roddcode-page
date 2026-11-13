@@ -98,3 +98,5 @@ Theme choice persists in local storage; language choice uses a functional cookie
 ## License
 
 Implementation code is available under the [MIT license](LICENSE). Portfolio copy, essays, documentation, CV, photographs, screenshots, logos and other media are reserved to their respective owners and are excluded from that license.
+
+Las versiones visibles de las librerías proceden de npm y se cachean en el servidor durante 24 horas. Si el registro no responde, se oculta ese dato opcional; descripción y enlaces siguen disponibles. La versión utilizada en un caso histórico se documenta por separado.

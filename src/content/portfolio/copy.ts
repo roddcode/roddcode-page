@@ -16,7 +16,7 @@ const es = {
   selected: "Trabajo seleccionado",
   componentsTitle: "Open source",
   componentsIntro:
-    "reactive-fsm controla qué herramientas puede usar un agente según su estado. exactly-once valida acciones y confirma operaciones idempotentes en PostgreSQL.",
+    "Desarrollo librerías TypeScript para agentes de IA y operaciones transaccionales.",
   viewCode: "Ver código",
   source: "Código fuente",
   package: "Paquete",
@@ -116,7 +116,7 @@ const en: Copy = {
   selected: "Selected work",
   componentsTitle: "Open source",
   componentsIntro:
-    "reactive-fsm controls which tools an agent can use in each state. exactly-once validates actions and commits idempotent operations in PostgreSQL.",
+    "I build TypeScript libraries for AI agents and transactional systems.",
   viewCode: "View code",
   source: "Source code",
   package: "Package",

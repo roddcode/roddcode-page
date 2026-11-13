@@ -26,7 +26,6 @@ export type Project = {
 
 export type Package = {
   name: "reactive-fsm" | "exactly-once";
-  version: string;
   summary: string;
   repo: string;
   npm: string;
