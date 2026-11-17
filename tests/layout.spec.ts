@@ -345,11 +345,11 @@ test("case and essay links provide context in both directions", async ({
   await page.goto("/work/soffia");
   await page.locator('article a[href="/writing/db-fat-llm-light"]').click();
   await expect(page).toHaveURL(/\/writing\/db-fat-llm-light$/);
-  const related = page
-    .getByRole("complementary")
-    .filter({ has: page.getByRole("heading", { name: "Related work" }) });
+  const related = page.getByRole("complementary").filter({
+    has: page.getByRole("heading", { name: "Proyectos relacionados" }),
+  });
   await related.getByRole("link", { name: "SoffIA", exact: true }).click();
-  await expect(page).toHaveURL(/\/en\/work\/soffia$/);
+  await expect(page).toHaveURL(/\/work\/soffia$/);
 });
 
 test("theme follows the system until a manual choice, then persists across routes, reloads and locales", async ({
@@ -550,7 +550,7 @@ test("writing keeps readable layouts, accessible code copying and client navigat
   const next = page
     .getByRole("complementary")
     .filter({
-      has: page.getByRole("heading", { name: "Read next", exact: true }),
+      has: page.getByRole("heading", { name: "Sigue leyendo", exact: true }),
     })
     .getByRole("link")
     .first();
@@ -662,4 +662,108 @@ test("essay references distinguish external destinations from local reading", as
   await expect(
     page.locator('main a[href="/writing"]').first(),
   ).not.toHaveAttribute("target", "_blank");
+});
+
+for (const locale of ["es", "en"] as const) {
+  test(`${locale}: writing keeps the interface locale from home to article and back`, async ({
+    page,
+  }) => {
+    const prefix = locale === "es" ? "" : "/en";
+    await page.goto(prefix || "/");
+    await page.locator('header nav a[href="/writing"]').first().click();
+    await expect(page).toHaveURL(/\/writing$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", locale);
+    await expect(page.locator("main h1")).toHaveText(
+      locale === "es" ? "Escritos" : "Writing",
+    );
+    await expect(page.locator("main")).toContainText(
+      locale === "es"
+        ? "Los artículos están en inglés"
+        : "The articles are in English",
+    );
+
+    const article = page.locator('main a[href^="/writing/"]').first();
+    const href = await article.getAttribute("href");
+    await article.click();
+    await expect(page).toHaveURL(new RegExp(`${href}$`));
+    await expect(page.locator("[data-writing-article] h1")).toHaveAttribute(
+      "lang",
+      "en",
+    );
+    await expect(page.locator('main a[href="/writing"]').first()).toContainText(
+      locale === "es" ? "Volver a escritos" : "Back to writing",
+    );
+
+    await page.locator(`header nav a[href="${prefix}/work"]`).first().click();
+    await expect(page).toHaveURL(`${prefix}/work`);
+    await expect(page.locator("html")).toHaveAttribute("lang", locale);
+    await expect(page.locator("main h1")).toHaveText(
+      locale === "es" ? "Proyectos" : "Work",
+    );
+  });
+}
+
+test("language toggle keeps the article slug, interface and reload", async ({
+  page,
+}) => {
+  await page.goto("/writing/db-fat-llm-light");
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(page.locator("[data-writing-article] h1")).toHaveAttribute(
+    "lang",
+    "en",
+  );
+
+  await page.locator('header a[hreflang="en"]').first().click();
+  await expect(page).toHaveURL(/\/writing\/db-fat-llm-light$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator("main")).toContainText("Back to writing");
+
+  await page.reload();
+  await expect(page).toHaveURL(/\/writing\/db-fat-llm-light$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator("[data-writing-article] h1")).toHaveAttribute(
+    "lang",
+    "en",
+  );
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('header a[hreflang="es"]').first().click();
+  await expect(page).toHaveURL(/\/writing\/db-fat-llm-light$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(page.locator("main")).toContainText("Volver a escritos");
+});
+
+test("writing interface resolves header, explicit cookie and invalid cookie", async ({
+  browser,
+  baseURL,
+}) => {
+  const visit = async (locale: string, cookie?: string) => {
+    const context = await browser.newContext({ locale });
+    if (cookie) {
+      await context.addCookies([
+        { name: "NEXT_LOCALE", value: cookie, url: baseURL ?? "" },
+      ]);
+    }
+    const page = await context.newPage();
+    await page.goto("/writing");
+    const heading = await page.locator("main h1").innerText();
+    const lang = await page.locator("html").getAttribute("lang");
+    await context.close();
+    return { heading, lang };
+  };
+
+  expect(await visit("en-US")).toEqual({ heading: "Writing", lang: "en" });
+  expect(await visit("es-PE")).toEqual({ heading: "Escritos", lang: "es" });
+  expect(await visit("es-PE", "en")).toEqual({
+    heading: "Writing",
+    lang: "en",
+  });
+  expect(await visit("en-US", "es")).toEqual({
+    heading: "Escritos",
+    lang: "es",
+  });
+  expect(await visit("fr-FR", "fr")).toEqual({
+    heading: "Escritos",
+    lang: "es",
+  });
 });

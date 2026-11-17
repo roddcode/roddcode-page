@@ -33,8 +33,12 @@ export function GET(request: NextRequest) {
       // A malformed return path falls back to the locale home.
     }
   }
+  // Writing tiene URL canónica neutral (/writing y /writing/:slug), así que el
+  // prefijo /en solo pasaría por el alias y añadiría un salto innecesario.
+  const neutralRoute =
+    safePath === "/writing" || safePath.startsWith("/writing/");
   const target =
-    locale === routing.defaultLocale
+    locale === routing.defaultLocale || neutralRoute
       ? safePath
       : `/${locale}${safePath === "/" ? "" : safePath}`;
   const response = NextResponse.redirect(new URL(target, request.url), 307);

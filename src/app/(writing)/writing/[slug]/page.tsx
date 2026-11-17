@@ -7,6 +7,9 @@ import { ArticleFooter } from "@/components/writing/article-footer";
 import { PostMeta } from "@/components/writing/post-list";
 import s from "@/components/writing/writing.module.css";
 import { getPortfolio } from "@/content/portfolio";
+import { getCopy } from "@/content/portfolio/copy";
+import type { Locale } from "@/content/portfolio/types";
+import { getInterfaceLocale } from "@/i18n/server";
 import { SITE } from "@/lib/constants";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
 import { ArrowLeft } from "lucide-react";
@@ -15,12 +18,12 @@ import { notFound } from "next/navigation";
 import type { ComponentProps } from "react";
 import rehypePrettyCode from "rehype-pretty-code";
 
-const mdxComponents = {
-  a: (props: ComponentProps<"a">) => <ContentLink {...props} locale="en" />,
+const mdxComponents = (locale: Locale) => ({
+  a: (props: ComponentProps<"a">) => <ContentLink {...props} locale={locale} />,
   AuthSequenceDiagram,
   pre: CodeBlock,
   h2: (props: ComponentProps<"h2">) => <h2 {...props} data-reveal />,
-};
+});
 
 export async function generateMetadata({
   params,
@@ -81,7 +84,9 @@ export default async function PostPage(props: {
   }
 
   if (!post) notFound();
-  const { identity, projects } = getPortfolio("en");
+  const locale = await getInterfaceLocale();
+  const t = getCopy(locale);
+  const { identity, projects } = getPortfolio(locale);
   const relatedWork = projects.filter((project) =>
     project.relatedPosts?.includes(params.slug),
   );
@@ -122,19 +127,19 @@ export default async function PostPage(props: {
         <div data-reveal>
           <Button asChild variant="link" size="link">
             <a href="/writing">
-              <ArrowLeft size={17} aria-hidden="true" /> Back to writing
+              <ArrowLeft size={17} aria-hidden="true" /> {t.backWriting}
             </a>
           </Button>
         </div>
         <header className={s.articleHeading} data-reveal>
-          <PostMeta post={post.meta} />
-          <h1>{post.meta.title}</h1>
-          <p>{post.meta.summary}</p>
+          <PostMeta post={post.meta} locale={locale} />
+          <h1 lang="en">{post.meta.title}</h1>
+          <p lang="en">{post.meta.summary}</p>
         </header>
-        <div className={`prose ${s.body}`}>
+        <div className={`prose ${s.body}`} lang="en">
           <MDXRemote
             source={post.content}
-            components={mdxComponents}
+            components={mdxComponents(locale)}
             options={{
               mdxOptions: {
                 rehypePlugins: [
@@ -155,6 +160,7 @@ export default async function PostPage(props: {
         </div>
 
         <ArticleFooter
+          locale={locale}
           title={post.meta.title}
           slug={post.slug}
           authorRole={identity.role}

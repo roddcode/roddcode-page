@@ -38,7 +38,7 @@ El RSS escapa valores XML. El loader solo procesa archivos locales del repositor
 
 ## Idioma y tema
 
-next-intl usa ES sin prefijo y EN bajo /en. El cambio explícito pasa por /api/locale, valida un retorno local, fija la cookie funcional y redirige a la misma vista traducida. Las páginas legales tienen retornos propios. Writing conserva su idioma original.
+next-intl usa ES sin prefijo y EN bajo /en. El cambio explícito pasa por /api/locale, valida un retorno local, fija la cookie funcional y redirige a la misma vista traducida. Las páginas legales tienen retornos propios. Writing conserva el inglés como idioma del artículo —título, resumen, cuerpo, metadatos e `inLanguage`—, pero su interfaz (navegación, índice, controles y pie) sigue el idioma de la solicitud. Fuera de `[locale]` ese idioma se resuelve primero por la cabecera del middleware, luego por la cookie `NEXT_LOCALE` validada y, por último, por `Accept-Language`; /writing y /writing/:slug siguen siendo las URLs canónicas neutrales.
 
 next-themes aplica clase a html y persiste la elección en roddcode-theme. Sigue el sistema hasta elegir manualmente. El tema no requiere una petición al servidor. ContourField conserva la instancia y el programa WebGL al cambiar la paleta; solo actualiza sus parámetros y redibuja. La etiqueta accesible espera al montaje para evitar diferencias de hidratación.
 

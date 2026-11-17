@@ -10,6 +10,7 @@ import { getIdentity } from "@/content/portfolio/identity";
 import { SITE } from "@/lib/constants";
 import { CV, pathFor } from "@/lib/paths";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import s from "./chrome.module.css";
 import { CopyEmail } from "./copy-email";
@@ -29,13 +30,16 @@ export function Header({
 }) {
   const t = getCopy(locale);
   const menu = useRef<HTMLDetailsElement>(null);
+  const pathname = usePathname();
+  // Writing lives outside [locale]; its neutral path carries the article slug.
+  const currentPath = pathname.startsWith("/writing") ? pathname : path;
   const links = [
     { path: "/work", label: t.work },
     { path: "/writing", label: t.writing },
     { path: "/about", label: t.about },
   ];
   const languageLink = (target: Locale) =>
-    `/api/locale?to=${target}&next=${encodeURIComponent(languagePaths?.[target] ?? path)}`;
+    `/api/locale?to=${target}&next=${encodeURIComponent(languagePaths?.[target] ?? currentPath)}`;
   return (
     <header className={s.header}>
       <Container className={s.headerRow}>
@@ -51,7 +55,9 @@ export function Header({
                   ? link.path
                   : pathFor(locale, link.path)
               }
-              aria-current={path.startsWith(link.path) ? "page" : undefined}
+              aria-current={
+                currentPath.startsWith(link.path) ? "page" : undefined
+              }
             >
               {link.label}
             </a>
