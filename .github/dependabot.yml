@@ -1,0 +1,38 @@
+# Version updates only. Security updates are raised by Dependabot as soon as an
+# advisory matches the lockfile, independent of these weekly schedules, and are
+# not grouped or deferred. They still require vulnerability alerts and Dependabot
+# security updates to be enabled in the repository settings.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: America/Lima
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: America/Lima
+    open-pull-requests-limit: 5
+    groups:
+      actions-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types:
+          - minor
+          - patch

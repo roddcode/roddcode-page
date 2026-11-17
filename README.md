@@ -95,6 +95,18 @@ Dates must be real YYYY-MM-DD calendar dates. If you include slug in frontmatter
 
 Theme choice persists in local storage; language choice uses a functional cookie. Existing open-source page URLs redirect to the home section. Publication and external profile edits are separate from local verification.
 
+## Dependency maintenance
+
+Dependabot opens weekly version pull requests for the root pnpm project and for GitHub Actions. Minor and patch release updates are grouped; majors stay individual. Nothing is auto-merged.
+
+Security updates follow a separate path: Dependabot raises them as soon as an advisory matches the lockfile, without waiting for the weekly schedule. That requires vulnerability alerts and Dependabot security updates to be enabled in GitHub repository settings. Confirm they are on rather than assuming it.
+
+Both paths need review. `.github/workflows/security.yml` runs `pnpm install --frozen-lockfile` and `pnpm audit --audit-level=moderate` on a weekly schedule, on dependency changes, and on manual dispatch, auditing dev dependencies too and failing if the registry is unreachable. `.github/workflows/verify.yml` remains the full gate: lint, content checks, build, typecheck and browser tests. An audit is not a substitute for those checks, which is why dependency pull requests are never merged automatically.
+
+Run `pnpm audit --audit-level=moderate` before publishing. When a new advisory lands, treat a patched dependency deploy as the fix, not the report.
+
+The same pattern applies to other repositories, adapting the ecosystem, directory, package manager and Node version, and verifying the lockfile with a frozen install.
+
 ## License
 
 Implementation code is available under the [MIT license](LICENSE). Portfolio copy, essays, documentation, CV, photographs, screenshots, logos and other media are reserved to their respective owners and are excluded from that license.
