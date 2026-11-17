@@ -9,37 +9,25 @@ series: "db-fat-llm-light"
 
 A patient asked to book an appointment. The LLM, eager to help, started confirming — name, service, time. What it didn't check was whether this was a returning patient or someone new. Without identity validation, the system booked a slot under a name that didn't exist in the database.
 
-I described another failure involving a missing `doctorId` in [Deterministic AI](/writing/deterministic-ai). Both failures came from the same permission boundary.
-
-The architecture gave the LLM write access to the database without structural guardrails.
-
-The model had permission to confirm operations before the system validated them.
+I described a related failure involving a missing `doctorId` in [Deterministic AI](/writing/deterministic-ai). Both came from the same permission boundary: the LLM could write to the database without structural guardrails, and it could confirm an operation before the system validated it.
 
 ---
 
 ## The model cannot be the source of truth
 
-LLMs don't distinguish between a fact and a convincing fiction. They're trained to maximize the probability of the next token, not to verify the truth of what they generate. Temperature, sampling strategy, and internal state introduce variance.
+An LLM can produce a plausible confirmation without checking the booking data. For this system, each confirmation has to map to a database row, a calendar event, and a scheduled reminder.
 
-Given the same input, the model produces different outputs on different runs. That's fine for a chatbot. It's not fine for a system that books medical appointments.
-
-When my agent confirms a 10 AM appointment with Dr. Ríos on Friday, that confirmation must map to an actual database row, a calendar event, and a scheduled reminder. The LLM cannot approximate this.
-
-Most teams try to solve this with prompts. "Never confirm a booking without verifying identity. Always check availability before responding." The model ignores this at the worst possible moment — when the context is long, when the pressure is high, when the "respond affirmatively" pattern outweighs the instruction.
-
-Prompts aren't contracts. They're suggestions.
-
-Architecture, on the other hand, is a contract.
+A prompt can ask the model to verify identity and availability. I also needed the application to enforce those checks, so the model could not execute a booking before the required steps were complete.
 
 ---
 
 ## DB-Fat, LLM-Light
 
-The thesis is simple: **the LLM reasons, the database decides.**
+**The LLM reasons, the database decides.**
 
 The model receives only the tools it needs at each step of the flow. During identity verification, it has no access to booking tools. During booking, it can't modify prices. The database holds atomic locks that prevent two confirmations from landing on the same slot.
 
-The LLM is an employee with read-only access. It can suggest, recommend, explain — but it can't write to the database without passing through a gate that validates the operation against the system's current state.
+The LLM works like an employee with read-only access. It can suggest, recommend, and explain; it can't write to the database without passing through a gate that validates the operation against the system's current state.
 
 Every state transition flows through a function that checks both the transition rules and the current database state:
 
@@ -79,9 +67,9 @@ I applied this separation in SoffIA, a WhatsApp booking product used at a clinic
 
 ### 1. Read-only access for the model
 
-The LLM doesn't write to the database. Ever. It suggests an operation, the system validates it against current state, and only if conditions are met does the system execute.
+The LLM never writes to the database. It suggests an operation; the system validates it against current state and executes only if the conditions are met.
 
-During identity verification, the model can call `lookup_patient` and `register_new_patient`. It cannot call `book_appointment`. The booking tool doesn't exist in this state — not in the context, not in the system prompt, not available.
+During identity verification, the model can call `lookup_patient` and `register_new_patient`. It cannot call `book_appointment`, because that tool is not in this state's tool set at all.
 
 In practice, this is enforced with progressive tool gating:
 
@@ -99,11 +87,9 @@ const result = await generateText({
 });
 ```
 
-The model receives exactly the context and capabilities relevant to its current position in the FSM.
-
 ### 2. Validate in the database, not in the prompt
 
-If the slot exists, the database knows it. If it doesn't, the database knows it. The LLM shouldn't have an opinion.
+Whether the slot exists is something the database knows and the model does not. The model shouldn't be asked to have an opinion about it.
 
 State transitions run inside a PostgreSQL function that encapsulates both the FSM logic and the business rules:
 
@@ -152,7 +138,7 @@ $$;
 
 ### 3. Tool argument validation
 
-At each step of the flow, the LLM only sees the tools corresponding to that step. During patient identification, booking tools don't exist. During payment, price modification tools don't exist.
+Tool gating already limits which tools exist at each step: no booking during patient identification, no price changes during payment. The arguments those tools receive need the same treatment.
 
 Tool schemas are validated with Zod before execution. If the model calls `book_appointment` with a malformed date, a missing doctor ID, or a service that doesn't exist in the clinic's catalog, the SDK throws before `execute` is called:
 
@@ -175,7 +161,7 @@ const bookAppointment = tool({
 });
 ```
 
-If the model can't see a tool, it can't call it — no matter how creative its prompt is.
+A tool the model cannot see is a tool it cannot call, whatever the prompt says.
 
 ### 4. Loop Shield against cognitive cycles
 
@@ -197,11 +183,6 @@ It's the equivalent of a circuit breaker, but for the model's reasoning.
 
 ---
 
-## What this means for you
+## What the architecture enforces
 
-The implementation puts these checks around the model:
-
-- A database that is the source of truth for every decision
-- A model that operates with explicit, verifiable constraints
-- A pipeline where every critical operation has an atomic lock or a server-side validation
-- Zero tolerance for the model deciding something the database didn't confirm
+The checks sit around the model, not inside it. The database is the source of truth for every decision, the model works inside explicit constraints, and every critical operation has an atomic lock or a server-side validation behind it. When the model proposes something the database did not confirm, nothing is written.

@@ -1,0 +1,56 @@
+---
+title: "When one NDC message meant two different operations"
+date: "2026-11-16"
+summary: "Separating payment from unpaid-order cancellation in an existing flight engine, even though the provider used OrderChangeRQ for both."
+slug: "ndc-payment-and-cancellation"
+themes: [backend, integrations, ndc, ai]
+kind: essay
+---
+
+While integrating Air Europa into an existing flight engine, I worked on a payment flow and later added cancellation for unpaid orders. The provider used the same NDC message type, `OrderChangeRQ`, for both. Inside our API, those operations needed separate requests and separate meanings of success.
+
+My work included SOAP builders, response parsers and mappings in the provider microservice, plus integration with the engine's backend-for-frontend (BFF). The team reviewed the functional decisions. One of those reviews led us to separate payment and cancellation.
+
+## Keeping the payment operation intact
+
+The payment request included an Order and `PaymentFunctions`: an amount, a currency and a payment method. The response could include a successful payment status and a ticket.
+
+Unpaid cancellation needed `ChangeOrderChoice` with `CancelUnpaidOrder`, along with the order and its version. It did not need `PaymentFunctions`. Both requests went through the provider's OrderChange route.
+
+In the first cancellation iteration, the two uses were mixed together. During review, we corrected the design to keep order-change for payment and add order-cancel for unpaid cancellation. That gave the internal API two commands and two XML builders, even though the outbound NDC message type was shared.
+
+The existing payment path still had to work after cancellation was added. Treating the work as a replacement for OrderChange would have missed that requirement.
+
+## The amount on screen was not the provider's amount
+
+A sandbox payment test exposed another distinction. The price displayed on screen included an additional web charge. Sending that amount to the provider produced error 466, Prices differ.
+
+The provider accepted its own `TotalPrice` and returned a successful payment response with a ticket. The additional charge belonged to the commercial presentation; it could not simply be added to the amount the provider expected to settle.
+
+I tested payment directly against the microservice in sandbox. Its integration into a complete web checkout was outside what that test verified.
+
+## Checking what cancellation actually did
+
+For an unpaid order, the dedicated cancellation endpoint returned `CANCELLED` in sandbox. A test against an issued order returned cancellation not confirmed, which matched the unpaid-only scope.
+
+Those are different outcomes from a successful payment. A regression test for cancellation needs to assert the cancellation state, as well as checking that its request contains `CancelUnpaidOrder` and excludes `PaymentFunctions`. Reusing a generic success check would not explain which operation succeeded.
+
+We validated these scenarios manually against the sandbox. My next step would be to save sanitized request and response fixtures for regression tests, including the existing payment request.
+
+## Working within an existing engine
+
+The BFF had to map its cancellation input to the provider operation while preserving its shared contract with other providers. The change was kept within the Air Europa integration.
+
+This also meant being specific about what the endpoint could do. `CancelUnpaidOrder` did not implement refunds or cancellation of issued tickets. A provider's refusal to cancel a paid order was not evidence that the unpaid cancellation request was broken.
+
+## What I would make explicit when asking AI for help
+
+I used AI assistance during this work. The operation's purpose and the existing behavior still needed review. Seeing the same provider message name was not enough to decide how our API should expose it.
+
+For another change like this, I would give the assistant the existing payment contract before asking it to add cancellation. I would ask it to identify what must remain unchanged, describe the new operation separately, and show the outgoing request for each one.
+
+I would then review examples with different expected outcomes: an unpaid order that can be cancelled, an issued order that cannot, and a payment request that still issues a ticket. The review question is what the change does to each operation, including the one that already worked.
+
+The separation was included in a production release recorded in Git. The examples above come from my sandbox tests.
+
+[The project case study](/en/work/ndc) covers the wider integration and the separate .NET migration.

@@ -10,19 +10,13 @@ The ticket said: "delete user, laptop reallocated." I was 18, three months into 
 
 What I didn't know at the time: this user's Exchange mailbox contained email threads tied to active import operations. In Peru, SUNAT — the tax authority — can audit those operations years after they close. If an auditor requests correspondence and the mailbox has been purged, the company has no legal defense. The emails aren't just communication. They're fiscal evidence.
 
-I wasn't fired. But I remember the exact feeling of realizing that a standard IT operation — one I performed correctly, by the book — could have created a legal liability for the company. The procedure was right. The context was wrong.
+I wasn't fired. What stayed with me was realizing that a standard IT operation, one I performed correctly and by the book, could have created a legal liability for the company.
 
-## The real problem wasn't the delete
+## Production access without domain context
 
-The problem was that I had production access to a system without understanding the domain it operated in. Nobody's fault — not mine, not my manager's. It was a process gap. The company assumed I knew what I was doing because they told me how to do it. They didn't tell me what it meant.
+I had production access to a system without understanding the domain it operated in. It was a process gap rather than anyone's mistake: the instructions told me how to delete a user, and nothing told me what the mailbox held.
 
-This gap isn't unique to juniors or to AD. It exists everywhere production access is granted without domain context:
-
-- A developer with database access who doesn't know that `DELETE FROM users WHERE id = X` cascades to invoices
-- An SRE who can push config without knowing which endpoints serve PII
-- A support agent who can reset a password without knowing the account handles payroll
-
-In every case, the operator has the technical ability to perform the action and no visibility into the business consequences. The system trusts them to know what they're doing. But the system never told them what they need to know.
+The same gap shows up wherever production access is granted without domain context. A developer with database access may not know that `DELETE FROM users WHERE id = X` cascades to invoices. An SRE can push config without knowing which endpoints serve PII, and a support agent can reset a password for the account that handles payroll. In each case the operator has the ability to perform the action and no visibility into what it costs outside the system.
 
 ## What I do now
 
@@ -55,15 +49,15 @@ const actions: Record<string, ProductionAction> = {
 };
 ```
 
-This isn't revolutionary. It's a mapping table. But it forces a question that most systems never ask: **what are the consequences of this action outside of this system?**
+It's a mapping table, and its only job is to force a question most systems never ask: what are the consequences of this action outside of this system?
 
-Before any production operation runs, it checks its `domainImpact` against a registry of active compliance requirements. If the operation touches a domain with fiscal implications, legal approval is required before execution. No approval, no execution.
+Before a production operation runs, it checks its `domainImpact` against a registry of active compliance requirements. If the operation touches a domain with fiscal implications, it waits for legal approval.
 
-## The actual lesson
+## What I ask now
 
-The AD incident taught me that technical competence and domain understanding are two different things. You can be excellent at Active Directory and still create a legal liability for your company if you don't know what the data represents outside of AD.
+Technical competence and domain understanding are different things. You can be excellent at Active Directory and still create a legal liability for the company if you don't know what the data represents outside it.
 
-When I interview now, I don't ask about frameworks. I ask: *"tell me about a time you made a production change and later realized you didn't understand the business impact."* The answer tells me more about a candidate's level than any coding exercise.
+When I interview now, I don't ask about frameworks. I ask: *"tell me about a time you made a production change and later realized you didn't understand the business impact."* The answer tells me more about how someone works than a coding exercise does.
 
 
-I made that mistake at 18. I haven't made it since. Not because I'm more careful — because I stopped trusting the operator and started building the questions into the system. Today, before I touch anything in production, I ask: *does disabling work instead of deleting?* It almost always does. And that simple question has saved me more times than any pattern or framework.
+I made that mistake at 18. The change afterward was not extra caution; it was refusing to depend on the operator remembering the context. Before I touch anything in production now, I ask whether disabling the account would do the job instead of deleting it. It usually would.

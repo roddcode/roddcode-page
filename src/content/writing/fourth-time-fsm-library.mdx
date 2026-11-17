@@ -6,7 +6,7 @@ slug: "fourth-time-fsm-library"
 themes: [ai, fsm, open-source, architecture]
 ---
 
-A patient confirmed a booking for a slot that was already taken. The LLM said "confirmed" while the database said "sold." That was the moment I realized: the model cannot be the source of truth.
+A patient confirmed a booking for a slot that was already taken. The LLM said "confirmed" while the database said "sold." The model cannot be the source of truth.
 
 ## The first three times
 
@@ -14,13 +14,9 @@ I was building SoffIA's core loop. The LLM needed to identify patients, check av
 
 So I built a state machine. Hardcoded. Tightly coupled to SoffIA's database schema and its specific LLM provider. It worked, but it wasn't reusable. I didn't care — it was a single product.
 
-The second time was a consulting client. Different domain, different LLM, different database. They had the same problem: their agent kept calling tools out of order. I rebuilt the same pattern from scratch. Same logic, different code.
+The second time was a consulting client. Different domain, different LLM, different database. Their agent kept calling tools out of order, the same problem I had solved in SoffIA. I rebuilt the pattern from scratch: identical logic, different code. Extracting it would take time, and the client needed delivery, not infrastructure.
 
-That's when I noticed the pattern. The state machine logic was identical — only the tools and transitions changed. But extracting it would take time, and the client needed delivery, not infrastructure.
-
-The third time broke me. I installed a framework instead of rebuilding. Configured the state machine. Simple enough — until I needed a loop shield. The framework didn't have one. I had to override a core class. The dependency started dictating my architecture.
-
-That's the moment you realize: a framework that doesn't fit your use case costs more than building your own. Not in code — in constraints.
+The third time, I installed a framework instead of rebuilding. Configuration was simple until I needed a loop shield. The framework didn't have one, so I overrode a core class, and the dependency started dictating the architecture. A framework that doesn't fit costs more in constraints than it saves in code.
 
 ## The fourth time
 
@@ -47,13 +43,13 @@ fsm.allowedTools; // ['confirm', 'invoice']
 
 I isolated the state machine into a core with zero dependencies. The provider integration became an adapter. The tool schemas became generic. The loop shield and gate refresh became configuration options, not hardcoded logic.
 
-I wrote 86 tests. Mostly edge cases I had debugged at 2 AM in production systems — the kind of failures you only know to test for after they've burned you.
+I wrote 86 tests, mostly for edge cases I had debugged in production: the kind of failure you only learn to test for after it has happened to you.
 
 The result is reactive-fsm. A TypeScript library that controls LLM tool access via state machines — with zero runtime dependencies, swappable provider adapters, and the loop shield and guard patterns that emerged from two years of production AI systems.
 
 ## The guardrail is structural, not textual
 
-The most common failure pattern in LLM-powered systems is the model calling a tool it shouldn't have access to. The standard fix is a better system prompt: *"never confirm a booking before identity is verified."* But prompts leak. The model finds a path around them.
+A common failure pattern in LLM-powered systems is the model calling a tool it shouldn't have access to. The standard fix is a better system prompt: *"never confirm a booking before identity is verified."* Prompts leak, and the model finds a path around them.
 
 Reactive-fsm's approach is different: **the tool doesn't exist in the LLM's context until the state machine says it does.** The model cannot call `confirm` during TRIAGE because `confirm` is not in the tools array at that state. There's no prompt to bypass.
 
@@ -67,9 +63,9 @@ fsm.transitionTo("BOOKING");
 // tools now includes confirm, check_service is removed
 ```
 
-## Guard and loop shield — the pair that prevents production incidents
+## What the guard and loop shield do
 
-In concurrent systems — which every production AI system is — the world changes between the LLM's decision and the tool execution. A patient books a slot while another patient is confirming. A naive state machine confirms both.
+The world can change between the LLM's decision and the tool execution. One patient books a slot while another is confirming it, and a state machine that only checks its own state confirms both.
 
 The guard validates each transition against current state before it executes. The loop shield detects when the LLM is cycling between the same tools and forces a fallback.
 
@@ -123,4 +119,4 @@ Snapshot and restore for serverless — store `fsm.snapshot()` in your database,
 
 This is not a framework. It doesn't manage prompts, orchestrate multi-agent conversations, or replace LangChain. It does one thing: control what tools an LLM can call at each step of a conversation, structurally, without relying on prompts.
 
-If you're dealing with LLMs that call tools they shouldn't, [reactive-fsm is MIT](https://npmjs.com/package/reactive-fsm) and takes 30 seconds to install. I wrote it because I got tired of fixing the same bug at 2 AM. You can install it and not make the same mistakes I made.
+If your agent calls tools it shouldn't, [reactive-fsm is MIT](https://npmjs.com/package/reactive-fsm). I wrote it so I would stop rebuilding the same state machine for the next project.

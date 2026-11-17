@@ -10,15 +10,11 @@ Friday 5 PM, the WhatsApp API stopped responding. A clinic's busiest hour. Patie
 
 The receptionist didn't know. The patients assumed someone would reply later. The clinic lost at least three leads that afternoon because the system had no resilience layer between WhatsApp and the database.
 
-The fix wasn't a better API key. It was a circuit breaker, a retry queue, and a dead-letter channel. That was the first time I stopped treating API failures as exceptions and started treating them as design inputs.
+The fix was a circuit breaker, a retry queue, and a dead-letter channel. That was the first time I stopped treating API failures as exceptions and started treating them as design inputs.
 
-Networks are asymmetric: sending a request is cheap. Handling a failure is expensive. When Evolution API (the WhatsApp bridge we use in Soff.ia) drops a connection mid-conversation, the cost isn't the lost HTTP call. The cost is: a patient left waiting in the middle of a booking, a second message arriving out of order, a mutex lock in Upstash Redis that never gets released, a hallucinated LLM confirmation that was never sent.
+Networks are asymmetric: sending a request is cheap. Handling a failure is expensive. When Evolution API (the WhatsApp bridge we use in SoffIA) drops a connection mid-conversation, the cost isn't the lost HTTP call. The cost is: a patient left waiting in the middle of a booking, a second message arriving out of order, a mutex lock in Upstash Redis that never gets released, a hallucinated LLM confirmation that was never sent. One dropped connection becomes four separate failures.
 
-One failed API call cascades into four separate system failures.
-
-Three layers handle this. Not one.
-
-**Exponential backoff with jitter.** Retrying immediately after a failure is the worst possible strategy. If the upstream service is overloaded, your retry adds to the problem. Wait, then retry. Double the wait each time. Add jitter so synchronized retries from multiple instances don't hit at the same time.
+**Exponential backoff with jitter.** Retrying immediately after a failure usually makes it worse. If the upstream service is overloaded, your retry adds to the problem. Wait, then retry. Double the wait each time. Add jitter so synchronized retries from multiple instances don't hit at the same time.
 
 ```typescript
 async function withBackoff<T>(
@@ -44,23 +40,21 @@ Attempt 1: wait 200ms + jitter. Attempt 2: 400ms. Attempt 3: 800ms. On the fourt
 
 **Circuit breaker.** The circuit breaker stops retrying when a service is clearly down. Five consecutive failures open the circuit. Stop sending requests. Wait 30 seconds. Try one probe call. If it succeeds, close the circuit. If not, wait again. This protects you from hammering a degraded service into a complete outage and burning serverless function budget on calls that will never succeed.
 
-In Soff.ia, we use circuit breakers around Google Calendar's API. Calendar is auxiliary — a booking can proceed without it, with a fallback notification to the clinic. The circuit breaker triggers that fallback.
+In SoffIA, we use circuit breakers around Google Calendar's API. Calendar is auxiliary — a booking can proceed without it, with a fallback notification to the clinic. The circuit breaker triggers that fallback.
 
-**Graceful degradation.** When retries are exhausted and the circuit is open, what does the user see? Never a broken spinner or a generic error. Graceful degradation means defining a fallback for every dependency:
+**Graceful degradation.** When retries are exhausted and the circuit is open, someone still has to see something. It should not be a broken spinner or a generic error. Graceful degradation means defining a fallback for every dependency:
 
 - **Calendar API down:** Booking is queued. Patient receives "Your appointment request was received. We'll confirm within 15 minutes." Clinic gets a Telegram notification.
 - **WhatsApp API down:** Incoming webhooks are idempotent. The queue preserves messages. Processing resumes when the connection recovers.
 - **LLM timeout:** The orchestrator returns to the last stable FSM state. The patient gets "I'm checking on that." No hallucinated confirmation.
 
-A `try/catch` catches exceptions. It doesn't define what happens next. The difference is between a plane detecting engine failure and a plane having a protocol for engine failure. Every external dependency needs an explicit contract:
+A `try/catch` catches an exception; it does not say what the system does next. The difference is a plane with an engine-failure alarm and a plane with a procedure for engine failure. Every external dependency needs an explicit contract:
 
 1. What is the maximum latency before failure?
 2. How many retries, with what backoff?
 3. At what failure rate do we stop trying?
 4. What does the user experience when it's unavailable?
 
-If you can't answer all four for every external call, your system isn't resilient. It's lucky.
+If you can't answer those four for an external call, that call is a dependency you are trusting to stay up.
 
-These four answers codified into a single 15-line wrapper. Not because it's complex to write — it's not. But writing it correctly every time, under deadline pressure, is where the errors happen. The primitive is simple. The discipline of applying it consistently is not.
-
-When a patient in Lima tries to book an appointment at 11 PM and the Calendar API is degraded, the system doesn't fail. It degrades. The patient doesn't know. The clinic gets notified. The appointment is confirmed the next morning.
+Those four answers ended up codified in a single 15-line wrapper. The wrapper itself is trivial. Remembering to put every new external call behind it, under deadline pressure, is the part that goes wrong.

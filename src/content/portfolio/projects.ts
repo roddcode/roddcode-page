@@ -51,6 +51,7 @@ const projects: Definition[] = [
     featured: true,
     stack: ["C#/.NET", "SOAP/XML", "PostgreSQL", "Serilog", "Azure DevOps"],
     delivery: { ndcOperations: 7, migratedRepositories: 4 },
+    relatedPosts: ["ndc-payment-and-cancellation"],
     es: {
       title: "Motor de vuelos: integración NDC y migración .NET",
       category: "Backend · Integraciones y migración",

@@ -10,9 +10,9 @@ A client asked me to audit their Next.js app. Revenue dashboard, user profiles, 
 
 I opened the Network tab, filtered by "script," and counted 16 third-party scripts running on the login page. Analytics, chat widgets, A/B testing, session recording. Any one of them could exfiltrate that token in one line. The app would have no way to detect it.
 
-The fix wasn't a better obfuscation library. It was removing the token from the browser entirely.
+The fix was to remove the token from the browser entirely.
 
-The browser is not a vault. It's a rendering surface. It executes arbitrary JavaScript from dozens of sources — your code, third-party scripts, npm packages with 47 transitive dependencies. `localStorage` is readable by every line of JavaScript running on the page. XSS is not a theoretical attack. It's been a real vulnerability for 25 years.
+A browser executes JavaScript from many sources: your code, third-party scripts, npm packages with 47 transitive dependencies. Anything in `localStorage` is readable by all of it. XSS has been a real vulnerability for 25 years, and one compromised script on the login page is enough to read the token.
 
 **HttpOnly cookies cannot be accessed by JavaScript.** The browser sends them with every request to your domain, and JS cannot read them. This is enforced by the browser's security model, not by your configuration.
 
@@ -20,7 +20,7 @@ The architecture: browser sends request → server reads HttpOnly cookie → ser
 
 <AuthSequenceDiagram />
 
-Access tokens expire by design. The question is what happens when they do. The naive approach: redirect to login. The correct approach: use a long-lived refresh token to issue a new access token silently, without interrupting the user.
+Access tokens expire by design. When the access token is gone but a refresh token is still valid, middleware can issue a new access token without interrupting the user, instead of sending them back to the login page.
 
 In Next.js App Router, this lives in middleware — it runs at the edge before any page renders:
 
@@ -66,12 +66,10 @@ The user never sees an expired token. The refresh token is itself an HttpOnly co
 
 HttpOnly cookies solve the client-side exposure problem. They don't solve server-side session management. If you validate a JWT on every request, you have stateless authentication — the most scalable approach for serverless environments. The tradeoff: you can't instantly invalidate a JWT before it expires. For most apps, this is acceptable. For high-security contexts, pair it with a Redis blocklist.
 
-In Soff.ia's dashboard — where clinic owners control patient data — we use 15-minute access tokens with a Redis blocklist checked on sensitive writes. One Redis lookup per mutation. Instant session invalidation as the tradeoff.
+In SoffIA's dashboard — where clinic owners control patient data — we use 15-minute access tokens with a Redis blocklist checked on sensitive writes. One Redis lookup per mutation. Instant session invalidation as the tradeoff.
 
-The shift in mental model: **the server is the source of truth. The browser is a view.** A user's preferences, their active session, their role permissions — none of these should live in a JavaScript variable. They should live in a database, read on the server, and arrive at the browser as rendered HTML.
+Other state has the same exposure. A user's preferences, active session, and role permissions belong in a database, read on the server, and sent to the browser as rendered HTML, not kept in a JavaScript variable that disappears on refresh.
 
-In Next.js with App Router, most state that developers reflexively put in `useState` can live in the URL (via `searchParams`) or be fetched on the server. This is not a performance tradeoff. For authenticated applications, server-side rendering of user-specific data is faster than loading a skeleton, fetching client-side, and filling in the content.
+In the App Router, most of the state that ends up in `useState` can live in the URL (via `searchParams`) or be fetched on the server. For authenticated pages this is often the faster option as well: rendering user data on the server avoids the skeleton and the client fetch.
 
-Store tokens in HttpOnly cookies. Never in `localStorage`, `sessionStorage`, or a JavaScript variable that outlives a render cycle. Rotate tokens silently in middleware. Use short expiry. Pair with a server-side blocklist if you need instant invalidation.
-
-The browser renders. The server authenticates. These responsibilities don't overlap.
+In this setup, tokens live in HttpOnly cookies rather than `localStorage`, `sessionStorage`, or a JavaScript variable that outlives a render cycle. Rotation happens in middleware, expiry stays short, and a Redis blocklist covers the cases where a session has to die immediately.
