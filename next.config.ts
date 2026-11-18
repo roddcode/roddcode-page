@@ -5,11 +5,11 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""};
+  script-src 'self' 'unsafe-inline' https://cloud.umami.is${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""};
   style-src 'self' 'unsafe-inline';
   font-src 'self';
   img-src 'self' blob: data:;
-  connect-src 'self';
+  connect-src 'self' https://gateway.umami.is;
   frame-ancestors 'none';
 `
   .replace(/\s{2,}/g, " ")

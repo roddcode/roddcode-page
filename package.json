@@ -23,11 +23,11 @@
     "clean": "node -e \"const f=require('node:fs');for(const d of ['.next','.turbo'])f.rmSync(d,{recursive:true,force:true})\"",
     "og:contour": "node scripts/og-contour.mjs",
     "validate:content": "node --experimental-strip-types scripts/validate-content.mjs",
-    "test:content": "node --experimental-strip-types --test tests/content.test.mjs"
+    "test:content": "node --experimental-strip-types --test tests/content.test.mjs",
+    "test:analytics": "node --experimental-strip-types --test tests/umami.test.mjs"
   },
   "dependencies": {
     "@tailwindcss/typography": "0.5.20",
-    "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "2.0.0",
     "class-variance-authority": "0.7.1",
     "clsx": "^2.1.1",

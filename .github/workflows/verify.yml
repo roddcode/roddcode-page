@@ -22,12 +22,18 @@ jobs:
       - run: pnpm lint
       - run: pnpm validate:content
       - run: pnpm test:content
+      - run: pnpm test:analytics
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
         env:
           PLAYWRIGHT_PRODUCTION: "1"
+      - run: pnpm exec playwright test tests/analytics.spec.ts --project=chromium --grep "configured production build"
+        env:
+          PLAYWRIGHT_PRODUCTION: "1"
+          VERCEL_ENV: production
+          NEXT_PUBLIC_UMAMI_WEBSITE_ID: 3f7b2c1a-9d4e-4a6b-8c2d-1e5f7a9b0c3d
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

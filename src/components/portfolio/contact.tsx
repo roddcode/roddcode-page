@@ -20,7 +20,7 @@ export function Contact({ locale }: { locale: Locale }) {
           <p>{t.contactBody}</p>
           <div className={s.actions}>
             <Button asChild className="gap-4">
-              <a href={`mailto:${SITE.email}`}>
+              <a href={`mailto:${SITE.email}`} data-umami-event="email_click">
                 {t.email}
                 <ArrowUpRight
                   size={17}
@@ -30,7 +30,11 @@ export function Contact({ locale }: { locale: Locale }) {
               </a>
             </Button>
             <Button asChild variant="outline">
-              <ExternalLink locale={locale} href={CV}>
+              <ExternalLink
+                locale={locale}
+                href={CV}
+                data-umami-event="cv_click"
+              >
                 {t.cv}
               </ExternalLink>
             </Button>

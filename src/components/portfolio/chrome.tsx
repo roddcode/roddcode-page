@@ -75,7 +75,7 @@ export function Header({
             size="link"
             className={`${s.headerContact} gap-2 text-ink`}
           >
-            <a href={`mailto:${SITE.email}`}>
+            <a href={`mailto:${SITE.email}`} data-umami-event="email_click">
               {t.email}
               <ArrowUpRight
                 size={15}
@@ -111,10 +111,16 @@ export function Header({
                   {link.label}
                 </a>
               ))}
-              <ExternalLink locale={locale} href={CV}>
+              <ExternalLink
+                locale={locale}
+                href={CV}
+                data-umami-event="cv_click"
+              >
                 {t.cv}
               </ExternalLink>
-              <a href={`mailto:${SITE.email}`}>{t.email}</a>
+              <a href={`mailto:${SITE.email}`} data-umami-event="email_click">
+                {t.email}
+              </a>
             </nav>
           </details>
         </div>
@@ -169,7 +175,12 @@ export function Footer({ locale }: { locale: Locale }) {
             </h2>
             <ul>
               <li>
-                <ExternalLink locale={locale} showIcon href={SITE.github}>
+                <ExternalLink
+                  locale={locale}
+                  showIcon
+                  href={SITE.github}
+                  data-umami-event="github_click"
+                >
                   <SocialIcon name="github" />
                   GitHub
                 </ExternalLink>
@@ -188,13 +199,21 @@ export function Footer({ locale }: { locale: Locale }) {
             </h2>
             <ul>
               <li className={s.emailRow}>
-                <a className={s.footerEmail} href={`mailto:${SITE.email}`}>
+                <a
+                  className={s.footerEmail}
+                  href={`mailto:${SITE.email}`}
+                  data-umami-event="email_click"
+                >
                   {SITE.email}
                 </a>
                 <CopyEmail email={SITE.email} locale={locale} />
               </li>
               <li>
-                <ExternalLink locale={locale} href={CV}>
+                <ExternalLink
+                  locale={locale}
+                  href={CV}
+                  data-umami-event="cv_click"
+                >
                   {t.cv}
                 </ExternalLink>
               </li>

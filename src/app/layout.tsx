@@ -1,9 +1,9 @@
 import { OG_ALT } from "@/app/og/alt";
+import { UmamiAnalytics } from "@/components/analytics/umami";
 import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getPortfolio } from "@/content/portfolio";
 import { SITE } from "@/lib/constants";
-import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { getLocale } from "next-intl/server";
@@ -103,7 +103,7 @@ export default async function RootLayout({
         </noscript>
         <JsonLd locale={locale} />
         {process.env.VERCEL === "1" && <SpeedInsights />}
-        {process.env.VERCEL === "1" && <Analytics />}
+        <UmamiAnalytics />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

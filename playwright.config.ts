@@ -9,7 +9,7 @@ export default defineConfig({
     {
       name: "chromium",
       use: { browserName: "chromium" },
-      testMatch: /layout\.spec\.ts/,
+      testMatch: /(?:layout|analytics)\.spec\.ts/,
     },
     {
       name: "firefox",

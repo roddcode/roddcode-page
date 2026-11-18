@@ -21,6 +21,7 @@ Open http://localhost:3000. No API keys or database are required. The booking de
 pnpm lint
 pnpm validate:content
 pnpm test:content
+pnpm test:analytics
 pnpm build
 pnpm typecheck
 pnpm exec playwright install chromium firefox webkit
@@ -37,6 +38,22 @@ Remove-Item Env:PLAYWRIGHT_PRODUCTION
 The suite runs the main regression tests in Chromium and focused layout/control checks in Firefox and WebKit. CI performs the same checks on pull requests and pushes to main. Visual inspection is still required for changes to layout or media.
 
 Development mode includes compilation and debugging overhead. To evaluate interactions without that overhead, run pnpm build followed by pnpm start.
+
+## Analytics
+
+Traffic and events use Umami Cloud. Vercel Web Analytics instrumentation and its package have been removed; Vercel Speed Insights stays for real-world performance metrics. Set `NEXT_PUBLIC_UMAMI_WEBSITE_ID` (the website UUID) in Vercel Production and redeploy. Do not commit the real ID; it is a public website identifier, not an API key. The tracker renders only when `NODE_ENV=production`, `VERCEL_ENV=production` and the ID is a valid UUID. Locally, in Preview and without the variable, the site ships no tracker and makes no Umami request.
+
+When enabled, the page contains one `https://cloud.umami.is/script.js` and the tracker posts collections to `https://gateway.umami.is/api/send`. CSP allows only those two hosts. Pageviews and client-side navigations are automatic; query strings and hashes are excluded. Do Not Track is respected.
+
+Four events are emitted from existing links: `cv_click`, `email_click`, `github_click` and `case_open` (with a `project` property: `soffia`, `ndc` or `meteor`). A click is not proof of an email being sent, a CV being read or a download completing.
+
+Exclude your own visits per browser with `localStorage.setItem('umami.disabled', '1')`; remove it with `localStorage.removeItem('umami.disabled')`. Load the tracker once in production, navigate between routes and confirm the script tag stays single. Then check Umami manually: Realtime/Overview for pageviews, Events for the four names and the `project` property. Reload after changing the exclusion flag. In DevTools → Network, confirm the script loads once per document and `gateway.umami.is/api/send` receives one pageview per navigation and one custom event per tracked click. A case click followed by a destination pageview is expected, not a duplicate. The repository tests intercept Umami traffic, including manually created browser contexts; they cannot confirm what your dashboard received.
+
+The configured-tracker regression uses a dummy ID and the same production build. Run it with `PLAYWRIGHT_PRODUCTION=1`, `VERCEL_ENV=production` and `NEXT_PUBLIC_UMAMI_WEBSITE_ID=3f7b2c1a-9d4e-4a6b-8c2d-1e5f7a9b0c3d`, then `pnpm exec playwright test tests/analytics.spec.ts --project=chromium --grep "configured production build"`. Clear those variables afterward. CI runs this separately from the unconfigured suite; neither run contacts Umami.
+
+The privacy pages describe the confirmed Hobby plan's six-month analytics retention, separately from provider logs/backups and Vercel retention. Before real activation, validate the lawful basis, processor agreement and international transfers under [Peru's current data protection rules](https://www.gob.pe/institucion/anpd/normas-legales/6554453-16-2024-jus) and GDPR/ePrivacy where applicable. Cookie-free operation alone does not establish a consent exemption: the [AEPD guidance](https://www.aepd.es/guias/guia-cookies-analiticas-externas.pdf) sets conditions that require assessment. No marketing cookies or consent manager are added by this integration.
+
+Official references: [collect data](https://docs.umami.is/docs/collect-data), [tracker configuration](https://docs.umami.is/docs/tracker-configuration), [track events](https://docs.umami.is/docs/track-events), [exclude your own visits](https://docs.umami.is/docs/exclude-my-own-visits).
 
 ## Structure
 

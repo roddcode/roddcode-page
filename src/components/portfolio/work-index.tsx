@@ -25,6 +25,8 @@ export function WorkIndex({ locale }: { locale: Locale }) {
                 href={pathFor(locale, `/work/${project.slug}`)}
                 aria-labelledby={titleId}
                 data-reveal=""
+                data-umami-event="case_open"
+                data-umami-event-project={project.slug}
               >
                 <div className={s.art}>
                   <ProjectArt slug={project.slug} locale={locale} />

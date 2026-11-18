@@ -36,7 +36,7 @@ export function Hero({ locale }: { locale: Locale }) {
             <a href={pathFor(locale, "/work")}>{t.viewWork}</a>
           </Button>
           <Button asChild variant="outline">
-            <ExternalLink locale={locale} href={CV}>
+            <ExternalLink locale={locale} href={CV} data-umami-event="cv_click">
               {t.cv}
             </ExternalLink>
           </Button>

@@ -166,6 +166,8 @@ export function CaseStudy({
                 className={s.nextCard}
                 href={pathFor(locale, `/work/${item.slug}`)}
                 aria-labelledby={`next-${item.slug}-title`}
+                data-umami-event="case_open"
+                data-umami-event-project={item.slug}
               >
                 <div className={s.nextArt}>
                   <div className={s.nextCanvas}>

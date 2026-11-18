@@ -35,7 +35,11 @@ export function ArticleFooter({
             {relatedWork.map((project) => (
               <li key={project.slug}>
                 <Button asChild variant="link" size="link">
-                  <a href={pathFor(locale, `/work/${project.slug}`)}>
+                  <a
+                    href={pathFor(locale, `/work/${project.slug}`)}
+                    data-umami-event="case_open"
+                    data-umami-event-project={project.slug}
+                  >
                     {project.title}
                     <ArrowRight size={17} aria-hidden="true" />
                   </a>

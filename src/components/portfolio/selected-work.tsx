@@ -17,6 +17,8 @@ function ProjectRow({ locale, project }: { locale: Locale; project: Project }) {
         href={pathFor(locale, `/work/${project.slug}`)}
         tabIndex={-1}
         aria-label={`${t.viewCase}: ${project.title}`}
+        data-umami-event="case_open"
+        data-umami-event-project={project.slug}
       >
         <ProjectArt slug={project.slug} locale={locale} />
       </a>
@@ -25,12 +27,22 @@ function ProjectRow({ locale, project }: { locale: Locale; project: Project }) {
           {project.category} <span>{project.period}</span>
         </p>
         <h3>
-          <a href={pathFor(locale, `/work/${project.slug}`)}>{project.title}</a>
+          <a
+            href={pathFor(locale, `/work/${project.slug}`)}
+            data-umami-event="case_open"
+            data-umami-event-project={project.slug}
+          >
+            {project.title}
+          </a>
         </h3>
         <p>{project.summary}</p>
         <ProjectHighlights project={project} />
         <Button asChild variant="link" size="link">
-          <a href={pathFor(locale, `/work/${project.slug}`)}>
+          <a
+            href={pathFor(locale, `/work/${project.slug}`)}
+            data-umami-event="case_open"
+            data-umami-event-project={project.slug}
+          >
             {t.viewCase}
             <ArrowRight
               size={17}

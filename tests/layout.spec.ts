@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, mockUmamiNetwork, test } from "./fixtures";
 
 const routes = [
   "",
@@ -464,6 +464,7 @@ test("case content stays readable without JavaScript and with reduced motion", a
     javaScriptEnabled: false,
     locale: "es-PE",
   });
+  await mockUmamiNetwork(context);
   try {
     const plain = await context.newPage();
     await plain.goto(new URL("/work/soffia", baseURL).href);
@@ -566,6 +567,7 @@ test("writing remains readable without JavaScript", async ({ browser }) => {
     javaScriptEnabled: false,
     viewport: { width: 320, height: 900 },
   });
+  await mockUmamiNetwork(context);
   const page = await context.newPage();
   await page.goto("/writing/server-centric-state");
   await expect(page.locator("main h1")).toBeVisible();
@@ -739,6 +741,7 @@ test("writing interface resolves header, explicit cookie and invalid cookie", as
 }) => {
   const visit = async (locale: string, cookie?: string) => {
     const context = await browser.newContext({ locale });
+    await mockUmamiNetwork(context);
     if (cookie) {
       await context.addCookies([
         { name: "NEXT_LOCALE", value: cookie, url: baseURL ?? "" },

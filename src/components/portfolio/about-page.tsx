@@ -35,7 +35,11 @@ export function AboutPage({ locale }: { locale: Locale }) {
               <p>{about.education}</p>
               <div className={s.actions}>
                 <Button asChild>
-                  <ExternalLink locale={locale} href={CV}>
+                  <ExternalLink
+                    locale={locale}
+                    href={CV}
+                    data-umami-event="cv_click"
+                  >
                     {t.cv}
                   </ExternalLink>
                 </Button>

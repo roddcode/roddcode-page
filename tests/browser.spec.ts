@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("reading and controls work across browser engines", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
